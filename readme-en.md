@@ -1,83 +1,82 @@
-# JQuickLang 语法参考手册
-## 概述
-JQuickLang 是一种轻量级类 Java 脚本语言，专为简洁高效的编程而设计。它结合了 Java 的类型系统和 JavaScript 的灵活性，非常适合快速原型开发、教学和小型项目。
+# JQuickLang Syntax Reference
+## Overview
+JQuickLang is a lightweight Java-like scripting language designed for concise and efficient programming. It combines Java's type system with JavaScript's flexibility, making it ideal for rapid prototyping, education, and small projects.
+# Table of Contents
 
-## 目录
-- [概述](#概述)
-- [核心特性](#核心特性)
-    - [1. 简化类型系统](#1-简化类型系统)
-- [程序结构](#程序结构)
-    - [导入声明](#导入声明)
-    - [变量声明](#变量声明)
-- [数据类型](#数据类型)
-    - [基本类型（simpleType）](#基本类型-simpletype)
-    - [复合类型](#复合类型)
-- [表达式](#表达式)
-    - [运算符分组](#运算符分组)
-    - [示例代码](#示例代码)
-- [控制结构](#控制结构)
-    - [if 语句](#if-语句)
-    - [循环语句](#循环语句)
-        - [for 循环](#for-循环)
-        - [while 循环](#while-循环)
-    - [方法定义](#方法定义)
-- [调用方式](#调用方式)
-    - [静态方法](#静态方法)
-    - [构造方法](#构造方法)
-    - [实例方法](#实例方法)
-- [输出](#输出)
-- [注释](#注释)
-- [代码示例](#代码示例)
-    - [示例 1](#示例-1)
-    - [示例 2](#示例-2)
-    - [示例 3](#示例-3)
-    - [示例 4](#示例-4)
-- [附录](#附录)
-    - [保留关键字](#保留关键字)
-    - [标识符规则](#标识符规则)
-- [完整示例](#完整示例)
-    1. [示例 1](#示例-1-1)
-    2. [示例 2](#示例-2-1)
-    3. [示例 3](#示例-3-1)
-    4. [示例 4](#示例-4-1)
+- [Overview](#overview)
+- [Core Features](#core-features)
+    - [1. Simplified Type System](#1-simplified-type-system)
+- [Program Structure](#program-structure)
+    - [Import Declarations](#import-declarations)
+    - [Variable Declarations](#variable-declarations)
+- [Data Types](#data-types)
+    - [Primitive Types (simpleType)](#primitive-types-simpletype)
+    - [Composite Types](#composite-types)
+- [Expressions](#expressions)
+    - [Operator Groups](#operator-groups)
+    - [Sample Code](#sample-code)
+- [Control Structures](#control-structures)
+    - [if statement](#if-statement)
+    - [loop statement](#loop-statement)
+        - [for loop](#for-loop)
+        - [while loop](#while-loop)
+    - [method definition](#method-definition)
+- [Invocation Styles](#invocation-styles)
+    - [Static Method](#static-method)
+    - [Constructor Method](#constructor-method)
+    - [Instance Method](#instance-method)
+- [Output](#output)
+- [Comments](#comments)
+- [Code Samples](#code-samples)
+    - [Sample 1](#sample-1)
+    - [Sample 2](#sample-2)
+    - [Sample 3](#sample-3)
+    - [Sample 4](#sample-4)
+- [Appendix](#appendix)
+    - [String Preserve Keywords](#string-preserve-keyword)
+    - [Identifier Rules](#identifier-rules)
+- [Complete Examples](#complete-example)
+    1. [Sample 1](#sample-1-1)
+    2. [Sample 2](#sample-2-1)
+    3. [Sample 3](#sample-3-1)
+    4. [Sample 4](#sample-4-1)
+## Core Features
+### 1. Simplified Type System
+- **7 Primitive types** built-in
+- **Full generics** support
+- **Flexible collections** (List/Set/Map)
+- **dimensional arrays**
 
-## 核心特性
-### 1. 简化类型系统
-- **7 种基本类型**内置支持
-- **完整的泛型**支持
-- **灵活的集合**（List/Set/Map）
-- **多维数组**
+```jquick
+// Primitive types
+int counter = 0;
+boolean enabled = true;
 
-```jquick  
-// 基本类型  
-int counter = 0;  
-boolean enabled = true;  
-
-// 泛型集合  
-List<String> names = ["Alice", "Bob"];  
-Map<String, Integer> scores = {"数学":90, "英语":85};  
+// Generic collections
+List<String> names = ["Alice", "Bob"];
+Map<String, Integer> scores = {"Math":90, "English":85};
 ```
 
-## 程序结构
+## Program Structure
 ```jquick
 import com.example.pkg as pkgAlias;
 int x = 10;
 console.log(x);
 ```
-### 导入声明
+### Import Declarations
 
 | Component      | Description                                 |
 |----------------|---------------------------------------------|
 | qualified.name | dot-separated path (e.g., java.lang.String) |
 | as             | alias name                                  |
-### 变量声明
+### Variable Declarations
 
 | Keyword    | Example            | Description                     |
 |------------|--------------------|---------------------------------|
 | simpleType | `int x = 10;`      | Type inferred                   |
 | TypeName   | `String s = "hi";` | Explicit type (optional)        |
-### 数据类型
-### 基本类型（原生类型）
+### Data Types
+### Primitive Types (simpleType)
 | Type Keyword | Data Type        | Example                     |
 |--------------|------------------|-----------------------------|
 | short        | Short integer    | `short s = 100;`            |
@@ -90,7 +89,7 @@ console.log(x);
 | Null         | null             | `null`                      |
 | Date         | Date             | `2025-06-07`                |
 | Date         | Date             | `2025-06-07 12:00:01`       |
-### 复合类型
+### Composite Types
 | Type Format               | Example                          |
 |--------------------------|----------------------------------|
 | Generic (Type<T>)         | `List<String> names;`            |
@@ -104,7 +103,7 @@ console.log(x);
 import List<java.lang.String> as StringList ;
 StringList list=["A","B","C"];
 ```
-###  表达式
+###  Expressions
 | Operator Group | Operators    | Example                  | Desc                          |
 |----------------|--------------|--------------------------|-------------------------------|
 | Mul            | `*`          | 1*1                      | number * number               | 
@@ -119,13 +118,13 @@ StringList list=["A","B","C"];
 | EQ             | `==`         | 1==1                     | number == number              |
 | AND            | `&&`         | true&& true              | boolean  && boolean           |
 | OR             | \|\|      | true \|\| false              | boolean\|\| boolean           |
-| PAREN          | (expression) | (a + b) * 2 > 10 && x != y | (expression)                  |
-#### 样例
+| PAREN          | (expression) | (a + b) * 2 > 10 && x != y | boolean\|\| boolean           |
+#### sample code
 ```jquick
 (a + b) * 2 > 10 && x != y
 ```
-### 控制结构
-#### if 语句
+### Control Structures
+#### if statement
 ```jquick
  if(false){
             console.log(1);
@@ -137,7 +136,7 @@ StringList list=["A","B","C"];
             console.log(4);
         }
 ```
-#### 循环 语句
+#### loop statement
 ```jquick
         for (int i = 0; i < 10; i = i + 1) {
             for (int j = 0; j < 10; j = j + 1){
@@ -160,9 +159,8 @@ StringList list=["A","B","C"];
             break;
         }
 ```
-#### 方法定义
+#### method definition
 ```jquick
-类型 function 方法名(参数类型:参数名或参数值)
 int function funtionName(int:a, int:b) {
     return a + b;
 }
@@ -173,14 +171,14 @@ StringList function funtionName(StringList:a, int:b) {
     return a;
 }
 ```
-### 如何调用java 方法
-| Type                    | Example                     |
-|-------------------------|-----------------------------|
-| 静态函数调用                  | `Math::max(1, 2)`           |
-| 构造函数调用                  | `new ArrayList()`           |
-| 实例方法调用                  | `list.add("item")`          |
-| 调用jquick自定义函数           | `this.doSomething()`        |
-### 静态方法
+### invocation Styles
+| Type             | Example                     |
+|------------------|-----------------------------|
+| Static Method    | `Math::max(1, 2)`           |
+| Constructor      | `new ArrayList()`           |
+| Instance Method  | `list.add("item")`          |
+| This-context     | `this.doSomething()`        |
+### Static Method
 1. sample
 ```jquick
 java.lang.Math::max(int:5, int:10);
@@ -221,7 +219,7 @@ output:a,b,c
 com.github.paohaijiao.service.JService::sum(int:1,int:2);
    output:3
 ```
-### 构造方法
+### Constructor Method
 1. sample
 ```jquick
 new com.github.paohaijiao.service.JService();
@@ -250,7 +248,7 @@ new java.util.ArrayList();
 ```jquick
 new com.github.paohaijiao.model.JStudent(java.lang.String:"a", java.lang.String:"b", java.lang.String:"c");
 ```
-### 实例方法
+### Instance Method
 1. sample
 ```jquick
 testObj.isEven(int:4);
@@ -273,11 +271,11 @@ testObj.methodWithMixedArgs(java.lang.String:"Test", int:42, boolean:true);
 testObj.methodWithVarArgs(java.lang.String:"a", java.lang.String:"b", java.lang.String:"c");
 ```
 
-### 输出
+### output
 ```jquick
 console.log("Result: " + result);
 ```
-### 注释
+### Comments
 ```jquick
 // single-line
 ```
@@ -286,7 +284,7 @@ console.log("Result: " + result);
   multi-line
 */
 ```
-### 代码示例
+### code sample 
 ```jquick
 java.lang.String function a(int:a,float:b) {
     java.lang.String p=java.lang.String::format(java.lang.String:"Number: %d, String: %s",int: 42, java.lang.String:"test"); 
@@ -315,8 +313,8 @@ java.util.HashMap<java.lang.String,java.lang.String> function a(int:a,float:b) {
     float d=8.1;
     this.a(int:c,float:d);
 ```
-### 附录
-```string 保留关键字
+### appendix
+```string preserve keyword
 global, 
 short, 
 int, 
@@ -343,13 +341,13 @@ true,
 false, 
 null
 ```
-### 标识符规则
+### Identifier Rules
 ```string
 1.starts with letter/underscore
 2.may contain letters, digits, underscores
 3.case-sensitive
 ```
-### 完整示例
+### complete example
 1. sample 1
 ```jquick
 int function getSquare(int:a,int:b){
@@ -399,42 +397,43 @@ type1 function a(int:a,float:b) {
 ```
 
 
-# **捐献 ☕**
+# **Generating Power with Love (and Caffeine) ☕**
 
-感谢您使用这个开源项目！它完全免费并将持续维护，但开发者确实需要您的支持。
+Thank you for using this open-source project! It is completely free and will be maintained continuously, but the developers do need your support.
 
 ---
 
-## **如何支持我们**
+## **How You Can Help**
 
-1. **请我喝杯咖啡**  
-   果这个项目为您节省了时间或金钱，请考虑通过小额捐赠支持我。
+1. **Buy Me a Coffee**  
+   If this project has saved you time or money, please consider supporting me with a small donation.
 
-2. **您的捐赠用途**
-- 维持项目运行的服务器成本.
-- 开发新功能以提供更多价值.
-- 优化文档以提升用户体验.
+2. **Where Your Donation Goes**
+  - Server costs to keep the project running.
+  - Feature development to add more value.
+  - Documentation optimization for a better user experience.
 
-3. **每一分都很重要**  
-   即使是1分钱的捐赠也能激励我熬夜调试！
+3. **Every Cent Counts**  
+   Even a donation of just 1 cent motivates me to debug late into the night!
 
 
-## **为什么捐赠?**
-✔️ 保持项目永远免费且无广告.  
-✔️ 支持及时响应问题和社区咨询.  
-✔️ 实现计划中的未来功能.
 
-感谢您成为让开源世界更美好的伙伴！
+## **Why Donate?**
+✔️ Keep the project **free and ad-free** forever.  
+✔️ Support timely responses to issues and community inquiries.  
+✔️ Enable planned features for the future.
+
+Thank you for being a partner in making the open-source world better!
 
 --- 
 
-### **补充说明**
-- 本项目和产品维护.
-- 您的支持确保其可持续性和成长 .  
+### **Additional Notes**
+- The project is maintained with love and caffeine.
+- Your support ensures its sustainability and growth.  
 ---
 
-## **🌟 立即支持**
-赞助时欢迎通过 [email](mailto:goudingcheng@gmail.com) 留言。您的名字将被列入项目README文件的 **"特别感谢"** 名单中！
+## **🌟 Support Now**
+Feel free to leave a message via [email](mailto:goudingcheng@gmail.com) when sponsoring. Your name will be included in the **"Special Thanks"** list in the project's README file!
 ![Ali Pay](./src/main/resources/pay/alipay.jpg)
 ![Wechat Pay](./src/main/resources/pay/wechat.jpg)
 ![OCBC Pay Now](./src/main/resources/pay/paynow.jpg)
