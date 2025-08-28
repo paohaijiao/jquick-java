@@ -434,8 +434,6 @@ Thank you for being a partner in making the open-source world better!
 
 ## **🌟 Support Now**
 Feel free to leave a message via [email](mailto:goudingcheng@gmail.com) when sponsoring. Your name will be included in the **"Special Thanks"** list in the project's README file!
-![Ali Pay](./src/main/resources/pay/alipay.jpg)
-![Wechat Pay](./src/main/resources/pay/wechat.jpg)
 ![OCBC Pay Now](./src/main/resources/pay/paynow.jpg)
 ![Touch n Go ](./src/main/resources/pay/tngGo.jpg)
 ---
