@@ -1,6 +1,6 @@
 # JQuickLang Syntax Reference
 ## Overview
-JQuickLang is a lightweight Java-like scripting language designed for concise and efficient programming. It combines Java's type system with JavaScript's flexibility, making it ideal for rapid prototyping, education, and small projects.
+JQuick Java is a lightweight Java-like scripting language designed for concise and efficient programming. It combines Java's type system with JavaScript's flexibility, making it ideal for rapid prototyping, education, and small projects.
 # Table of Contents
 
 - [Overview](#overview)
