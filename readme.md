@@ -1,4 +1,4 @@
-# JQuickLang 语法参考手册
+# JQuick Java 语法参考手册
 简体中文 | [英文](./readme-en.md)
 ## 概述
 JQuick java 是一种轻量级类 Java 脚本语言，专为简洁高效的编程而设计。它结合了 Java 的类型系统和 JavaScript 的灵活性，非常适合快速原型开发、教学和小型项目。
