@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](CHANGELOG.md)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/username/jquick-java/build.yml?branch=main)](https://github.com/username/jquick-java/actions)
-[![Stars](https://img.shields.io/github/stars/username/jquick-java.svg?style=social)](https://github.com/paohaijiao/jquick-java)
+[![Stars](https://img.shields.io/github/stars/paohaijiao/jquick-java.svg?style=social)](https://github.com/paohaijiao/jquick-java)
 [![Issues](https://img.shields.io/github/issues/username/jquick-java.svg)](https://github.com/paohaijiao/jquick-java/issues)
 ## 概述
 ```jquick  
