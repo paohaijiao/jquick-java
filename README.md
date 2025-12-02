@@ -1,5 +1,11 @@
 # JQuick Java 语法参考手册
-简体中文 | [英文](./readme-en.md)
+简体中文 | [EN](./README-EN.md)
+## 项目进度
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](CHANGELOG.md)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/username/jquick-java/build.yml?branch=main)](https://github.com/username/jquick-java/actions)
+[![Stars](https://img.shields.io/github/stars/username/jquick-java.svg?style=social)](https://github.com/paohaijiao/jquick-java)
+[![Issues](https://img.shields.io/github/issues/username/jquick-java.svg)](https://github.com/paohaijiao/jquick-java/issues)
 ## 概述
 ```jquick  
     JQuick java 是一种轻量级类 Java 脚本语言，专为简洁高效的编程而设计。它结合了 Java 的类型系统
