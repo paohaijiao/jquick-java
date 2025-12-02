@@ -3,7 +3,7 @@
 ## 项目进度
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](CHANGELOG.md)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/paohaijiao/jquick-java/build.yml?branch=main)](https://github.com/username/jquick-java/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/paohaijiao/jquick-java/build.yml?branch=main)](https://github.com/paohaijiao/jquick-java/actions)
 [![Stars](https://img.shields.io/github/stars/paohaijiao/jquick-java.svg?style=social)](https://github.com/paohaijiao/jquick-java)
 [![Issues](https://img.shields.io/github/issues/paohaijiao/jquick-java.svg)](https://github.com/paohaijiao/jquick-java/issues)
 ## 概述
