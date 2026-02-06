@@ -67,7 +67,6 @@ boolean enabled = true;
 List<String> names = ["Alice", "Bob"];  
 Map<String, Integer> scores = {"数学":90, "英语":85};  
 ```
-
 ## 程序结构
 ```jquick
 import com.example.pkg as pkgAlias;
