@@ -8,8 +8,10 @@
 [![Issues](https://img.shields.io/github/issues/paohaijiao/jquick-java.svg)](https://github.com/paohaijiao/jquick-java/issues)
 ## 概述
 ```jquick  
-    JQuick java 是一种轻量级类 Java 脚本语言，专为简洁高效的编程而设计。它结合了 Java 的类型系统
-和 JavaScript 的灵活性，支持常用的java方法调用以及逻辑嵌套,非常适合快速原型开发、教学和小型项目。
+   JQuick Java 是一种轻量级类 Java 脚本语言，**天生为规则引擎而生**。它完美融合了 Java 的强类型安全
+与 JavaScript 的动态灵活性，支持在**运行时动态加载、解析和执行业务规则**。无论是复杂的逻辑判断、
+数据校验还是流程编排，JQuick Java 都能让您**像配置参数一样调整业务规则**，无需重启应用，无需重新部署，
+让您的系统真正实现**规则与代码分离**。
 ```
 ## 目录
 - [概述](#概述)
