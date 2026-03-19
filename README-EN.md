@@ -1,6 +1,6 @@
 # JQuickLang Syntax Reference
 ## Overview
-**   **<b>JQuick Java is a lightweight Java-like scripting language, inherently designed for rule engines</b>。
+   <b>JQuick Java is a lightweight Java-like scripting language, inherently designed for rule engines</b>。
 it perfectly integrates the strong type safety of Java with the dynamic flexibility of JavaScript, supporting
 <b> dynamic loading, parsing, and execution of business rules at runtime </b>,whether it's complex logical 
 judgments or data verification or process orchestration,jQuick Java enables you to <b>tune business rules 
