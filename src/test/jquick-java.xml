@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.test.xml.UserApi">
+    <java name="all" returnClass="java.util.List">
+
+    </java>
+
+    <java name="getUserById" returnClass="com.github.paohaijiao.test.model.JUser">
+
+    </java>
+    <java name="getUserByIdVariable" returnClass="com.github.paohaijiao.test.model.JUser">
+        <if test="a==1"> -H "Content-Type: application/json" </if>
+    </java>
+
+    <java name="users" returnClass="com.github.paohaijiao.test.model.JUser">
+
+    </java>
+    <java name="usersByVariable" returnClass="com.github.paohaijiao.test.model.JUser">
+    </java>
+
+    <java name="usersPut" returnClass="com.github.paohaijiao.test.model.JUser">
+    </java>
+
+    <java name="usersPatch" returnClass="com.github.paohaijiao.test.model.JUser">
+
+    </java>
+
+    <java name="usersDelete" returnClass="java.lang.Void">
+
+    </java>
+
+    <java name="usersHead" returnClass="java.lang.Void">
+    </java>
+
+    <java name="usersOptions" returnClass="com.github.paohaijiao.model.JResult">
+
+    </java>
+
+    <java name="usersTrace" returnClass="java.lang.String">
+    </java>
+
+    <java name="upload" returnClass="java.lang.String">
+
+    </java>
+
+    <java name="upload1" returnClass="java.lang.String">
+    </java>
+
+    <java name="download" returnClass="byte[]">
+
+    </java>
+
+    <java name="uploadWithPostParams" returnClass="java.lang.String">
+    </java>
+</javas>

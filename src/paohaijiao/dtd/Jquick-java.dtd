@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!ELEMENT javas (java*)>
+        <!ATTLIST javas namespace CDATA #REQUIRED>
+        <!ELEMENT java (#PCDATA | if | foreach | choose)*>
+        <!ATTLIST java
+                name CDATA #REQUIRED
+                returnClass CDATA #REQUIRED
+                >
+        <!ELEMENT if (#PCDATA | if | foreach | choose)*>
+        <!ATTLIST if
+                test CDATA #REQUIRED
+                >
+        <!ELEMENT foreach (#PCDATA | if | foreach | choose)*>
+        <!ATTLIST foreach
+                collection CDATA #REQUIRED
+                item CDATA #REQUIRED
+                open CDATA #IMPLIED
+                close CDATA #IMPLIED
+                separator CDATA #IMPLIED
+                >
+
+        <!ELEMENT choose (when*, otherwise?)>
+        <!ATTLIST choose
+                xmlns CDATA #IMPLIED
+                >
+        <!ELEMENT when (#PCDATA | if | foreach | choose)*>
+        <!ATTLIST when
+                test CDATA #REQUIRED
+                >
+        <!ELEMENT otherwise (#PCDATA | if | foreach | choose)*>
