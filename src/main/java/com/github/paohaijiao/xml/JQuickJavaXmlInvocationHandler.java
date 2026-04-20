@@ -39,7 +39,7 @@ public class JQuickJavaXmlInvocationHandler extends JQuickXmlInvocationHandler {
         JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(lexerStr));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.ArithmeticContext tree = parser.arithmetic();
+        JQuickLangParser.ProgramContext tree = parser.program();
         if(!context.isEmpty()){
             context.putAll(context);
         }

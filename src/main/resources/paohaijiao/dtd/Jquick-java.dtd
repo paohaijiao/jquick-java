@@ -2,7 +2,7 @@
         <!ELEMENT javas (java*)>
         <!ATTLIST javas namespace CDATA #REQUIRED>
 
-        <!ELEMENT java ( (#PCDATA|if|foreach|choose)*)>
+        <!ELEMENT java (#PCDATA|if|foreach|choose)*>
         <!ATTLIST java
                 name CDATA #REQUIRED
                 returnClass CDATA #REQUIRED
