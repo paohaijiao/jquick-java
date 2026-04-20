@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.xml.UserMapper">
+    <java name="all" returnClass="java.util.List">
+       <![CDATA[
+        java.util.HashMap<java.lang.String,java.lang.String>   function a(int:a,float:b) {
+            java.lang.String str1 = new java.lang.String(java.lang.String:"Hello");
+            console.log(str1);
+            java.lang.String upperStr = str1.toUpperCase();
+            console.log(upperStr);
+            java.lang.String subStr = str1.substring(int:1, int:3);
+            console.log(subStr);
+            java.util.HashMap<java.lang.String,java.lang.String> result = new java.util.HashMap();
+            result.put(java.lang.String:"constructed1", java.lang.String:str1);
+            result.put(java.lang.String:"constructed2", java.lang.String:str1);
+            result.put(java.lang.String:"uppercased", java.lang.String:upperStr);
+            result.put(java.lang.String:"substring", java.lang.String:subStr);
+            return result;
+        }
+            int c=1;
+            float d=8.1;
+            this.a(int:c,float:d);
+        ]]>
+    </java>
+</javas>

@@ -35,9 +35,6 @@ public class JQuickLangExecutor extends JAbstractAntlrExecutor<String, Object> {
 
     private JContext context;
 
-
-
-
     public JQuickLangExecutor(){
         this.context=new JContext();
     }

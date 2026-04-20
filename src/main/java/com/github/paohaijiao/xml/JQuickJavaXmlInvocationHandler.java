@@ -6,7 +6,6 @@ import com.github.paohaijiao.parser.JQuickLangLexer;
 import com.github.paohaijiao.parser.JQuickLangParser;
 import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
 import com.github.paohaijiao.xml.invocation.JQuickXmlInvocationHandler;
-import com.google.gson.JsonObject;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
@@ -17,20 +16,36 @@ public class JQuickJavaXmlInvocationHandler extends JQuickXmlInvocationHandler {
 
     private JConsole console=new JConsole();
 
+    private JContext context=new JContext();
+
+    private Stack statck=new Stack<>();
+
+    public JQuickJavaXmlInvocationHandler(){
+
+    }
+    public JQuickJavaXmlInvocationHandler(JContext jcontext){
+        context.putAll(jcontext);
+    }
+    public JQuickJavaXmlInvocationHandler(Stack statck){
+        this.statck=statck;
+    }
+    public JQuickJavaXmlInvocationHandler(JContext jcontext,Stack statck){
+        context.putAll(jcontext);
+        this.statck=statck;
+    }
+
     @Override
     protected Object loadResult(String lexerStr, JContext context, Method method, Object[] args) {
         JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(lexerStr));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickLangParser parser = new JQuickLangParser(tokens);
         JQuickLangParser.ArithmeticContext tree = parser.arithmetic();
-        JContext params = new JContext();
         if(!context.isEmpty()){
-            params.putAll(context);
+            context.putAll(context);
         }
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,new Stack<>(),lexer,tokens,parser);
+        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(context,statck,lexer,tokens,parser);
         Object object = tv.visit(tree);
-        JsonObject jsonObject = new JsonObject();
-        console.info("the result is "+object.toString());
+        console.info("the result is : "+object.toString());
         return object;
     }
 
