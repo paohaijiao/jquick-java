@@ -129,25 +129,5 @@ public class JQuickJavaRegistryVisitor extends JQuickJavaCoreVisitor {
     }
 
 
-    public static void main(String[] args) {
-//        List<JfunctionParamModel> params = new ArrayList<>();
-//        params.add(new JfunctionParamModel("String", "name"));
-//        params.add(new JfunctionParamModel("int", "age"));
-//        JFunctionDefinitionModel function = new JFunctionDefinitionModel(
-//                "greet",
-//                List.of("name", "age"),
-//                List.of("String", "int"),
-//                "{...}"
-//        );
-//
-//        JVariableContainerModel locals = new JVariableContainerModel();
-//        bindParameters(function, List.of("Alice", 30), locals);
-//
-//        bindParameters(function, List.of("Bob", "25"), locals);
-//        bindParameters(function, List.of("Carol", null), locals);
-//        bindParameters(function, List.of("Dave", "abc"), locals);
-    }
-
-
 
 }

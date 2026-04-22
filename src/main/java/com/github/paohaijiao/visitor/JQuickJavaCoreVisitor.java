@@ -20,8 +20,10 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.paohaijiao.console.JConsole;
 import com.github.paohaijiao.enums.JLiteralEnums;
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.executor.JQuickClassTypeExecutor;
 import com.github.paohaijiao.factory.JFunctionRegistry;
+import com.github.paohaijiao.i18n.I18nUtils;
 import com.github.paohaijiao.model.JImportContainerModel;
 import com.github.paohaijiao.model.JLiteralModel;
 import com.github.paohaijiao.param.JContext;
@@ -32,18 +34,23 @@ import com.github.paohaijiao.scope.VariableContext;
 import com.github.paohaijiao.support.JTypeReference;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import lombok.Data;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
 
-
+@Data
 public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
 
     protected JContext context;
+
+    protected Locale local= Locale.ENGLISH;
+
 
     protected CommonTokenStream tokenStream;
 
@@ -239,6 +246,25 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
         for (VariableContext context : contextStack) {
              context.updateVariableWithAllScopes(varName, newValue,type);
         }
+    }
+
+    private String getCurrentClassFullPath(Class<?> clazz) {
+        return clazz.getName();
+    }
+    protected String getMessageKeyPrefix(Class<?> clazz, String prefix) {
+        JAssert.notNull(clazz, "clazz required  not null");
+        return getCurrentClassFullPath(clazz) + "." + prefix;
+    }
+
+    protected static String getI18N(String key,Object... value) {
+        JAssert.notNull(key, "required key not null");
+        String result = I18nUtils.getMessage("i18n/messages", key, value);
+        return result;
+    }
+    protected static void thowEx(String key,Object... value) {
+        JAssert.notNull(key, "required key not null");
+        String msg=getI18N(key,value);
+        JAssert.throwNewException(msg);
     }
 
 }

@@ -51,6 +51,11 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.paohaijiao</groupId>
+            <artifactId>javelin-core</artifactId>
+            <version>1.6.0</version>
+        </dependency>
     </dependencies>
 
     <description>

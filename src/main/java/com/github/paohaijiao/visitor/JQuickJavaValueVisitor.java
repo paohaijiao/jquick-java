@@ -18,6 +18,7 @@ package com.github.paohaijiao.visitor;
 import com.github.paohaijiao.constants.JConstants;
 import com.github.paohaijiao.date.JDateUtil;
 import com.github.paohaijiao.exception.JAssert;
+import com.github.paohaijiao.i18n.I18nUtils;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.scope.Variable;
 import com.github.paohaijiao.scope.VariableContext;
@@ -33,6 +34,8 @@ import java.util.Stack;
 
 
 public class JQuickJavaValueVisitor extends JQuickJavaImportVisitor {
+    private static final Class<?> PKG = JQuickJavaValueVisitor.class;
+
 
     @Override
     public Object visitVariables(JQuickJavaParser.VariablesContext ctx) {
@@ -50,9 +53,10 @@ public class JQuickJavaValueVisitor extends JQuickJavaImportVisitor {
         } else if (null != ctx.DATETIME()) {
             String dateString = ctx.DATETIME().getText();
             Date date = JDateUtil.parse(JDateUtil.getSimpleDateFormat(JConstants.dateTime), dateString);
+            thowEx(getMessageKeyPrefix(PKG,"date"),ctx.getText());
             return date;
         }
-        JAssert.throwNewException("invalid date format: " + ctx.getText());
+
         return null;
     }
 
@@ -63,6 +67,7 @@ public class JQuickJavaValueVisitor extends JQuickJavaImportVisitor {
             String str = JStringUtils.trim(text);
             return str;
         }
+        I18nUtils.getMessage("");
         JAssert.throwNewException("invalid string: " + ctx.getText());
         return null;
     }
