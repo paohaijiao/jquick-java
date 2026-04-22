@@ -16,9 +16,9 @@
 package com.github.paohaijiao.visitor;
 
 import com.github.paohaijiao.exception.JAssert;
-import com.github.paohaijiao.factory.JTypeReferenceFactory;
+import com.github.paohaijiao.factory.JQuickJavaTypeReferenceFactory;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.support.JTypeReference;
+import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,11 +27,14 @@ import java.util.List;
 
 
 public class JQuickJavaImportVisitor extends JQuickJavaRegistryVisitor {
+
+    private static final Class<?> PKG = JQuickJavaImportVisitor.class;
+
     @Override
     public Void visitImportDeclaration(JQuickJavaParser.ImportDeclarationContext ctx) {
         JAssert.notNull(ctx.paramType(),"missing paramType ");
         JAssert.notNull(ctx.importVar(),"missing qualified import variable");
-        JTypeReference<?> typeReference=null;
+        JQuickJavaTypeReference<?> typeReference=null;
         if(ctx.paramType() != null) {
             typeReference=visitParamType(ctx.paramType());
         }
@@ -46,7 +49,7 @@ public class JQuickJavaImportVisitor extends JQuickJavaRegistryVisitor {
         return null;
     }
     @Override
-    public JTypeReference<?>  visitClasssType(JQuickJavaParser.ClasssTypeContext ctx) {
+    public JQuickJavaTypeReference<?> visitClasssType(JQuickJavaParser.ClasssTypeContext ctx) {
         if(ctx.importVar()!=null){
             return importContainer.get(ctx.importVar().getText());
         }else if(ctx.paramType()!=null){
@@ -57,28 +60,28 @@ public class JQuickJavaImportVisitor extends JQuickJavaRegistryVisitor {
     }
 
     @Override
-    public JTypeReference<?> visitParamType(JQuickJavaParser.ParamTypeContext ctx) {
+    public JQuickJavaTypeReference<?> visitParamType(JQuickJavaParser.ParamTypeContext ctx) {
         if(ctx.simpleType()!=null){
             return   visitSimpleType(ctx.simpleType());
         }else if(ctx.genericType()!=null){
             String type=ctx.getText();
-            JTypeReference<?> stringRef = JTypeReferenceFactory.fromTypeString(type);
+            JQuickJavaTypeReference<?> stringRef = JQuickJavaTypeReferenceFactory.fromTypeString(type);
             return stringRef;
         }else if(ctx.listType()!=null){
-            JTypeReference<?> classType=visitClasssType(ctx.listType().classsType());
-            JTypeReference<?> listRef = JTypeReferenceFactory.listFromElementType(classType.getRawType().getTypeName());
+            JQuickJavaTypeReference<?> classType=visitClasssType(ctx.listType().classsType());
+            JQuickJavaTypeReference<?> listRef = JQuickJavaTypeReferenceFactory.listFromElementType(classType.getRawType().getTypeName());
             return listRef;
         }else if(ctx.setType()!=null){
-            JTypeReference<?> classType=visitClasssType(ctx.setType().classsType());
-            JTypeReference<?> listRef = JTypeReferenceFactory.setFromElementType(classType.getRawType().getTypeName());
+            JQuickJavaTypeReference<?> classType=visitClasssType(ctx.setType().classsType());
+            JQuickJavaTypeReference<?> listRef = JQuickJavaTypeReferenceFactory.setFromElementType(classType.getRawType().getTypeName());
             return listRef;
         }else if(ctx.mapType()!=null){
             JAssert.isTrue( ctx.mapType().classsType().size()==2,"map type  have two parameters one for key , and one for value");
-            JTypeReference<?> key=visitClasssType(ctx.mapType().classsType(0));
-            JTypeReference<?> value=visitClasssType(ctx.mapType().classsType(1));
+            JQuickJavaTypeReference<?> key=visitClasssType(ctx.mapType().classsType(0));
+            JQuickJavaTypeReference<?> value=visitClasssType(ctx.mapType().classsType(1));
             String keyType=key.getRawType().getTypeName();
             String valueType=value.getRawType().getTypeName();
-            JTypeReference<?> mapRef = JTypeReferenceFactory.mapFromTypes(keyType,valueType);
+            JQuickJavaTypeReference<?> mapRef = JQuickJavaTypeReferenceFactory.mapFromTypes(keyType,valueType);
             return mapRef;
         }else if(ctx.arrayType()!=null){
             String type="";
@@ -87,7 +90,7 @@ public class JQuickJavaImportVisitor extends JQuickJavaRegistryVisitor {
             }else{
                 type=ctx.arrayType().qualifiedName().getText();
             }
-            JTypeReference<?> arrayRef = JTypeReferenceFactory.arrayFromElementType(type);
+            JQuickJavaTypeReference<?> arrayRef = JQuickJavaTypeReferenceFactory.arrayFromElementType(type);
             return arrayRef;
         }
         JAssert.throwNewException("unsupported type argument type");
@@ -106,9 +109,9 @@ public class JQuickJavaImportVisitor extends JQuickJavaRegistryVisitor {
         }
 
     @Override
-    public  JTypeReference<?>[] visitTypeArguments(JQuickJavaParser.TypeArgumentsContext ctx) {
+    public  JQuickJavaTypeReference<?>[] visitTypeArguments(JQuickJavaParser.TypeArgumentsContext ctx) {
         JAssert.notNull(ctx.classsType(),"typeArgument not null");
-        JTypeReference<?>[] typeReference=new JTypeReference<?>[ctx.classsType().size()];
+        JQuickJavaTypeReference<?>[] typeReference=new JQuickJavaTypeReference<?>[ctx.classsType().size()];
         if(ctx.classsType()!=null&&!ctx.classsType().isEmpty()){
            for (int i = 0; i < ctx.classsType().size(); i++) {
             typeReference[i]=visitClasssType(ctx.classsType().get(i));
@@ -117,33 +120,33 @@ public class JQuickJavaImportVisitor extends JQuickJavaRegistryVisitor {
         return typeReference;
     }
     @Override
-    public JTypeReference visitSimpleType(JQuickJavaParser.SimpleTypeContext ctx) {
+    public JQuickJavaTypeReference visitSimpleType(JQuickJavaParser.SimpleTypeContext ctx) {
         if(ctx.TYPESHORT()!=null){
-            return JTypeReference.of(short.class);
+            return JQuickJavaTypeReference.of(short.class);
         }else if(ctx.TYPEINT()!=null){
-            return JTypeReference.of(int.class);
+            return JQuickJavaTypeReference.of(int.class);
         } else if (ctx.TYPEFLOAT()!=null) {
-            return JTypeReference.of(float.class);
+            return JQuickJavaTypeReference.of(float.class);
         }else if (ctx.TYPEDOUBLE()!=null){
-            return JTypeReference.of(double.class);
+            return JQuickJavaTypeReference.of(double.class);
         }else if (ctx.TYPELONG()!=null){
-            return JTypeReference.of(long.class);
+            return JQuickJavaTypeReference.of(long.class);
         }else if (ctx.TYPEBOOLEAN()!=null){
-            return JTypeReference.of(boolean.class);
+            return JQuickJavaTypeReference.of(boolean.class);
         }else if (ctx.TYPEBYTE()!=null){
-            return JTypeReference.of(byte.class);
+            return JQuickJavaTypeReference.of(byte.class);
         }
         JAssert.throwNewException("unexpected type data type");
         return null;
     }
 
 
-    protected JTypeReference<?> getComplexReferenceRef(String varType){
-        JTypeReference<?> stringRef = JTypeReferenceFactory.fromClassName(varType);
-        JTypeReference<?> listRef = JTypeReferenceFactory.listFromElementType(varType);
-        JTypeReference<?> mapRef = JTypeReferenceFactory.mapFromTypes(varType, varType);
-        JTypeReference<?> arrayRef = JTypeReferenceFactory.arrayFromElementType(varType);
-        JTypeReference<?> complexRef = JTypeReferenceFactory.fromTypeString("java.util.Map<java.lang.String, java.util.List<java.lang.Integer>>");
+    protected JQuickJavaTypeReference<?> getComplexReferenceRef(String varType){
+        JQuickJavaTypeReference<?> stringRef = JQuickJavaTypeReferenceFactory.fromClassName(varType);
+        JQuickJavaTypeReference<?> listRef = JQuickJavaTypeReferenceFactory.listFromElementType(varType);
+        JQuickJavaTypeReference<?> mapRef = JQuickJavaTypeReferenceFactory.mapFromTypes(varType, varType);
+        JQuickJavaTypeReference<?> arrayRef = JQuickJavaTypeReferenceFactory.arrayFromElementType(varType);
+        JQuickJavaTypeReference<?> complexRef = JQuickJavaTypeReferenceFactory.fromTypeString("java.util.Map<java.lang.String, java.util.List<java.lang.Integer>>");
         if(null!=listRef){
             return listRef;
         }else if(null!=mapRef){

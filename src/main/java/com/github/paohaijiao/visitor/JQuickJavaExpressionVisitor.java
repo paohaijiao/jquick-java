@@ -20,6 +20,8 @@ import com.github.paohaijiao.parser.JQuickJavaParser;
 
 public class JQuickJavaExpressionVisitor extends JQuickJavaBoolVisitor {
 
+    private static final Class<?> PKG = JQuickJavaExpressionVisitor.class;
+
     @Override
     public Object visitExpressionStatement(JQuickJavaParser.ExpressionStatementContext ctx) {
         if (ctx.expression() != null) {

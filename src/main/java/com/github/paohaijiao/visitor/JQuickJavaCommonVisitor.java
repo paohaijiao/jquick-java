@@ -15,18 +15,20 @@
  */
 package com.github.paohaijiao.visitor;
 
-import com.github.paohaijiao.model.JReturnValueModel;
+import com.github.paohaijiao.model.JQuickJavaReturnValueModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.scope.VariableContext;
+import com.github.paohaijiao.scope.JQuickJavaVariableContext;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.util.Stack;
 
 public class JQuickJavaCommonVisitor extends JQuickJavaStatementVisitor {
 
-    public JQuickJavaCommonVisitor(JContext context, Stack<VariableContext> stack, JQuickJavaLexer lexer, CommonTokenStream tokenStream, JQuickJavaParser parser) {
+    private static final Class<?> PKG = JQuickJavaCommonVisitor.class;
+
+    public JQuickJavaCommonVisitor(JContext context, Stack<JQuickJavaVariableContext> stack, JQuickJavaLexer lexer, CommonTokenStream tokenStream, JQuickJavaParser parser) {
         this.context = context;
         this.lexer = lexer;
         this.tokenStream = tokenStream;
@@ -50,7 +52,7 @@ public class JQuickJavaCommonVisitor extends JQuickJavaStatementVisitor {
 
     @Override
     public Object visitProgram(JQuickJavaParser.ProgramContext ctx) {
-        globalContext = new VariableContext();
+        globalContext = new JQuickJavaVariableContext();
         contextStack.push(globalContext);
         for (JQuickJavaParser.ImportDeclarationContext importCtx : ctx.importDeclaration()) {
             visit(importCtx);
@@ -58,8 +60,8 @@ public class JQuickJavaCommonVisitor extends JQuickJavaStatementVisitor {
         Object result = null;
         for (JQuickJavaParser.StatementContext stmt : ctx.statement()) {
             result = visit(stmt);
-            if (result instanceof JReturnValueModel) {
-                return ((JReturnValueModel) result).getValue();
+            if (result instanceof JQuickJavaReturnValueModel) {
+                return ((JQuickJavaReturnValueModel) result).getValue();
             }
         }
         return result;

@@ -16,18 +16,18 @@
 package com.github.paohaijiao.visitor;
 
 import com.github.paohaijiao.exception.JAssert;
-import com.github.paohaijiao.exception.JBreakException;
-import com.github.paohaijiao.exception.JContinueException;
-import com.github.paohaijiao.model.JReturnValueModel;
+import com.github.paohaijiao.exception.JQuickJavaBreakException;
+import com.github.paohaijiao.exception.JQuickJavaContinueException;
+import com.github.paohaijiao.model.JQuickJavaReturnValueModel;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.support.JTypeReference;
+import com.github.paohaijiao.support.JQuickJavaTypeReference;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JQuickJavaStatementVisitor extends JQuickJavaIfStatementVisitor {
-
+    private static final Class<?> PKG = JQuickJavaStatementVisitor.class;
     @Override
     public Object visitControlStatement(JQuickJavaParser.ControlStatementContext ctx) {
         if (ctx.ifStatement() != null) {
@@ -65,7 +65,7 @@ public class JQuickJavaStatementVisitor extends JQuickJavaIfStatementVisitor {
     public Object visitAccessStaticVariable(JQuickJavaParser.AccessStaticVariableContext ctx) {
         JAssert.notNull(ctx.classsType(),"can't access  className variable ["+"]");
         JAssert.notNull(ctx.accessObjectName(),"can't access static ObjectName variable ["+"]");
-        JTypeReference<?> typeReference=visitClasssType(ctx.classsType());
+        JQuickJavaTypeReference<?> typeReference=visitClasssType(ctx.classsType());
         JAssert.notNull(typeReference,"can't access className ["+ctx.classsType().getText()+"]");
         String staticField=ctx.accessObjectName().getText();
         try{
@@ -104,7 +104,7 @@ public class JQuickJavaStatementVisitor extends JQuickJavaIfStatementVisitor {
         }
         for (JQuickJavaParser.ControlStatementContext ctrlStmt : controlStatements) {
             result = visit(ctrlStmt);
-            if (result instanceof JReturnValueModel) {
+            if (result instanceof JQuickJavaReturnValueModel) {
                 return result;
             }
         }
@@ -112,11 +112,11 @@ public class JQuickJavaStatementVisitor extends JQuickJavaIfStatementVisitor {
     }
     @Override
     public Void visitBreakStatement(JQuickJavaParser.BreakStatementContext ctx) {
-        throw new JBreakException(new ArrayList<>());
+        throw new JQuickJavaBreakException(new ArrayList<>());
     }
     @Override
     public Void visitContinueStatement(JQuickJavaParser.ContinueStatementContext ctx) {
-        throw new JContinueException(new ArrayList<>());
+        throw new JQuickJavaContinueException(new ArrayList<>());
     }
     @Override
     public Object visitSout(JQuickJavaParser.SoutContext ctx) {

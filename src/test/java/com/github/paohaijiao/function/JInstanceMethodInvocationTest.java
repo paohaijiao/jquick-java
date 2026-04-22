@@ -18,9 +18,9 @@ import com.github.paohaijiao.JVariableContextBuilder;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.scope.VariableContext;
+import com.github.paohaijiao.scope.JQuickJavaVariableContext;
 import com.github.paohaijiao.service.JService;
-import com.github.paohaijiao.support.JTypeReference;
+import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -52,14 +52,14 @@ public class JInstanceMethodInvocationTest {
         map.put("key", "value");
         return jContext;
     }
-    public Stack<VariableContext> mockData(){
-        VariableContext variableContext=new VariableContext();
+    public Stack<JQuickJavaVariableContext> mockData(){
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
         List<Integer> listVar = new ArrayList<Integer>() {
         };
         listVar.addAll(Arrays.asList(1, 2, 3));
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        variableContext.addVariable("testObj", new JService(), JTypeReference.of(JService.class));
-        variableContext.addVariable("listVar", listVar, JTypeReference.listOf(Integer.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        variableContext.addVariable("testObj", new JService(), JQuickJavaTypeReference.of(JService.class));
+        variableContext.addVariable("listVar", listVar, JQuickJavaTypeReference.listOf(Integer.class));
         contextStack.add(variableContext);
         return contextStack;
     }
@@ -84,12 +84,12 @@ public class JInstanceMethodInvocationTest {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
-        VariableContext variableContext=new VariableContext();
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
         List<Integer> listVar = new ArrayList<Integer>() {
         };
         listVar.addAll(Arrays.asList(1, 2, 3));
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        variableContext.addVariable("testObj", new JService(), JTypeReference.of(JService.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        variableContext.addVariable("testObj", new JService(), JQuickJavaTypeReference.of(JService.class));
         contextStack.add(variableContext);
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(new JContext(),contextStack,lexer,tokens,parser);
         Object object = tv.visit(tree);

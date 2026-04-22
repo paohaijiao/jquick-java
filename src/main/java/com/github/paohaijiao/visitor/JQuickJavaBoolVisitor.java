@@ -16,10 +16,10 @@
 package com.github.paohaijiao.visitor;
 
 
-import com.github.paohaijiao.enums.JMathOp;
+import com.github.paohaijiao.enums.JQuickJavaMathOp;
 import com.github.paohaijiao.exception.JAssert;
-import com.github.paohaijiao.factory.JBigDecimalComparatorFactory;
-import com.github.paohaijiao.factory.compare.JComparator;
+import com.github.paohaijiao.factory.JQuickJavaBigDecimalComparatorFactory;
+import com.github.paohaijiao.factory.compare.JQuickJavaComparator;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 import org.antlr.v4.runtime.Token;
 
@@ -27,7 +27,7 @@ import java.math.BigDecimal;
 
 public class JQuickJavaBoolVisitor extends JQuickJavaMathVisitor {
 
-
+    private static final Class<?> PKG = JQuickJavaBoolVisitor.class;
 
     @Override
     public Object visitComparison(JQuickJavaParser.ComparisonContext ctx) {
@@ -38,7 +38,7 @@ public class JQuickJavaBoolVisitor extends JQuickJavaMathVisitor {
         }
         for (int i = 1; i < ctx.primary().size(); i++) {
             String operator = ctx.getChild(2 * i - 1).getText();
-            JMathOp op = JMathOp.codeOf(operator);
+            JQuickJavaMathOp op = JQuickJavaMathOp.codeOf(operator);
             JAssert.notNull(op, "Unsupported operator: " + operator);
             Object right = extract(visit(ctx.primary(i)));
             boolean result;
@@ -112,7 +112,7 @@ public class JQuickJavaBoolVisitor extends JQuickJavaMathVisitor {
         if (left instanceof Number && right instanceof Number) {
             BigDecimal leftBigDecimal  = new BigDecimal(left.toString());
             BigDecimal rightBigDecimal  = new BigDecimal(right.toString());
-            JComparator comparator=JBigDecimalComparatorFactory.greaterThan(rightBigDecimal);
+            JQuickJavaComparator comparator= JQuickJavaBigDecimalComparatorFactory.greaterThan(rightBigDecimal);
             return comparator.compare(leftBigDecimal);
         }
         throw new RuntimeException("cannot compare non-numeric values with >");
@@ -122,7 +122,7 @@ public class JQuickJavaBoolVisitor extends JQuickJavaMathVisitor {
         if (left instanceof Number && right instanceof Number) {
             BigDecimal leftBigDecimal  = new BigDecimal(left.toString());
             BigDecimal rightBigDecimal  = new BigDecimal(right.toString());
-            JComparator comparator=JBigDecimalComparatorFactory.greaterThanOrEqual(rightBigDecimal);
+            JQuickJavaComparator comparator= JQuickJavaBigDecimalComparatorFactory.greaterThanOrEqual(rightBigDecimal);
             return comparator.compare(leftBigDecimal);
         }
         throw new RuntimeException("cannot compare non-numeric values with >=");
@@ -132,7 +132,7 @@ public class JQuickJavaBoolVisitor extends JQuickJavaMathVisitor {
         if (left instanceof Number && right instanceof Number) {
             BigDecimal leftBigDecimal  = new BigDecimal(left.toString());
             BigDecimal rightBigDecimal  = new BigDecimal(right.toString());
-            JComparator comparator=JBigDecimalComparatorFactory.lessThan(rightBigDecimal);
+            JQuickJavaComparator comparator= JQuickJavaBigDecimalComparatorFactory.lessThan(rightBigDecimal);
             return comparator.compare(leftBigDecimal);
         }
         throw new RuntimeException("cannot compare non-numeric values with <");
@@ -142,7 +142,7 @@ public class JQuickJavaBoolVisitor extends JQuickJavaMathVisitor {
         if (left instanceof Number && right instanceof Number) {
             BigDecimal leftBigDecimal  = new BigDecimal(left.toString());
             BigDecimal rightBigDecimal  = new BigDecimal(right.toString());
-            JComparator comparator=JBigDecimalComparatorFactory.lessThanOrEqual(rightBigDecimal);
+            JQuickJavaComparator comparator= JQuickJavaBigDecimalComparatorFactory.lessThanOrEqual(rightBigDecimal);
             return comparator.compare(leftBigDecimal);
         }
         throw new RuntimeException("cannot compare non-numeric values with <=");

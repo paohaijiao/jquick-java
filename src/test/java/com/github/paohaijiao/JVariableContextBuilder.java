@@ -15,9 +15,9 @@
  */
 package com.github.paohaijiao;
 
-import com.github.paohaijiao.scope.VariableContext;
+import com.github.paohaijiao.scope.JQuickJavaVariableContext;
 import com.github.paohaijiao.service.JService;
-import com.github.paohaijiao.support.JTypeReference;
+import com.github.paohaijiao.support.JQuickJavaTypeReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,14 +32,14 @@ import java.util.Stack;
  * @since 2025/8/9
  */
 public class JVariableContextBuilder {
-    public static Stack<VariableContext> mockData(){
-        VariableContext variableContext=new VariableContext();
+    public static Stack<JQuickJavaVariableContext> mockData(){
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
         List<Integer> listVar = new ArrayList<Integer>() {
         };
         listVar.addAll(Arrays.asList(1, 2, 3));
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        variableContext.addVariable("testObj", new JService(), JTypeReference.of(JService.class));
-        variableContext.addVariable("listVar", listVar, JTypeReference.listOf(Integer.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        variableContext.addVariable("testObj", new JService(), JQuickJavaTypeReference.of(JService.class));
+        variableContext.addVariable("listVar", listVar, JQuickJavaTypeReference.listOf(Integer.class));
         contextStack.add(variableContext);
         return contextStack;
     }

@@ -16,9 +16,11 @@
 package com.github.paohaijiao.visitor;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.scope.Variable;
+import com.github.paohaijiao.scope.JQuickJavaVariable;
 
 public class JQuickJavaPrimaryVisitor extends JQuickJavaAssignVisitor {
+
+    private static final Class<?> PKG = JQuickJavaPrimaryVisitor.class;
 
     @Override
     public Object visitPrimary(JQuickJavaParser.PrimaryContext ctx) {
@@ -27,7 +29,7 @@ public class JQuickJavaPrimaryVisitor extends JQuickJavaAssignVisitor {
             return visitLiteral(ctx.literal());
         } else if (ctx.IDENTIFIER() != null) {
             String identifier=ctx.IDENTIFIER().getText();
-            Variable variable=currentContext().getVariable(identifier);
+            JQuickJavaVariable variable=currentContext().getVariable(identifier);
             JAssert.isTrue(null!=variable,"variable "+identifier+" not found");;
             return variable.getValue();
         }else if (ctx.expression()!=null) {

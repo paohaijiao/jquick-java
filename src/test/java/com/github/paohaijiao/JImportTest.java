@@ -14,7 +14,7 @@ package com.github.paohaijiao;/*
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
 
-import com.github.paohaijiao.model.JImportContainerModel;
+import com.github.paohaijiao.model.JQuickJavaImportContainerModel;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
@@ -46,7 +46,7 @@ public class JImportTest {
         JContext params = new JContext();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
-        JImportContainerModel importContainerModel=tv.getImportContainer();
+        JQuickJavaImportContainerModel importContainerModel=tv.getImportContainer();
         System.out.println(tv);
     }
     @Test
@@ -60,7 +60,7 @@ public class JImportTest {
         JContext params = new JContext();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
-        JImportContainerModel importContainerModel=tv.getImportContainer();
+        JQuickJavaImportContainerModel importContainerModel=tv.getImportContainer();
         System.out.println(tv);
     }
 

@@ -18,6 +18,9 @@ package com.github.paohaijiao.visitor;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 
 public class JQuickJavaIfStatementVisitor extends JQuickJavaForStatementVisitor {
+
+    private static final Class<?> PKG = JQuickJavaIfStatementVisitor.class;
+
     @Override
     public Object visitIfStatement(JQuickJavaParser.IfStatementContext ctx) {
         if (toBoolean(visitConExpression(ctx.conExpression()))) {

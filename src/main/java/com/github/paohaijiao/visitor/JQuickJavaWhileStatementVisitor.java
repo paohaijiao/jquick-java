@@ -16,13 +16,13 @@
 package com.github.paohaijiao.visitor;
 
 
-import com.github.paohaijiao.exception.JBreakException;
-import com.github.paohaijiao.exception.JContinueException;
+import com.github.paohaijiao.exception.JQuickJavaBreakException;
+import com.github.paohaijiao.exception.JQuickJavaContinueException;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 
 
 public class JQuickJavaWhileStatementVisitor extends JQuickJavaReturnStatementVisitor {
-
+    private static final Class<?> PKG = JQuickJavaWhileStatementVisitor.class;
 
     @Override
     public Object visitWhileStatement(JQuickJavaParser.WhileStatementContext ctx) {
@@ -32,9 +32,9 @@ public class JQuickJavaWhileStatementVisitor extends JQuickJavaReturnStatementVi
             try {
                 result = visitAction(ctx.action());
             } catch (Exception e) {
-                if (e instanceof JContinueException) {
+                if (e instanceof JQuickJavaContinueException) {
                     continue;
-                }else if (e instanceof JBreakException) {
+                }else if (e instanceof JQuickJavaBreakException) {
                     break;
                 }else{
                     e.printStackTrace();

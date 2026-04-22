@@ -15,11 +15,11 @@
  */
 package com.github.paohaijiao;
 
-import com.github.paohaijiao.executor.JQuickLangActionExecutor;
-import com.github.paohaijiao.executor.JQuickLangExecutor;
+import com.github.paohaijiao.executor.JQuickJavaActionExecutor;
+import com.github.paohaijiao.executor.JQuickJavaExecutor;
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.scope.VariableContext;
-import com.github.paohaijiao.support.JTypeReference;
+import com.github.paohaijiao.scope.JQuickJavaVariableContext;
+import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -37,20 +37,20 @@ public class JActionTest {
     public void mutiple() throws IOException {
         JContext context = new JContext();
         context.addConstant("PI", 3.14);
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        VariableContext variableContext=new VariableContext();
-        variableContext.addVariable("radius", 5.0, JTypeReference.of(float.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
+        variableContext.addVariable("radius", 5.0, JQuickJavaTypeReference.of(float.class));
         contextStack.add(variableContext);
-        JQuickLangActionExecutor executor = new JQuickLangActionExecutor(context,contextStack);
+        JQuickJavaActionExecutor executor = new JQuickJavaActionExecutor(context,contextStack);
         String actionCode = "{ var area = PI * radius * radius; return area; }";
         Object result = executor.execute(actionCode);
         System.out.println("Area: " + result);
     }
     @Test
     public void sample1() throws IOException {
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        VariableContext variableContext=new VariableContext();
-        variableContext.addVariable("charArray", new Character[]{'W', 'o', 'r', 'l', 'd'}, JTypeReference.of(Character.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
+        variableContext.addVariable("charArray", new Character[]{'W', 'o', 'r', 'l', 'd'}, JQuickJavaTypeReference.of(Character.class));
         contextStack.add(variableContext);
         String rule=
                 " java.util.HashMap<java.lang.String,java.lang.String>   function a(int:a,float:b) {\n" +
@@ -71,15 +71,15 @@ public class JActionTest {
                         "    float d=8.1;\n" +
                         "    this.a(int:c,float:d);" ;
         System.out.println(rule);
-        JQuickLangExecutor executor = new JQuickLangExecutor();
+        JQuickJavaExecutor executor = new JQuickJavaExecutor();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
     @Test
     public void sample2() throws IOException {
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        VariableContext variableContext=new VariableContext();
-        variableContext.addVariable("charArray", new Character[]{'W', 'o', 'r', 'l', 'd'}, JTypeReference.of(Character.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
+        variableContext.addVariable("charArray", new Character[]{'W', 'o', 'r', 'l', 'd'}, JQuickJavaTypeReference.of(Character.class));
         contextStack.add(variableContext);
         String rule=
                 "   java.lang.String function a(int:a,float:b) {\n" +
@@ -90,15 +90,15 @@ public class JActionTest {
                         "    float d=8.1;\n" +
                         "    this.a(int:c,float:d);" ;
         System.out.println(rule);
-        JQuickLangExecutor executor = new JQuickLangExecutor();
+        JQuickJavaExecutor executor = new JQuickJavaExecutor();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
     @Test
     public void sample3() throws IOException {
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        VariableContext variableContext=new VariableContext();
-        variableContext.addVariable("charArray", new Character[]{'W', 'o', 'r', 'l', 'd'}, JTypeReference.of(Character.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
+        variableContext.addVariable("charArray", new Character[]{'W', 'o', 'r', 'l', 'd'}, JQuickJavaTypeReference.of(Character.class));
         contextStack.add(variableContext);
         String rule=
                 "    import java.lang.String as type1;" +
@@ -110,7 +110,7 @@ public class JActionTest {
                         "    float d=8.1;\n" +
                         "    this.a(int:c,float:d);" ;
         System.out.println(rule);
-        JQuickLangExecutor executor = new JQuickLangExecutor();
+        JQuickJavaExecutor executor = new JQuickJavaExecutor();
         Object result=executor.execute(rule);
         System.out.println(result);
     }

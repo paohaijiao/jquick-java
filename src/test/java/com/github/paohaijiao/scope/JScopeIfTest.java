@@ -1,6 +1,6 @@
 package com.github.paohaijiao.scope;
 
-import com.github.paohaijiao.executor.JQuickLangExecutor;
+import com.github.paohaijiao.executor.JQuickJavaExecutor;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ public class JScopeIfTest {
                             "int c=1;\n" +
                             "float d=8.1;" ;
             System.out.println(rule);
-            JQuickLangExecutor executor = new JQuickLangExecutor();
+            JQuickJavaExecutor executor = new JQuickJavaExecutor();
             Object result=executor.execute(rule);
             System.out.println(result);
     }
@@ -35,7 +35,7 @@ public class JScopeIfTest {
                         "float d=8.1;" +
                         "this.a(int:c,float:d);" ;
         System.out.println(rule);
-        JQuickLangExecutor executor = new JQuickLangExecutor();
+        JQuickJavaExecutor executor = new JQuickJavaExecutor();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
@@ -55,7 +55,7 @@ public class JScopeIfTest {
                         "java.lang.String g=\"helloworld\";" +
                         "this.a(int:c,float:d);" ;
         System.out.println(rule);
-        JQuickLangExecutor executor = new JQuickLangExecutor();
+        JQuickJavaExecutor executor = new JQuickJavaExecutor();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
@@ -75,7 +75,7 @@ public class JScopeIfTest {
                         "java.lang.String g=\"helloworld\";" +
                         "this.a(int:c,float:d);" ;
         System.out.println(rule);
-        JQuickLangExecutor executor = new JQuickLangExecutor();
+        JQuickJavaExecutor executor = new JQuickJavaExecutor();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
@@ -99,7 +99,7 @@ public class JScopeIfTest {
                         "float g=32;\n" +
                         "this.a(int:c,float:d);" ;
         System.out.println(rule);
-        JQuickLangExecutor executor = new JQuickLangExecutor();
+        JQuickJavaExecutor executor = new JQuickJavaExecutor();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
@@ -123,7 +123,7 @@ public class JScopeIfTest {
                         "float g=32;\n" +
                         "this.a(int:c,float:d);" ;
         System.out.println(rule);
-        JQuickLangExecutor executor = new JQuickLangExecutor();
+        JQuickJavaExecutor executor = new JQuickJavaExecutor();
         Object result=executor.execute(rule);
         System.out.println(result);
     }

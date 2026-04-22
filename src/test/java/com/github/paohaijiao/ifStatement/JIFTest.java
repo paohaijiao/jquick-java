@@ -1,9 +1,9 @@
 package com.github.paohaijiao.ifStatement;
 
-import com.github.paohaijiao.executor.JQuickLangIfExecutor;
+import com.github.paohaijiao.executor.JQuickJavaIfExecutor;
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.scope.VariableContext;
-import com.github.paohaijiao.support.JTypeReference;
+import com.github.paohaijiao.scope.JQuickJavaVariableContext;
+import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -16,12 +16,12 @@ public class JIFTest {
                 "console.log(1)" +
                 "}";
         System.out.println(rule);
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        VariableContext variableContext=new VariableContext();
-        variableContext.addVariable("radius", 5.0, JTypeReference.of(float.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
+        variableContext.addVariable("radius", 5.0, JQuickJavaTypeReference.of(float.class));
         contextStack.push(variableContext);
         JContext jContext=new JContext();
-        JQuickLangIfExecutor executor = new JQuickLangIfExecutor(jContext,contextStack);
+        JQuickJavaIfExecutor executor = new JQuickJavaIfExecutor(jContext,contextStack);
         Object result=executor.execute(rule);
     }
     @Test
@@ -32,12 +32,12 @@ public class JIFTest {
                 "            console.log(2);\n" +
                 "        }";
         System.out.println(rule);
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        VariableContext variableContext=new VariableContext();
-        variableContext.addVariable("radius", 5.0, JTypeReference.of(float.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
+        variableContext.addVariable("radius", 5.0, JQuickJavaTypeReference.of(float.class));
         contextStack.push(variableContext);
         JContext jContext=new JContext();
-        JQuickLangIfExecutor executor = new JQuickLangIfExecutor(jContext,contextStack);
+        JQuickJavaIfExecutor executor = new JQuickJavaIfExecutor(jContext,contextStack);
         Object result=executor.execute(rule);
     }
     @Test
@@ -50,12 +50,12 @@ public class JIFTest {
                 "            console.log(3);\n" +
                 "        }";
         System.out.println(rule);
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        VariableContext variableContext=new VariableContext();
-        variableContext.addVariable("radius", 5.0, JTypeReference.of(float.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
+        variableContext.addVariable("radius", 5.0, JQuickJavaTypeReference.of(float.class));
         contextStack.push(variableContext);
         JContext jContext=new JContext();
-        JQuickLangIfExecutor executor = new JQuickLangIfExecutor(jContext,contextStack);
+        JQuickJavaIfExecutor executor = new JQuickJavaIfExecutor(jContext,contextStack);
         Object result=executor.execute(rule);
     }
     @Test
@@ -70,12 +70,12 @@ public class JIFTest {
                 "            console.log(4);\n" +
                 "        }";
         System.out.println(rule);
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        VariableContext variableContext=new VariableContext();
-        variableContext.addVariable("radius", 5.0, JTypeReference.of(float.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
+        variableContext.addVariable("radius", 5.0, JQuickJavaTypeReference.of(float.class));
         contextStack.push(variableContext);
         JContext jContext=new JContext();
-        JQuickLangIfExecutor executor = new JQuickLangIfExecutor(jContext,contextStack);
+        JQuickJavaIfExecutor executor = new JQuickJavaIfExecutor(jContext,contextStack);
         Object result=executor.execute(rule);
     }
     @Test
@@ -90,12 +90,12 @@ public class JIFTest {
                 "            console.log(4);\n" +
                 "        }";
         System.out.println(rule);
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        VariableContext variableContext=new VariableContext();
-        variableContext.addVariable("radius", 5.0, JTypeReference.of(float.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
+        variableContext.addVariable("radius", 5.0, JQuickJavaTypeReference.of(float.class));
         contextStack.push(variableContext);
         JContext jContext=new JContext();
-        JQuickLangIfExecutor executor = new JQuickLangIfExecutor(jContext,contextStack);
+        JQuickJavaIfExecutor executor = new JQuickJavaIfExecutor(jContext,contextStack);
         Object result=executor.execute(rule);
     }
     @Test
@@ -104,12 +104,12 @@ public class JIFTest {
                 "            break;\n" +
                 "        }";
         System.out.println(rule);
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        VariableContext variableContext=new VariableContext();
-        variableContext.addVariable("radius", 5.0, JTypeReference.of(float.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
+        variableContext.addVariable("radius", 5.0, JQuickJavaTypeReference.of(float.class));
         contextStack.push(variableContext);
         JContext jContext=new JContext();
-        JQuickLangIfExecutor executor = new JQuickLangIfExecutor(jContext,contextStack);
+        JQuickJavaIfExecutor executor = new JQuickJavaIfExecutor(jContext,contextStack);
         Object result=executor.execute(rule);
     }
     @Test
@@ -118,12 +118,12 @@ public class JIFTest {
                 "            continue;\n" +
                 "        }";
         System.out.println(rule);
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        VariableContext variableContext=new VariableContext();
-        variableContext.addVariable("radius", 5.0, JTypeReference.of(float.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
+        variableContext.addVariable("radius", 5.0, JQuickJavaTypeReference.of(float.class));
         contextStack.push(variableContext);
         JContext jContext=new JContext();
-        JQuickLangIfExecutor executor = new JQuickLangIfExecutor(jContext,contextStack);
+        JQuickJavaIfExecutor executor = new JQuickJavaIfExecutor(jContext,contextStack);
         Object result=executor.execute(rule);
     }
 }

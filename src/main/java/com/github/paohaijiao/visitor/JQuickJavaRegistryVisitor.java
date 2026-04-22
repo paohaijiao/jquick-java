@@ -17,18 +17,20 @@ package com.github.paohaijiao.visitor;
 
 
 import com.github.paohaijiao.exception.JAssert;
-import com.github.paohaijiao.factory.JFunctionRegistry;
+import com.github.paohaijiao.factory.JQuickJavaFunctionRegistry;
 import com.github.paohaijiao.model.*;
-import com.github.paohaijiao.support.JTypeReference;
+import com.github.paohaijiao.support.JQuickJavaTypeReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class JQuickJavaRegistryVisitor extends JQuickJavaCoreVisitor {
 
-    JFunctionRegistry registry= JFunctionRegistry.getInstance();
+    private static final Class<?> PKG = JQuickJavaRegistryVisitor.class;
 
-    public void registerFunction(JFunctionDefinitionModel function) {
+    JQuickJavaFunctionRegistry registry= JQuickJavaFunctionRegistry.getInstance();
+
+    public void registerFunction(JQuickJavaFunctionDefinitionModel function) {
         if (function == null || function.getName() == null) {
             throw new IllegalArgumentException("Function definition cannot be null");
         }
@@ -38,20 +40,20 @@ public class JQuickJavaRegistryVisitor extends JQuickJavaCoreVisitor {
         return registry.isFunctionDefined(functionName);
     }
 
-    public  JVariableContainerModel invoke(String functionName, JTypeReferenceAndValueModel model) {
+    public JQuickJavaVariableContainerModel invoke(String functionName, JQuickJavaTypeReferenceAndValueModel model) {
         if (!hasFunction(functionName)) {
             throw new IllegalArgumentException("Function '" + functionName + "' is not defined");
         }
-        JTypeReference<?>[] references=model.getList().stream().map(JTypeReferenceAndValue::getTypeArguments).toArray(JTypeReference[]::new);
-        Object[] data=model.getList().stream().map(JTypeReferenceAndValue::getData).toArray();
-        JFunctionDefinitionModel function = registry.lookupFunction(functionName,references);
+        JQuickJavaTypeReference<?>[] references=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getTypeArguments).toArray(JQuickJavaTypeReference[]::new);
+        Object[] data=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).toArray();
+        JQuickJavaFunctionDefinitionModel function = registry.lookupFunction(functionName,references);
         validateArguments(function, references);
-        JVariableContainerModel localVariables = new JVariableContainerModel();
+        JQuickJavaVariableContainerModel localVariables = new JQuickJavaVariableContainerModel();
         bindParameters(function, data, localVariables);
         return localVariables;
     }
 
-    private void validateArguments(JFunctionDefinitionModel function,  JTypeReference<?>[] typeReferences) {
+    private void validateArguments(JQuickJavaFunctionDefinitionModel function, JQuickJavaTypeReference<?>[] typeReferences) {
         JAssert.notNull(function, "Function cannot be null");
         int expectedCount = function.getParameterCount();
         int actualCount = typeReferences != null ? typeReferences.length : 0;
@@ -65,10 +67,10 @@ public class JQuickJavaRegistryVisitor extends JQuickJavaCoreVisitor {
             return;
         }
 
-        List<JFunctionFieldModel> fields = function.getFields();
+        List<JQuickJavaFunctionFieldModel> fields = function.getFields();
         for (int i = 0; i < expectedCount; i++) {
-            JFunctionFieldModel expectedField = fields.get(i);
-            JTypeReference<?> actualValue = typeReferences[i];
+            JQuickJavaFunctionFieldModel expectedField = fields.get(i);
+            JQuickJavaTypeReference<?> actualValue = typeReferences[i];
             if (actualValue.getType() == null && !isNullableType(expectedField.getType())) {
                 throw new IllegalArgumentException(String.format(
                         "parameter '%s'(index:%d) can not be null，need type: %s",
@@ -77,7 +79,7 @@ public class JQuickJavaRegistryVisitor extends JQuickJavaCoreVisitor {
             }
         }
     }
-    private boolean isNullableType(JTypeReference<?> type) {
+    private boolean isNullableType(JQuickJavaTypeReference<?> type) {
         switch (type.getRawType().getSimpleName()) {
             case "int":
             case "long":
@@ -90,11 +92,11 @@ public class JQuickJavaRegistryVisitor extends JQuickJavaCoreVisitor {
         }
     }
 
-    private void bindParameters(JFunctionDefinitionModel function,
+    private void bindParameters(JQuickJavaFunctionDefinitionModel function,
                                 Object[] arguments,
-                                JVariableContainerModel localVariables) {
+                                JQuickJavaVariableContainerModel localVariables) {
         List<String> paramNames = function.getParameterNames();
-        List<JFunctionFieldModel> paramTypes = function.getFields();
+        List<JQuickJavaFunctionFieldModel> paramTypes = function.getFields();
         for (int i = 0; i < paramNames.size(); i++) {
             String paramName = paramNames.get(i);
             Object argValue = arguments[i];
@@ -112,11 +114,11 @@ public class JQuickJavaRegistryVisitor extends JQuickJavaCoreVisitor {
 
 
 
-    public static JFunctionDefinitionModel createFunctionDefinition(String name, List<JFunctionFieldModel> paramDefine, String action,JTypeReference<?> type) {
+    public static JQuickJavaFunctionDefinitionModel createFunctionDefinition(String name, List<JQuickJavaFunctionFieldModel> paramDefine, String action, JQuickJavaTypeReference<?> type) {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Function name cannot be null or empty");
         }
-        return new JFunctionDefinitionModel(name,paramDefine, action,type);
+        return new JQuickJavaFunctionDefinitionModel(name,paramDefine, action,type);
     }
 
     public List<String> getRegisteredFunctionNames() {
@@ -124,7 +126,7 @@ public class JQuickJavaRegistryVisitor extends JQuickJavaCoreVisitor {
     }
 
 
-    public List<JFunctionDefinitionModel> getFunctionDefinition(String functionName) {
+    public List<JQuickJavaFunctionDefinitionModel> getFunctionDefinition(String functionName) {
         return registry.getFunctionTable().get(functionName);
     }
 

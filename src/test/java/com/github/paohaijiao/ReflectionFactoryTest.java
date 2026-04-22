@@ -1,7 +1,7 @@
 package com.github.paohaijiao;
 
-import com.github.paohaijiao.support.JTypeReference;
-import com.github.paohaijiao.support.JReflectionFactory;
+import com.github.paohaijiao.support.JQuickJavaTypeReference;
+import com.github.paohaijiao.support.JQuickJavaReflectionFactory;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -55,42 +55,42 @@ public class ReflectionFactoryTest {
     }
     @Test
     public void testConstructorFactory() {
-        TestClass instance1 = JReflectionFactory.constructor(TestClass.class).newInstance();
+        TestClass instance1 = JQuickJavaReflectionFactory.constructor(TestClass.class).newInstance();
         assertEquals("default", instance1.getName());
         assertEquals(0, instance1.getValue());
-        TestClass instance2 = JReflectionFactory.constructor(TestClass.class)
-                .newInstance(JTypeReference.of(String.class), "test");
+        TestClass instance2 = JQuickJavaReflectionFactory.constructor(TestClass.class)
+                .newInstance(JQuickJavaTypeReference.of(String.class), "test");
         assertEquals("test", instance2.getName());
         assertEquals(1, instance2.getValue());
 
-        TestClass instance3 = JReflectionFactory.constructor(TestClass.class)
-                .newInstance(new JTypeReference<?>[]{JTypeReference.of(String.class), JTypeReference.of(int.class)},
+        TestClass instance3 = JQuickJavaReflectionFactory.constructor(TestClass.class)
+                .newInstance(new JQuickJavaTypeReference<?>[]{JQuickJavaTypeReference.of(String.class), JQuickJavaTypeReference.of(int.class)},
                         "test", 42);
         assertEquals("test", instance3.getName());
         assertEquals(42, instance3.getValue());
-        JTypeReference<?>[] references=new JTypeReference<?>[]{
-                JTypeReference.of(String.class),JTypeReference.of(String.class),JTypeReference.of(String.class),
-                JTypeReference.of(String.class)};
-        TestClass instance4 = JReflectionFactory.constructor(TestClass.class)
+        JQuickJavaTypeReference<?>[] references=new JQuickJavaTypeReference<?>[]{
+                JQuickJavaTypeReference.of(String.class), JQuickJavaTypeReference.of(String.class), JQuickJavaTypeReference.of(String.class),
+                JQuickJavaTypeReference.of(String.class)};
+        TestClass instance4 = JQuickJavaReflectionFactory.constructor(TestClass.class)
                 .newInstance(references, "a", "b", "c");
         assertEquals("a", instance4.getName());
         assertEquals(3, instance4.getValue());
     }
     @Test
     public void testStaticMethodFactory() {
-        String result1 = JReflectionFactory.staticMethod(TestClass.class)
+        String result1 = JQuickJavaReflectionFactory.staticMethod(TestClass.class)
                 .invoke("staticConcat",
-                        new JTypeReference<?>[]{JTypeReference.of(String.class), JTypeReference.of(String.class)},
+                        new JQuickJavaTypeReference<?>[]{JQuickJavaTypeReference.of(String.class), JQuickJavaTypeReference.of(String.class)},
                         "Hello", "World");
         assertEquals("HelloWorld", result1);
-        String result2 = JReflectionFactory.staticMethod(TestClass.class)
+        String result2 = JQuickJavaReflectionFactory.staticMethod(TestClass.class)
                 .invoke("staticVarargs",
-                        new JTypeReference<?>[]{JTypeReference.of(String.class), JTypeReference.varargsOf(String.class)},
+                        new JQuickJavaTypeReference<?>[]{JQuickJavaTypeReference.of(String.class), JQuickJavaTypeReference.varargsOf(String.class)},
                         "Prefix:", "a", "b", "c");
         assertEquals("Prefix:a,b,c", result2);
-        JTypeReference<?>[] references=new JTypeReference<?>[]{
-                JTypeReference.of(String.class),JTypeReference.of(String.class)};
-        String result3 = JReflectionFactory.staticMethod(TestClass.class)
+        JQuickJavaTypeReference<?>[] references=new JQuickJavaTypeReference<?>[]{
+                JQuickJavaTypeReference.of(String.class), JQuickJavaTypeReference.of(String.class)};
+        String result3 = JQuickJavaReflectionFactory.staticMethod(TestClass.class)
                 .invoke("staticConcat",references, "A", "B");
         assertEquals("AB", result3);
     }
@@ -98,34 +98,34 @@ public class ReflectionFactoryTest {
     @Test
     public void testInstanceMethodFactory() {
         TestClass instance = new TestClass("test");
-        String name = JReflectionFactory.instanceMethod(instance).invoke("getName");
+        String name = JQuickJavaReflectionFactory.instanceMethod(instance).invoke("getName");
         assertEquals("test", name);
-        String concatResult = JReflectionFactory.instanceMethod(instance)
-                .invoke("concat", JTypeReference.of(String.class), "_suffix");
+        String concatResult = JQuickJavaReflectionFactory.instanceMethod(instance)
+                .invoke("concat", JQuickJavaTypeReference.of(String.class), "_suffix");
         assertEquals("test_suffix", concatResult);
-        String varargsResult = JReflectionFactory.instanceMethod(instance)
+        String varargsResult = JQuickJavaReflectionFactory.instanceMethod(instance)
                 .invoke("varargsMethod",
-                        new JTypeReference<?>[]{JTypeReference.of(String.class), JTypeReference.varargsOf(String.class)},
+                        new JQuickJavaTypeReference<?>[]{JQuickJavaTypeReference.of(String.class), JQuickJavaTypeReference.varargsOf(String.class)},
                         "Prefix:", "x", "y", "z");
         assertEquals("Prefix:testx,y,z", varargsResult);
         String[] params = new String[]{"1", "2", "3"};
-        String arrayVarargsResult = JReflectionFactory.instanceMethod(instance)
+        String arrayVarargsResult = JQuickJavaReflectionFactory.instanceMethod(instance)
                 .invoke("varargsMethod",
-                        new JTypeReference<?>[]{JTypeReference.of(String.class), JTypeReference.varargsOf(String.class)},
+                        new JQuickJavaTypeReference<?>[]{JQuickJavaTypeReference.of(String.class), JQuickJavaTypeReference.varargsOf(String.class)},
                         "Prefix:", params);
         assertEquals("Prefix:test1,2,3", arrayVarargsResult);
     }
 
     @Test
     public void testComplexTypes() {
-        List<String> list = JReflectionFactory.constructor(ArrayList.class).newInstance();
-        JReflectionFactory.instanceMethod(list).invoke("add", JTypeReference.of(String.class), "item1");
-        JReflectionFactory.instanceMethod(list).invoke("add", JTypeReference.of(String.class), "item2");
-        int size = JReflectionFactory.instanceMethod(list).invoke("size");
+        List<String> list = JQuickJavaReflectionFactory.constructor(ArrayList.class).newInstance();
+        JQuickJavaReflectionFactory.instanceMethod(list).invoke("add", JQuickJavaTypeReference.of(String.class), "item1");
+        JQuickJavaReflectionFactory.instanceMethod(list).invoke("add", JQuickJavaTypeReference.of(String.class), "item2");
+        int size = JQuickJavaReflectionFactory.instanceMethod(list).invoke("size");
         assertEquals(2, size);
-        String[] array = (String[]) JReflectionFactory.staticMethod(Arrays.class)
+        String[] array = (String[]) JQuickJavaReflectionFactory.staticMethod(Arrays.class)
                 .invoke("copyOf",
-                        new JTypeReference<?>[]{JTypeReference.of(Object[].class), JTypeReference.of(int.class)},
+                        new JQuickJavaTypeReference<?>[]{JQuickJavaTypeReference.of(Object[].class), JQuickJavaTypeReference.of(int.class)},
                         new String[]{"a", "b", "c"}, 2);
         assertArrayEquals(new String[]{"a", "b"}, array);
     }

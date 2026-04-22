@@ -16,16 +16,16 @@
 package com.github.paohaijiao.visitor;
 
 import com.github.paohaijiao.exception.JAssert;
-import com.github.paohaijiao.executor.JQuickLangActionExecutor;
+import com.github.paohaijiao.executor.JQuickJavaActionExecutor;
 import com.github.paohaijiao.model.*;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.scope.Variable;
-import com.github.paohaijiao.support.JObjectFactory;
-import com.github.paohaijiao.support.JReflectionFactory;
-import com.github.paohaijiao.support.JTypeReference;
-import com.github.paohaijiao.support.impl.JConstructorFactory;
-import com.github.paohaijiao.support.impl.JInstanceMethodFactory;
-import com.github.paohaijiao.support.impl.JStaticMethodFactory;
+import com.github.paohaijiao.scope.JQuickJavaVariable;
+import com.github.paohaijiao.support.JQuickJavaObjectFactory;
+import com.github.paohaijiao.support.JQuickJavaReflectionFactory;
+import com.github.paohaijiao.support.JQuickJavaTypeReference;
+import com.github.paohaijiao.support.impl.JQuickJavaConstructorFactory;
+import com.github.paohaijiao.support.impl.JQuickJavaInstanceMethodFactory;
+import com.github.paohaijiao.support.impl.JQuickJavaStaticMethodFactory;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStreamRewriter;
 import org.antlr.v4.runtime.misc.Interval;
@@ -35,20 +35,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
+
+    private static final Class<?> PKG = JQuickJavaFunctionCallVisitor.class;
+
     @Override
     public Object  visitFunctionDefinition(JQuickJavaParser.FunctionDefinitionContext ctx) {
         JAssert.notNull(ctx.IDENTIFIER(), "functionName must not be null");
         String functionName = ctx.IDENTIFIER().getText();
-        List<JFunctionFieldModel> paramDefine = new ArrayList<>();
+        List<JQuickJavaFunctionFieldModel> paramDefine = new ArrayList<>();
         if (ctx.parameterList() != null) {
             paramDefine=visitParameterList(ctx.parameterList())  ;
         }
         if (ctx.parameterList() != null) {
-            List<Variable> variables = new ArrayList<>();
+            List<JQuickJavaVariable> variables = new ArrayList<>();
             for (JQuickJavaParser.ParamContext paramCtx : ctx.parameterList().param()) {
-                JTypeReference<?> paramType = visitClasssType(paramCtx.classsType());
+                JQuickJavaTypeReference<?> paramType = visitClasssType(paramCtx.classsType());
                 String name = paramCtx.functionVar().getText();
-                Variable variable=new Variable(name,null,paramType);
+                JQuickJavaVariable variable=new JQuickJavaVariable(name,null,paramType);
                 variables.add(variable);
             }
             currentContext().addScopeVariable(functionName, variables);
@@ -75,20 +78,20 @@ public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
         String modifiedBody = rewriter.getText(
                 Interval.of(ctx.action().start.getTokenIndex(), ctx.action().stop.getTokenIndex())
         );
-        JTypeReference<?> type=null;
+        JQuickJavaTypeReference<?> type=null;
         if (null!=ctx.classsType()){
             type= visitClasssType(ctx.classsType());
         }
-        JFunctionDefinitionModel jFunctionDefinitionModel =createFunctionDefinition(functionName,paramDefine,modifiedBody,type);
+        JQuickJavaFunctionDefinitionModel jFunctionDefinitionModel =createFunctionDefinition(functionName,paramDefine,modifiedBody,type);
         registry.registerFunction(jFunctionDefinitionModel);
         return null;
     }
     @Override
-    public List<JFunctionFieldModel> visitParameterList(JQuickJavaParser.ParameterListContext ctx) {
-        List<JFunctionFieldModel> list=new ArrayList<>();
+    public List<JQuickJavaFunctionFieldModel> visitParameterList(JQuickJavaParser.ParameterListContext ctx) {
+        List<JQuickJavaFunctionFieldModel> list=new ArrayList<>();
         for (int i = 0; i < ctx.param().size(); i++) {
-            JFunctionFieldModel model=new JFunctionFieldModel();
-            JfunctionParamModel param=visitParam(ctx.param().get(i));
+            JQuickJavaFunctionFieldModel model=new JQuickJavaFunctionFieldModel();
+            JQuickJavafunctionParamModel param=visitParam(ctx.param().get(i));
             model.setIndex(i);
             model.setFieldName(param.getName());
             model.setType(param.getType());
@@ -99,8 +102,8 @@ public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
 
 
     @Override
-    public JfunctionParamModel visitParam(JQuickJavaParser.ParamContext ctx) {
-        JfunctionParamModel model=new JfunctionParamModel();
+    public JQuickJavafunctionParamModel visitParam(JQuickJavaParser.ParamContext ctx) {
+        JQuickJavafunctionParamModel model=new JQuickJavafunctionParamModel();
         if(ctx.functionVar() != null) {
             model.setName(visitFunctionVar(ctx.functionVar()));
         }
@@ -110,12 +113,12 @@ public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
         return model;
     }
     @Override
-    public JTypeReferenceAndValue visitLiteralItem(JQuickJavaParser.LiteralItemContext ctx) {
+    public JQuickJavaTypeReferenceAndValue visitLiteralItem(JQuickJavaParser.LiteralItemContext ctx) {
         JAssert.notNull(ctx.classsType(), "classsType must not be null");
         JAssert.notNull(ctx.literal(), "literal require not be null");
         String str=ctx.getText();
-        JTypeReferenceAndValue typeReferenceAndValue=new JTypeReferenceAndValue();
-        JTypeReference<?> classType=visitClasssType(ctx.classsType());
+        JQuickJavaTypeReferenceAndValue typeReferenceAndValue=new JQuickJavaTypeReferenceAndValue();
+        JQuickJavaTypeReference<?> classType=visitClasssType(ctx.classsType());
         Object literal=visitLiteral(ctx.literal());
         String jsonString=null;
         if(null!=literal) {
@@ -134,12 +137,12 @@ public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
 
 
     @Override
-    public JTypeReferenceAndValueModel visitArgumentList(JQuickJavaParser.ArgumentListContext ctx) {
-        JTypeReferenceAndValueModel model=new JTypeReferenceAndValueModel();
+    public JQuickJavaTypeReferenceAndValueModel visitArgumentList(JQuickJavaParser.ArgumentListContext ctx) {
+        JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
         if (null != ctx.literalItem() && !ctx.literalItem().isEmpty()) {
-            List<JTypeReferenceAndValue> list = new ArrayList<>();
+            List<JQuickJavaTypeReferenceAndValue> list = new ArrayList<>();
             for (JQuickJavaParser.LiteralItemContext literalItemContext : ctx.literalItem()) {
-                JTypeReferenceAndValue object = visitLiteralItem(literalItemContext);
+                JQuickJavaTypeReferenceAndValue object = visitLiteralItem(literalItemContext);
                 list.add(object);
             }
             model.setList(list);
@@ -152,16 +155,16 @@ public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
         JAssert.notNull(ctx.methodName(),"the method name is not support");
         String qualifiedName = ctx.classsType() != null ? ctx.classsType().getText() : null;
         String methodName = visitMethodName(ctx.methodName());
-        JTypeReferenceAndValueModel model=new JTypeReferenceAndValueModel();
+        JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
         if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&&ctx.argumentList().literalItem().size()>0){
             model=visitArgumentList(ctx.argumentList());
         }
         try {
-            JTypeReference<?> typeReference = loadClass(qualifiedName);
+            JQuickJavaTypeReference<?> typeReference = loadClass(qualifiedName);
             Class<?> clazz=typeReference.getRawType();
-            JStaticMethodFactory instance = JReflectionFactory.staticMethod(clazz);
-            JTypeReference<?>[] references=model.getList().stream().map(JTypeReferenceAndValue::getTypeArguments).toArray(JTypeReference[]::new);
-            Object[] data=model.getList().stream().map(JTypeReferenceAndValue::getData).toArray();
+            JQuickJavaStaticMethodFactory instance = JQuickJavaReflectionFactory.staticMethod(clazz);
+            JQuickJavaTypeReference<?>[] references=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getTypeArguments).toArray(JQuickJavaTypeReference[]::new);
+            Object[] data=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).toArray();
             return instance.invoke(methodName, references,data);
         } catch (Exception e) {
             throw new RuntimeException("please double check static method invocation : " + methodName, e);
@@ -171,17 +174,17 @@ public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
     @Override
     public Object visitConstructorCall(JQuickJavaParser.ConstructorCallContext ctx) {
         JAssert.notNull(ctx.classsType(),"the class name is not support");
-        JTypeReferenceAndValueModel model=new JTypeReferenceAndValueModel();
+        JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
         if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&&ctx.argumentList().literalItem().size()>0){
             model=visitArgumentList(ctx.argumentList());
         }
         String qualifiedName = ctx.classsType() != null ? ctx.classsType().getText() : null;
         try {
-            JTypeReference<?> typeReference = loadClass(qualifiedName);
+            JQuickJavaTypeReference<?> typeReference = loadClass(qualifiedName);
             Class<?> clazz=typeReference.getRawType();
-            JConstructorFactory<?> instance =JReflectionFactory.constructor(clazz);
-            JTypeReference<?>[] references=model.getList().stream().map(JTypeReferenceAndValue::getTypeArguments).toArray(JTypeReference[]::new);
-            Object[] data=model.getList().stream().map(JTypeReferenceAndValue::getData).toArray();
+            JQuickJavaConstructorFactory<?> instance = JQuickJavaReflectionFactory.constructor(clazz);
+            JQuickJavaTypeReference<?>[] references=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getTypeArguments).toArray(JQuickJavaTypeReference[]::new);
+            Object[] data=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).toArray();
             return instance.newInstance(references,data);
         } catch (Exception e) {
             throw new RuntimeException("please double check constructor method   " , e);
@@ -197,14 +200,14 @@ public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
             target = visitInstanceName(ctx.instanceName());
         }
         JAssert.notNull(target,"the target object is not support:"+ctx.instanceName().getText());
-        JTypeReferenceAndValueModel model=new JTypeReferenceAndValueModel();
+        JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
         if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&&ctx.argumentList().literalItem().size()>0){
             model=visitArgumentList(ctx.argumentList());
         }
         try {
-            JInstanceMethodFactory instance =JReflectionFactory.instanceMethod(target);
-            JTypeReference<?>[] references=model.getList().stream().map(JTypeReferenceAndValue::getTypeArguments).toArray(JTypeReference[]::new);
-            Object[] data=model.getList().stream().map(JTypeReferenceAndValue::getData).toArray();
+            JQuickJavaInstanceMethodFactory instance = JQuickJavaReflectionFactory.instanceMethod(target);
+            JQuickJavaTypeReference<?>[] references=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getTypeArguments).toArray(JQuickJavaTypeReference[]::new);
+            Object[] data=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).toArray();
             return instance.invoke(methodName,references,data);
         } catch (Exception e) {
             throw new RuntimeException("please double check constructor method   " , e);
@@ -216,17 +219,17 @@ public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
         String methodName = visitMethodName(ctx.methodName());
         boolean flag=this.hasFunction(methodName);
         JAssert.isTrue(flag,"the method [ "+methodName+" ] did not define in this context");
-        JTypeReferenceAndValueModel model=new JTypeReferenceAndValueModel();
+        JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
         if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&&!ctx.argumentList().literalItem().isEmpty()){
             model=visitArgumentList(ctx.argumentList());
         }
-        JTypeReference<?>[] references=model.getList().stream().map(JTypeReferenceAndValue::getTypeArguments).toArray(JTypeReference[]::new);
-        JFunctionDefinitionModel function = registry.lookupFunction(methodName,references);//find the best match method
+        JQuickJavaTypeReference<?>[] references=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getTypeArguments).toArray(JQuickJavaTypeReference[]::new);
+        JQuickJavaFunctionDefinitionModel function = registry.lookupFunction(methodName,references);//find the best match method
         JAssert.notNull(function,"can't find function ["+methodName+"] based the parameter [ "+references+" ] you gived");
-        JQuickLangActionExecutor executor=new JQuickLangActionExecutor();
-        List<Object> data= model.getList().stream().map(JTypeReferenceAndValue::getData).collect(Collectors.toList());
+        JQuickJavaActionExecutor executor=new JQuickJavaActionExecutor();
+        List<Object> data= model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).collect(Collectors.toList());
         for (int i=0;i<function.getFields().size();i++){
-            JFunctionFieldModel field=function.getFields().get(i);
+            JQuickJavaFunctionFieldModel field=function.getFields().get(i);
             Object value=data.get(i);
             if(field.getType().targetAssignableFrom(value)){
                 this.currentContext().addVariable(field.getFieldName(),value,field.getType());
@@ -249,12 +252,12 @@ public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
         String methodName = visitMethodName(ctx.methodName());
         try {
             Object target=visitAccessStaticVariable(ctx.accessStaticVariable());
-            JTypeReferenceAndValueModel model=new JTypeReferenceAndValueModel();
+            JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
             if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&&ctx.argumentList().literalItem().size()>0){
                 model=visitArgumentList(ctx.argumentList());
             }
-            List<Object>  args=model.getList().stream().map(JTypeReferenceAndValue::getData).collect(Collectors.toList());
-            return  JObjectFactory.createByInstanceMethod(target, methodName, args);
+            List<Object>  args=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).collect(Collectors.toList());
+            return  JQuickJavaObjectFactory.createByInstanceMethod(target, methodName, args);
         } catch (Exception e) {
             throw new RuntimeException("please double check static method invocation : " + methodName, e);
         }
@@ -264,7 +267,7 @@ public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
     @Override
     public Object visitInstanceName(JQuickJavaParser.InstanceNameContext ctx) {
         String instanceName=ctx.getText();
-        Variable variable= currentContext().getVariable(instanceName);
+        JQuickJavaVariable variable= currentContext().getVariable(instanceName);
         JAssert.notNull(variable,"can't find variable ["+instanceName+"]");
         return variable.getValue();
     }

@@ -1,9 +1,9 @@
 package com.github.paohaijiao.whileStatement;
 
-import com.github.paohaijiao.executor.JQuickLangWhileExecutor;
+import com.github.paohaijiao.executor.JQuickJavaWhileExecutor;
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.scope.VariableContext;
-import com.github.paohaijiao.support.JTypeReference;
+import com.github.paohaijiao.scope.JQuickJavaVariableContext;
+import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -16,12 +16,12 @@ public class JWhileStatementTest {
                 "            continue;\n" +
                 "        }";
         System.out.println(rule);
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        VariableContext variableContext=new VariableContext();
-        variableContext.addVariable("radius", 5.0, JTypeReference.of(float.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
+        variableContext.addVariable("radius", 5.0, JQuickJavaTypeReference.of(float.class));
         contextStack.push(variableContext);
         JContext jContext=new JContext();
-        JQuickLangWhileExecutor executor = new JQuickLangWhileExecutor(jContext,contextStack);
+        JQuickJavaWhileExecutor executor = new JQuickJavaWhileExecutor(jContext,contextStack);
         Object result=executor.execute(rule);
     }
     @Test
@@ -30,12 +30,12 @@ public class JWhileStatementTest {
                 "            break;\n" +
                 "        }";
         System.out.println(rule);
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        VariableContext variableContext=new VariableContext();
-        variableContext.addVariable("radius", 5.0, JTypeReference.of(float.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
+        variableContext.addVariable("radius", 5.0, JQuickJavaTypeReference.of(float.class));
         contextStack.push(variableContext);
         JContext jContext=new JContext();
-        JQuickLangWhileExecutor executor = new JQuickLangWhileExecutor(jContext,contextStack);
+        JQuickJavaWhileExecutor executor = new JQuickJavaWhileExecutor(jContext,contextStack);
         Object result=executor.execute(rule);
     }
     @Test
@@ -51,12 +51,12 @@ public class JWhileStatementTest {
                 "            break;\n" +
                 "        }";
         System.out.println(rule);
-        Stack<VariableContext> contextStack = new Stack<VariableContext>();
-        VariableContext variableContext=new VariableContext();
-        variableContext.addVariable("radius", 5.0, JTypeReference.of(float.class));
+        Stack<JQuickJavaVariableContext> contextStack = new Stack<JQuickJavaVariableContext>();
+        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
+        variableContext.addVariable("radius", 5.0, JQuickJavaTypeReference.of(float.class));
         contextStack.push(variableContext);
         JContext jContext=new JContext();
-        JQuickLangWhileExecutor executor = new JQuickLangWhileExecutor(jContext,contextStack);
+        JQuickJavaWhileExecutor executor = new JQuickJavaWhileExecutor(jContext,contextStack);
         Object result=executor.execute(rule);
     }
 }

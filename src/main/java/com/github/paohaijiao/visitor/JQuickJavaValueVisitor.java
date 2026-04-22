@@ -20,9 +20,9 @@ import com.github.paohaijiao.date.JDateUtil;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.i18n.I18nUtils;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.scope.Variable;
-import com.github.paohaijiao.scope.VariableContext;
-import com.github.paohaijiao.support.JTypeReference;
+import com.github.paohaijiao.scope.JQuickJavaVariable;
+import com.github.paohaijiao.scope.JQuickJavaVariableContext;
+import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import com.github.paohaijiao.util.JStringUtils;
 
 import java.text.NumberFormat;
@@ -53,10 +53,9 @@ public class JQuickJavaValueVisitor extends JQuickJavaImportVisitor {
         } else if (null != ctx.DATETIME()) {
             String dateString = ctx.DATETIME().getText();
             Date date = JDateUtil.parse(JDateUtil.getSimpleDateFormat(JConstants.dateTime), dateString);
-            thowEx(getMessageKeyPrefix(PKG,"date"),ctx.getText());
             return date;
         }
-
+        thowEx(getMessageKeyPrefix(PKG,"date"),ctx.getText());
         return null;
     }
 
@@ -102,8 +101,8 @@ public class JQuickJavaValueVisitor extends JQuickJavaImportVisitor {
             }
         }else  if(null!=ctx.identifier()){
             String identifier=ctx.identifier().getText();
-            Variable variable = currentContext().getVariable(identifier);
-            Stack<VariableContext> ss= this.contextStack;
+            JQuickJavaVariable variable = currentContext().getVariable(identifier);
+            Stack<JQuickJavaVariableContext> ss= this.contextStack;
             JAssert.notNull(variable,"can't find variable ["+identifier+"]");
             //console.log(JLogLevel.DEBUG,"identifier="+identifier+"value:"+gson.toJson(variable));
             return variable.getValue();
@@ -113,7 +112,7 @@ public class JQuickJavaValueVisitor extends JQuickJavaImportVisitor {
             return ctx.mapLiteral().getText();
         } else if(ctx.qualifiedName() != null) {
             String qualifiedName=visitQualifiedName(ctx.qualifiedName());
-            JTypeReference<?> typeReference = loadClass(qualifiedName);
+            JQuickJavaTypeReference<?> typeReference = loadClass(qualifiedName);
             Class<?> clazz=typeReference.getRawType();
             return clazz;
         }else if (null!=ctx.null_()){

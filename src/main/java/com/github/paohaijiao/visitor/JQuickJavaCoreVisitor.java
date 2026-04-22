@@ -19,19 +19,19 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.paohaijiao.console.JConsole;
-import com.github.paohaijiao.enums.JLiteralEnums;
+import com.github.paohaijiao.enums.JQuickJavaLiteralEnums;
 import com.github.paohaijiao.exception.JAssert;
-import com.github.paohaijiao.executor.JQuickClassTypeExecutor;
-import com.github.paohaijiao.factory.JFunctionRegistry;
+import com.github.paohaijiao.executor.JQuickJavaClassTypeExecutor;
+import com.github.paohaijiao.factory.JQuickJavaFunctionRegistry;
 import com.github.paohaijiao.i18n.I18nUtils;
-import com.github.paohaijiao.model.JImportContainerModel;
-import com.github.paohaijiao.model.JLiteralModel;
+import com.github.paohaijiao.model.JQuickJavaImportContainerModel;
+import com.github.paohaijiao.model.JQuickJavaLiteralModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaBaseVisitor;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.scope.VariableContext;
-import com.github.paohaijiao.support.JTypeReference;
+import com.github.paohaijiao.scope.JQuickJavaVariableContext;
+import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.Data;
@@ -47,6 +47,8 @@ import java.util.Stack;
 @Data
 public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
 
+    private static final Class<?> PKG = JQuickJavaCoreVisitor.class;
+
     protected JContext context;
 
     protected Locale local= Locale.ENGLISH;
@@ -58,24 +60,24 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
 
     protected JQuickJavaParser parser;
 
-    protected Stack<VariableContext> contextStack = new Stack<>();
+    protected Stack<JQuickJavaVariableContext> contextStack = new Stack<>();
 
-    protected VariableContext globalContext;
+    protected JQuickJavaVariableContext globalContext;
 
     protected Gson gson=new Gson();
 
     protected static JConsole console=new JConsole();
 
-    protected JImportContainerModel importContainer=JImportContainerModel.getInstance();
+    protected JQuickJavaImportContainerModel importContainer= JQuickJavaImportContainerModel.getInstance();
 
 
-    JFunctionRegistry registry= JFunctionRegistry.getInstance();
+    JQuickJavaFunctionRegistry registry= JQuickJavaFunctionRegistry.getInstance();
 
     protected void enterScope() {
-        VariableContext current = contextStack.peek();
-        contextStack.push(new VariableContext(current));
+        JQuickJavaVariableContext current = contextStack.peek();
+        contextStack.push(new JQuickJavaVariableContext(current));
     }
-    protected VariableContext currentContext() {
+    protected JQuickJavaVariableContext currentContext() {
         return contextStack.peek();
     }
 
@@ -93,36 +95,36 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
         }
         throw new RuntimeException("cannot convert value to boolean: " + value);
     }
-    protected JTypeReference<?> loadClass(String className){
-        JQuickClassTypeExecutor executor = new JQuickClassTypeExecutor();
+    protected JQuickJavaTypeReference<?> loadClass(String className){
+        JQuickJavaClassTypeExecutor executor = new JQuickJavaClassTypeExecutor();
         return  executor.execute(className);
     }
     protected Object extract(Object value) {
         if(null==value){
             return null;
-        }else if(value instanceof JLiteralModel){
-            JLiteralModel literalModel = (JLiteralModel) value;
+        }else if(value instanceof JQuickJavaLiteralModel){
+            JQuickJavaLiteralModel literalModel = (JQuickJavaLiteralModel) value;
             return literalModel.getValue();
         }else{
             return value;
         }
 
     }
-    protected JLiteralModel convert(Object value,String literal) {
+    protected JQuickJavaLiteralModel convert(Object value, String literal) {
         if(value==null){
-            JLiteralModel model=new JLiteralModel();
+            JQuickJavaLiteralModel model=new JQuickJavaLiteralModel();
             model.setValue(null);
             model.setLiteral("null");
-            model.setType(JLiteralEnums.Null);
+            model.setType(JQuickJavaLiteralEnums.Null);
             return model;
-        }else if(value instanceof JLiteralModel){
-            return (JLiteralModel)value;
+        }else if(value instanceof JQuickJavaLiteralModel){
+            return (JQuickJavaLiteralModel)value;
         }else{
-            JLiteralModel model=new JLiteralModel();
+            JQuickJavaLiteralModel model=new JQuickJavaLiteralModel();
             model.setValue(value);
             model.setLiteral(literal);
-            JTypeReference<?> typeReference=JTypeReference.of(value.getClass());
-            JLiteralEnums literalEnums=JLiteralEnums.typeOf(typeReference);
+            JQuickJavaTypeReference<?> typeReference= JQuickJavaTypeReference.of(value.getClass());
+            JQuickJavaLiteralEnums literalEnums= JQuickJavaLiteralEnums.typeOf(typeReference);
             model.setType(literalEnums);
             return model;
         }
@@ -147,15 +149,15 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
         return false;
 
     }
-    protected Object mergeDataWithTypeReference(String data,JTypeReference<?> typeReference){
+    protected Object mergeDataWithTypeReference(String data, JQuickJavaTypeReference<?> typeReference){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             if (data == null || typeReference == null) {
                 return null;
             }
             Type type = typeReference.getRawType();
-            JTypeReference stringJTypeReference=JTypeReference.of(String.class);
-            JTypeReference charSequenceJTypeReference=JTypeReference.of(CharSequence.class);
+            JQuickJavaTypeReference stringJTypeReference= JQuickJavaTypeReference.of(String.class);
+            JQuickJavaTypeReference charSequenceJTypeReference= JQuickJavaTypeReference.of(CharSequence.class);
             boolean isString =type.equals(stringJTypeReference.getRawType());
             boolean isCharSequence =type.equals(charSequenceJTypeReference.getRawType());
             if(data instanceof String&&isString){
@@ -225,11 +227,11 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
 
         return javaType.getRawClass();
     }
-    public JFunctionRegistry getRegistry() {
+    public JQuickJavaFunctionRegistry getRegistry() {
         return registry;
     }
 
-    public JImportContainerModel getImportContainer() {
+    public JQuickJavaImportContainerModel getImportContainer() {
         return importContainer;
     }
     public JContext getContext() {
@@ -238,12 +240,12 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
     public void setContext(JContext context) {
         this.context = context;
     }
-    public void setImportContainer(JImportContainerModel importContainer) {
+    public void setImportContainer(JQuickJavaImportContainerModel importContainer) {
         this.importContainer = importContainer;
     }
 
-    public void updateVariableInStack(String varName, Object newValue, JTypeReference<?> type) {
-        for (VariableContext context : contextStack) {
+    public void updateVariableInStack(String varName, Object newValue, JQuickJavaTypeReference<?> type) {
+        for (JQuickJavaVariableContext context : contextStack) {
              context.updateVariableWithAllScopes(varName, newValue,type);
         }
     }

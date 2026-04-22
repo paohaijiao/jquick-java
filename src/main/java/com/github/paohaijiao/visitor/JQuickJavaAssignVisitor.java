@@ -15,11 +15,13 @@
  */
 package com.github.paohaijiao.visitor;
 import com.github.paohaijiao.exception.JAssert;
-import com.github.paohaijiao.model.JLiteralModel;
+import com.github.paohaijiao.model.JQuickJavaLiteralModel;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.support.JTypeReference;
+import com.github.paohaijiao.support.JQuickJavaTypeReference;
 
 public class JQuickJavaAssignVisitor extends JQuickJavaValueVisitor {
+
+    private static final Class<?> PKG = JQuickJavaAssignVisitor.class;
 
     @Override
     public Object visitVariableDecl(JQuickJavaParser.VariableDeclContext ctx) {
@@ -31,7 +33,7 @@ public class JQuickJavaAssignVisitor extends JQuickJavaValueVisitor {
         }
         String varName = ctx.IDENTIFIER().getText();
         if(ctx.classsType() != null){// define
-            JTypeReference<?>  typeRef=visitClasssType(ctx.classsType());
+            JQuickJavaTypeReference<?> typeRef=visitClasssType(ctx.classsType());
             Object express=visitExpression(ctx.expression());
             String string=null==express?null:express.toString();
             Object value=mergeDataWithTypeReference(string,typeRef);
@@ -43,11 +45,11 @@ public class JQuickJavaAssignVisitor extends JQuickJavaValueVisitor {
             return value;
         }else{//update
             Object value = ctx.expression() != null ? visitExpression(ctx.expression()) : null;
-            if(value instanceof JLiteralModel){
-                JLiteralModel literalModel=(JLiteralModel)value;
+            if(value instanceof JQuickJavaLiteralModel){
+                JQuickJavaLiteralModel literalModel=(JQuickJavaLiteralModel)value;
                 updateVariableInStack(varName, value, literalModel.getType().getTypeReference());
             }else{
-                JLiteralModel literalModel=convert(value,ctx.getText());
+                JQuickJavaLiteralModel literalModel=convert(value,ctx.getText());
                 updateVariableInStack(varName, value, literalModel.getType().getTypeReference());
             }
             return value;

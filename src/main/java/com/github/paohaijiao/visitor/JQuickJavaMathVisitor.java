@@ -16,7 +16,7 @@
 package com.github.paohaijiao.visitor;
 
 
-import com.github.paohaijiao.enums.JMathOp;
+import com.github.paohaijiao.enums.JQuickJavaMathOp;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.util.JStringUtils;
@@ -25,13 +25,16 @@ import java.math.BigDecimal;
 
 public class JQuickJavaMathVisitor extends JQuickJavaFunctionCallVisitor {
 
+    private static final Class<?> PKG = JQuickJavaMathVisitor.class;
+
+
     @Override
     public Object visitArithmetic(JQuickJavaParser.ArithmeticContext ctx) {
         String t=ctx.getText();
         Object result = visitPrimary(ctx.primary(0));
         for (int i = 1; i < ctx.primary().size(); i++) {
             String operator = ctx.getChild(2 * i - 1).getText();
-            JMathOp op = JMathOp.codeOf(operator);
+            JQuickJavaMathOp op = JQuickJavaMathOp.codeOf(operator);
             JAssert.notNull(op, "Unsupported operator: " + operator);
             Object right = extract(visitPrimary(ctx.primary(i)));
             switch (operator) {
