@@ -2,8 +2,8 @@ package com.github.paohaijiao.xml;
 
 import com.github.paohaijiao.console.JConsole;
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.parser.JQuickLangLexer;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaLexer;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
 import com.github.paohaijiao.xml.invocation.JQuickXmlInvocationHandler;
 import org.antlr.v4.runtime.CharStreams;
@@ -36,10 +36,10 @@ public class JQuickJavaXmlInvocationHandler extends JQuickXmlInvocationHandler {
 
     @Override
     protected Object loadResult(String lexerStr, JContext context, Method method, Object[] args) {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(lexerStr));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(lexerStr));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.ProgramContext tree = parser.program();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.ProgramContext tree = parser.program();
         if(!context.isEmpty()){
             context.putAll(context);
         }

@@ -15,8 +15,10 @@ package com.github.paohaijiao;/*
  */
 
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.parser.JQuickLangLexer;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaLexer;
+import com.github.paohaijiao.parser.JQuickJavaParser;
+import com.github.paohaijiao.parser.JQuickJavaLexer;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -36,10 +38,10 @@ import java.io.IOException;
 public class JVariableDeclTest {
     @Test
     public void variableDecl() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("int a=1;"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("int a=1;"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.VariableDeclContext tree = parser.variableDecl();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.VariableDeclContext tree = parser.variableDecl();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,JVariableContextBuilder.mockData(),lexer,tokens,parser);
         Object object = tv.visit(tree);

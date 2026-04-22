@@ -18,12 +18,12 @@ package com.github.paohaijiao.visitor;
 import com.github.paohaijiao.exception.JAntlrExecutionException;
 import com.github.paohaijiao.exception.JBreakException;
 import com.github.paohaijiao.exception.JContinueException;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 
 public class JQuickLangForStatementVisitor  extends JQuickLangWhileStatementVisitor {
 
     @Override
-    public Object visitForStatement(JQuickLangParser.ForStatementContext ctx) {
+    public Object visitForStatement(JQuickJavaParser.ForStatementContext ctx) {
         enterScope();
         Object result = null;
         try{
@@ -62,21 +62,21 @@ public class JQuickLangForStatementVisitor  extends JQuickLangWhileStatementVisi
         return result;
     }
     @Override
-    public Object visitInitExpression(JQuickLangParser.InitExpressionContext ctx) {
+    public Object visitInitExpression(JQuickJavaParser.InitExpressionContext ctx) {
         if(null!=ctx.expression()){
             return visitExpression( ctx.expression());
         }
         return null;
     }
     @Override
-    public Object visitConExpression(JQuickLangParser.ConExpressionContext ctx) {
+    public Object visitConExpression(JQuickJavaParser.ConExpressionContext ctx) {
         if(null!=ctx.expression()){
             return visitExpression( ctx.expression());
         }
         return null;
     }
     @Override
-    public Object visitStopExpression(JQuickLangParser.StopExpressionContext ctx) {
+    public Object visitStopExpression(JQuickJavaParser.StopExpressionContext ctx) {
         if(null!=ctx.expression()){
             return visitExpression( ctx.expression());
         }

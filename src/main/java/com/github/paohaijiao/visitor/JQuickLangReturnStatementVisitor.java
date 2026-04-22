@@ -14,12 +14,12 @@
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
 package com.github.paohaijiao.visitor;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 
 public class JQuickLangReturnStatementVisitor extends JQuickLangExpressionVisitor {
 
     @Override
-    public Object visitReturnStatement(JQuickLangParser.ReturnStatementContext ctx) {
+    public Object visitReturnStatement(JQuickJavaParser.ReturnStatementContext ctx) {
         if(ctx.expression() != null){
             return visitExpression( ctx.expression() );
         }else{

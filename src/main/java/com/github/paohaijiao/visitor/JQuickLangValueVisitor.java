@@ -19,7 +19,7 @@ import com.github.paohaijiao.constants.JConstants;
 import com.github.paohaijiao.date.JDateUtil;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.model.JLiteralModel;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.scope.Variable;
 import com.github.paohaijiao.scope.VariableContext;
 import com.github.paohaijiao.support.JTypeReference;
@@ -36,14 +36,14 @@ import java.util.Stack;
 public class JQuickLangValueVisitor extends JQuickLangImportVisitor {
 
     @Override
-    public Object visitVariables(JQuickLangParser.VariablesContext ctx) {
+    public Object visitVariables(JQuickJavaParser.VariablesContext ctx) {
         String identifier = ctx.IDENTIFIER().getText();
         Object value= this.context.get(identifier);
         return value;
     }
 
     @Override
-    public Date visitDate(JQuickLangParser.DateContext ctx) {
+    public Date visitDate(JQuickJavaParser.DateContext ctx) {
         if (null != ctx.DATE()) {
             String dateString = ctx.DATE().getText();
             Date date = JDateUtil.parse(JDateUtil.getSimpleDateFormat(JConstants.date), dateString);
@@ -58,7 +58,7 @@ public class JQuickLangValueVisitor extends JQuickLangImportVisitor {
     }
 
     @Override
-    public String visitString(JQuickLangParser.StringContext ctx) {
+    public String visitString(JQuickJavaParser.StringContext ctx) {
         if (ctx.STRING() != null) {
             String text = ctx.STRING().getText();
             String str = JStringUtils.trim(text);
@@ -70,7 +70,7 @@ public class JQuickLangValueVisitor extends JQuickLangImportVisitor {
 
 
     @Override
-    public Boolean visitBool(JQuickLangParser.BoolContext ctx) {
+    public Boolean visitBool(JQuickJavaParser.BoolContext ctx) {
         if (ctx.TRUE() != null) {
             return true;
         } else if (ctx.FALSE() != null) {
@@ -80,7 +80,7 @@ public class JQuickLangValueVisitor extends JQuickLangImportVisitor {
         return null;
     }
     @Override
-    public Object visitLiteral(JQuickLangParser.LiteralContext ctx) {
+    public Object visitLiteral(JQuickJavaParser.LiteralContext ctx) {
         if(null!=ctx.bool()){
             return visitBool(ctx.bool());
         }else  if(null!=ctx.string()){
@@ -119,7 +119,7 @@ public class JQuickLangValueVisitor extends JQuickLangImportVisitor {
         return null;
     }
     @Override
-    public Map<Object,Object> visitMapLiteral(JQuickLangParser.MapLiteralContext ctx) {
+    public Map<Object,Object> visitMapLiteral(JQuickJavaParser.MapLiteralContext ctx) {
         Map<Object,Object> map=new HashMap<>();
         for (int i = 0; i < ctx.mapEntry().size(); i++) {
             Map<Object,Object> entry=visitMapEntry(ctx.mapEntry(i));
@@ -128,7 +128,7 @@ public class JQuickLangValueVisitor extends JQuickLangImportVisitor {
         return map;
     }
     @Override
-    public Map<Object,Object> visitMapEntry(JQuickLangParser.MapEntryContext ctx) {
+    public Map<Object,Object> visitMapEntry(JQuickJavaParser.MapEntryContext ctx) {
         Map<Object,Object> map=new HashMap<>();
         if(ctx.expression() != null&&ctx.expression().size()==2) {
             Object key=visitExpression(ctx.expression().get(0));

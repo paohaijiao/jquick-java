@@ -15,10 +15,10 @@ package com.github.paohaijiao;/*
  */
 
 import com.github.paohaijiao.model.JImportContainerModel;
+import com.github.paohaijiao.parser.JQuickJavaLexer;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.parser.JQuickLangLexer;
-import com.github.paohaijiao.parser.JQuickLangParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
@@ -39,10 +39,10 @@ public class JImportTest {
     public void testImport() throws IOException {
         String rule="import java.lang.String as a ;";
         System.out.println(rule);
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.ProgramContext tree = parser.program();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.ProgramContext tree = parser.program();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -53,10 +53,10 @@ public class JImportTest {
     public void testImport1() throws IOException {
         String rule="import List<java.lang.String> as c ;";
         System.out.println(rule);
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.ProgramContext tree = parser.program();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.ProgramContext tree = parser.program();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);

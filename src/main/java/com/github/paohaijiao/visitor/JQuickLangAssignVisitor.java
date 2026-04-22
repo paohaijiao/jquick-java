@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.model.JLiteralModel;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.scope.Variable;
 import com.github.paohaijiao.scope.VariableContext;
 import com.github.paohaijiao.support.JTypeReference;
@@ -32,7 +32,7 @@ import java.util.Stack;
 public class JQuickLangAssignVisitor extends JQuickLangValueVisitor {
 
     @Override
-    public Object visitVariableDecl(JQuickLangParser.VariableDeclContext ctx) {
+    public Object visitVariableDecl(JQuickJavaParser.VariableDeclContext ctx) {
         JAssert.notNull(ctx.IDENTIFIER(),"identifier required not null");
         JAssert.notNull(ctx.expression(),"expression required not null");
         boolean global=false;

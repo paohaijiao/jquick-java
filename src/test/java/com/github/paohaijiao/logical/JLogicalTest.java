@@ -16,8 +16,8 @@
 package com.github.paohaijiao.logical;
 
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.parser.JQuickLangLexer;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaLexer;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -36,10 +36,10 @@ public class JLogicalTest {
     @Test
     public void  and() throws IOException {
         String rule = "true&&false";
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LogicalContext tree = parser.logical();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LogicalContext tree = parser.logical();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -48,10 +48,10 @@ public class JLogicalTest {
     @Test
     public void  or() throws IOException {
         String rule = "true||false";
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LogicalContext tree = parser.logical();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LogicalContext tree = parser.logical();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -60,10 +60,10 @@ public class JLogicalTest {
     @Test
     public void  gt() throws IOException {
         String rule = "2>1";
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LogicalContext tree = parser.logical();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LogicalContext tree = parser.logical();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -72,10 +72,10 @@ public class JLogicalTest {
     @Test
     public void  ge() throws IOException {
         String rule = "2>=1";
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LogicalContext tree = parser.logical();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LogicalContext tree = parser.logical();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -84,10 +84,10 @@ public class JLogicalTest {
     @Test
     public void  lt() throws IOException {
         String rule = "1<3";
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LogicalContext tree = parser.logical();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LogicalContext tree = parser.logical();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -96,10 +96,10 @@ public class JLogicalTest {
     @Test
     public void  le() throws IOException {
         String rule = "6<=5";
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LogicalContext tree = parser.logical();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LogicalContext tree = parser.logical();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -108,10 +108,10 @@ public class JLogicalTest {
     @Test
     public void  eq() throws IOException {
         String rule = "1==1";
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LogicalContext tree = parser.logical();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LogicalContext tree = parser.logical();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -120,10 +120,10 @@ public class JLogicalTest {
     @Test
     public void  neq() throws IOException {
         String rule = "1!=1";
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LogicalContext tree = parser.logical();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LogicalContext tree = parser.logical();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);

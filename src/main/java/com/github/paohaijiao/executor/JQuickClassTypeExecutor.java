@@ -20,8 +20,8 @@ import com.github.paohaijiao.antlr.impl.JAbstractAntlrExecutor;
 import com.github.paohaijiao.exception.JAntlrExecutionException;
 import com.github.paohaijiao.model.JLiteralModel;
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.parser.JQuickLangLexer;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaLexer;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.support.JTypeReference;
 import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
 import org.antlr.v4.runtime.*;
@@ -37,9 +37,9 @@ import java.util.Stack;
  */
 public class JQuickClassTypeExecutor extends JAbstractAntlrExecutor<String, JTypeReference<?>> {
 
-    private JQuickLangLexer lexer;
+    private JQuickJavaLexer lexer;
 
-    private JQuickLangParser parser;
+    private JQuickJavaParser parser;
 
     private TokenStream tokenStream;
 
@@ -54,21 +54,21 @@ public class JQuickClassTypeExecutor extends JAbstractAntlrExecutor<String, JTyp
 
     @Override
     protected Lexer createLexer(CharStream input) {
-        this.lexer= new JQuickLangLexer(input);
+        this.lexer= new JQuickJavaLexer(input);
         return lexer;
     }
 
     @Override
     protected Parser createParser(TokenStream tokens) {
         this.tokenStream=tokens;
-        this.parser= new JQuickLangParser(tokens);
+        this.parser= new JQuickJavaParser(tokens);
         return parser;
     }
 
     @Override
     protected JTypeReference<?> parse(Parser parser) throws JAntlrExecutionException {
-        JQuickLangParser calcParser = (JQuickLangParser) parser;
-        JQuickLangParser.ClasssTypeContext tree = calcParser.classsType();
+        JQuickJavaParser calcParser = (JQuickJavaParser) parser;
+        JQuickJavaParser.ClasssTypeContext tree = calcParser.classsType();
         CommonTokenStream commonTokenStream=(CommonTokenStream)tokenStream;
         JQuickLangCommonVisitor visitor = new JQuickLangCommonVisitor(context,new Stack<>(),lexer,commonTokenStream,calcParser);
         JTypeReference<?> object=(JTypeReference<?>)visitor.visit(tree);

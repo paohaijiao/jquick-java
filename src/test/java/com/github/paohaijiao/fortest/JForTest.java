@@ -1,8 +1,8 @@
 package com.github.paohaijiao.fortest;
 
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.parser.JQuickLangLexer;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaLexer;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.scope.VariableContext;
 import com.github.paohaijiao.support.JTypeReference;
 import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
@@ -26,14 +26,14 @@ public class JForTest {
                 "            }\n" +
                 "   };";
         System.out.println(rule);
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
         Stack<VariableContext> contextStack = new Stack<VariableContext>();
         VariableContext variableContext=new VariableContext();
         variableContext.addVariable("radius", 5.0, JTypeReference.of(float.class));
         contextStack.push(variableContext);
-        JQuickLangParser.ForStatementContext tree = parser.forStatement();
+        JQuickJavaParser.ForStatementContext tree = parser.forStatement();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,contextStack,lexer,tokens,parser);
 //        parser.exitScope();
@@ -50,10 +50,10 @@ public class JForTest {
                 "            }\n" +
                 "   };";
         System.out.println(rule);
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.ForStatementContext tree = parser.forStatement();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.ForStatementContext tree = parser.forStatement();
         JContext params = new JContext();
         Stack<VariableContext> contextStack = new Stack<VariableContext>();
         VariableContext variableContext=new VariableContext();
@@ -74,10 +74,10 @@ public class JForTest {
                 "            }\n" +
                 "        };";
         System.out.println(rule);
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.ForStatementContext tree = parser.forStatement();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.ForStatementContext tree = parser.forStatement();
         JContext params = new JContext();
         Stack<VariableContext> contextStack = new Stack<VariableContext>();
         VariableContext variableContext=new VariableContext();

@@ -20,7 +20,7 @@ import com.github.paohaijiao.enums.JMathOp;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.factory.JBigDecimalComparatorFactory;
 import com.github.paohaijiao.factory.compare.JComparator;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import org.antlr.v4.runtime.Token;
 
 import java.math.BigDecimal;
@@ -30,7 +30,7 @@ public class JQuickLangBoolVisitor extends JQuickLangMathVisitor {
 
 
     @Override
-    public Object visitComparison(JQuickLangParser.ComparisonContext ctx) {
+    public Object visitComparison(JQuickJavaParser.ComparisonContext ctx) {
         JAssert.isTrue(!ctx.primary().isEmpty(),"left expression expected");
         Object left = extract(visit(ctx.primary(0)));
         if (ctx.primary().size() == 1) {
@@ -70,13 +70,13 @@ public class JQuickLangBoolVisitor extends JQuickLangMathVisitor {
     }
 
     @Override
-    public Object visitLogical(JQuickLangParser.LogicalContext ctx) {
+    public Object visitLogical(JQuickJavaParser.LogicalContext ctx) {
         JAssert.isTrue(!ctx.comparison().isEmpty(),"left expression expected");
         boolean result = toBoolean(visit(ctx.comparison(0)));
         for (int i = 1; i < ctx.comparison().size(); i++) {
             Token operatorToken = ((org.antlr.v4.runtime.tree.TerminalNode) ctx.getChild(2 * i - 1)).getSymbol();
             int operatorType = operatorToken.getType();
-            if (operatorType == JQuickLangParser.AND) {
+            if (operatorType == JQuickJavaParser.AND) {
                 result = result && toBoolean(visit(ctx.comparison(i)));
             }else{
                 result = result || toBoolean(visit(ctx.comparison(i)));

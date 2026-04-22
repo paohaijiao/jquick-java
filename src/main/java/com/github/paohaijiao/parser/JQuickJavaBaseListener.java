@@ -1,4 +1,4 @@
-// Generated from D:/idea/jthornruleGrammer/QuickLang/JQuickLang.g4 by ANTLR 4.13.2
+// Generated from D:/my/jthornruleGrammer/QuickJava/JQuickJava.g4 by ANTLR 4.13.2
 
 package com.github.paohaijiao.parser;
 
@@ -7,780 +7,780 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
- * This class provides an empty implementation of {@link JQuickLangListener},
+ * This class provides an empty implementation of {@link JQuickJavaListener},
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
 @SuppressWarnings("CheckReturnValue")
-public class JQuickLangBaseListener implements JQuickLangListener {
+public class JQuickJavaBaseListener implements JQuickJavaListener {
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProgram(JQuickLangParser.ProgramContext ctx) { }
+	@Override public void enterProgram(JQuickJavaParser.ProgramContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProgram(JQuickLangParser.ProgramContext ctx) { }
+	@Override public void exitProgram(JQuickJavaParser.ProgramContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterImportDeclaration(JQuickLangParser.ImportDeclarationContext ctx) { }
+	@Override public void enterImportDeclaration(JQuickJavaParser.ImportDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitImportDeclaration(JQuickLangParser.ImportDeclarationContext ctx) { }
+	@Override public void exitImportDeclaration(JQuickJavaParser.ImportDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParamType(JQuickLangParser.ParamTypeContext ctx) { }
+	@Override public void enterParamType(JQuickJavaParser.ParamTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParamType(JQuickLangParser.ParamTypeContext ctx) { }
+	@Override public void exitParamType(JQuickJavaParser.ParamTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterGenericType(JQuickLangParser.GenericTypeContext ctx) { }
+	@Override public void enterGenericType(JQuickJavaParser.GenericTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitGenericType(JQuickLangParser.GenericTypeContext ctx) { }
+	@Override public void exitGenericType(JQuickJavaParser.GenericTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSimpleType(JQuickLangParser.SimpleTypeContext ctx) { }
+	@Override public void enterSimpleType(JQuickJavaParser.SimpleTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSimpleType(JQuickLangParser.SimpleTypeContext ctx) { }
+	@Override public void exitSimpleType(JQuickJavaParser.SimpleTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTypeArguments(JQuickLangParser.TypeArgumentsContext ctx) { }
+	@Override public void enterTypeArguments(JQuickJavaParser.TypeArgumentsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTypeArguments(JQuickLangParser.TypeArgumentsContext ctx) { }
+	@Override public void exitTypeArguments(JQuickJavaParser.TypeArgumentsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArrayType(JQuickLangParser.ArrayTypeContext ctx) { }
+	@Override public void enterArrayType(JQuickJavaParser.ArrayTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArrayType(JQuickLangParser.ArrayTypeContext ctx) { }
+	@Override public void exitArrayType(JQuickJavaParser.ArrayTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterListType(JQuickLangParser.ListTypeContext ctx) { }
+	@Override public void enterListType(JQuickJavaParser.ListTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitListType(JQuickLangParser.ListTypeContext ctx) { }
+	@Override public void exitListType(JQuickJavaParser.ListTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSetType(JQuickLangParser.SetTypeContext ctx) { }
+	@Override public void enterSetType(JQuickJavaParser.SetTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSetType(JQuickLangParser.SetTypeContext ctx) { }
+	@Override public void exitSetType(JQuickJavaParser.SetTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMapType(JQuickLangParser.MapTypeContext ctx) { }
+	@Override public void enterMapType(JQuickJavaParser.MapTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMapType(JQuickLangParser.MapTypeContext ctx) { }
+	@Override public void exitMapType(JQuickJavaParser.MapTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterQualifiedName(JQuickLangParser.QualifiedNameContext ctx) { }
+	@Override public void enterQualifiedName(JQuickJavaParser.QualifiedNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitQualifiedName(JQuickLangParser.QualifiedNameContext ctx) { }
+	@Override public void exitQualifiedName(JQuickJavaParser.QualifiedNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStatement(JQuickLangParser.StatementContext ctx) { }
+	@Override public void enterStatement(JQuickJavaParser.StatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStatement(JQuickLangParser.StatementContext ctx) { }
+	@Override public void exitStatement(JQuickJavaParser.StatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMethod(JQuickLangParser.MethodContext ctx) { }
+	@Override public void enterMethod(JQuickJavaParser.MethodContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMethod(JQuickLangParser.MethodContext ctx) { }
+	@Override public void exitMethod(JQuickJavaParser.MethodContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAction(JQuickLangParser.ActionContext ctx) { }
+	@Override public void enterAction(JQuickJavaParser.ActionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAction(JQuickLangParser.ActionContext ctx) { }
+	@Override public void exitAction(JQuickJavaParser.ActionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterControlStatement(JQuickLangParser.ControlStatementContext ctx) { }
+	@Override public void enterControlStatement(JQuickJavaParser.ControlStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitControlStatement(JQuickLangParser.ControlStatementContext ctx) { }
+	@Override public void exitControlStatement(JQuickJavaParser.ControlStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIfStatement(JQuickLangParser.IfStatementContext ctx) { }
+	@Override public void enterIfStatement(JQuickJavaParser.IfStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIfStatement(JQuickLangParser.IfStatementContext ctx) { }
+	@Override public void exitIfStatement(JQuickJavaParser.IfStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterElseIfConExpression(JQuickLangParser.ElseIfConExpressionContext ctx) { }
+	@Override public void enterElseIfConExpression(JQuickJavaParser.ElseIfConExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitElseIfConExpression(JQuickLangParser.ElseIfConExpressionContext ctx) { }
+	@Override public void exitElseIfConExpression(JQuickJavaParser.ElseIfConExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterElseIfAction(JQuickLangParser.ElseIfActionContext ctx) { }
+	@Override public void enterElseIfAction(JQuickJavaParser.ElseIfActionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitElseIfAction(JQuickLangParser.ElseIfActionContext ctx) { }
+	@Override public void exitElseIfAction(JQuickJavaParser.ElseIfActionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterElseAction(JQuickLangParser.ElseActionContext ctx) { }
+	@Override public void enterElseAction(JQuickJavaParser.ElseActionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitElseAction(JQuickLangParser.ElseActionContext ctx) { }
+	@Override public void exitElseAction(JQuickJavaParser.ElseActionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterForStatement(JQuickLangParser.ForStatementContext ctx) { }
+	@Override public void enterForStatement(JQuickJavaParser.ForStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitForStatement(JQuickLangParser.ForStatementContext ctx) { }
+	@Override public void exitForStatement(JQuickJavaParser.ForStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterInitExpression(JQuickLangParser.InitExpressionContext ctx) { }
+	@Override public void enterInitExpression(JQuickJavaParser.InitExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitInitExpression(JQuickLangParser.InitExpressionContext ctx) { }
+	@Override public void exitInitExpression(JQuickJavaParser.InitExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterConExpression(JQuickLangParser.ConExpressionContext ctx) { }
+	@Override public void enterConExpression(JQuickJavaParser.ConExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitConExpression(JQuickLangParser.ConExpressionContext ctx) { }
+	@Override public void exitConExpression(JQuickJavaParser.ConExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStopExpression(JQuickLangParser.StopExpressionContext ctx) { }
+	@Override public void enterStopExpression(JQuickJavaParser.StopExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStopExpression(JQuickLangParser.StopExpressionContext ctx) { }
+	@Override public void exitStopExpression(JQuickJavaParser.StopExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWhileStatement(JQuickLangParser.WhileStatementContext ctx) { }
+	@Override public void enterWhileStatement(JQuickJavaParser.WhileStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWhileStatement(JQuickLangParser.WhileStatementContext ctx) { }
+	@Override public void exitWhileStatement(JQuickJavaParser.WhileStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterReturnStatement(JQuickLangParser.ReturnStatementContext ctx) { }
+	@Override public void enterReturnStatement(JQuickJavaParser.ReturnStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitReturnStatement(JQuickLangParser.ReturnStatementContext ctx) { }
+	@Override public void exitReturnStatement(JQuickJavaParser.ReturnStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBreakStatement(JQuickLangParser.BreakStatementContext ctx) { }
+	@Override public void enterBreakStatement(JQuickJavaParser.BreakStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBreakStatement(JQuickLangParser.BreakStatementContext ctx) { }
+	@Override public void exitBreakStatement(JQuickJavaParser.BreakStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterContinueStatement(JQuickLangParser.ContinueStatementContext ctx) { }
+	@Override public void enterContinueStatement(JQuickJavaParser.ContinueStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitContinueStatement(JQuickLangParser.ContinueStatementContext ctx) { }
+	@Override public void exitContinueStatement(JQuickJavaParser.ContinueStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpressionStatement(JQuickLangParser.ExpressionStatementContext ctx) { }
+	@Override public void enterExpressionStatement(JQuickJavaParser.ExpressionStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExpressionStatement(JQuickLangParser.ExpressionStatementContext ctx) { }
+	@Override public void exitExpressionStatement(JQuickJavaParser.ExpressionStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVariableDecl(JQuickLangParser.VariableDeclContext ctx) { }
+	@Override public void enterVariableDecl(JQuickJavaParser.VariableDeclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVariableDecl(JQuickLangParser.VariableDeclContext ctx) { }
+	@Override public void exitVariableDecl(JQuickJavaParser.VariableDeclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpression(JQuickLangParser.ExpressionContext ctx) { }
+	@Override public void enterExpression(JQuickJavaParser.ExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExpression(JQuickLangParser.ExpressionContext ctx) { }
+	@Override public void exitExpression(JQuickJavaParser.ExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSout(JQuickLangParser.SoutContext ctx) { }
+	@Override public void enterSout(JQuickJavaParser.SoutContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSout(JQuickLangParser.SoutContext ctx) { }
+	@Override public void exitSout(JQuickJavaParser.SoutContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLogical(JQuickLangParser.LogicalContext ctx) { }
+	@Override public void enterLogical(JQuickJavaParser.LogicalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLogical(JQuickLangParser.LogicalContext ctx) { }
+	@Override public void exitLogical(JQuickJavaParser.LogicalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterComparison(JQuickLangParser.ComparisonContext ctx) { }
+	@Override public void enterComparison(JQuickJavaParser.ComparisonContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitComparison(JQuickLangParser.ComparisonContext ctx) { }
+	@Override public void exitComparison(JQuickJavaParser.ComparisonContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArithmetic(JQuickLangParser.ArithmeticContext ctx) { }
+	@Override public void enterArithmetic(JQuickJavaParser.ArithmeticContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArithmetic(JQuickLangParser.ArithmeticContext ctx) { }
+	@Override public void exitArithmetic(JQuickJavaParser.ArithmeticContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionDefinition(JQuickLangParser.FunctionDefinitionContext ctx) { }
+	@Override public void enterFunctionDefinition(JQuickJavaParser.FunctionDefinitionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunctionDefinition(JQuickLangParser.FunctionDefinitionContext ctx) { }
+	@Override public void exitFunctionDefinition(JQuickJavaParser.FunctionDefinitionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParameterList(JQuickLangParser.ParameterListContext ctx) { }
+	@Override public void enterParameterList(JQuickJavaParser.ParameterListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParameterList(JQuickLangParser.ParameterListContext ctx) { }
+	@Override public void exitParameterList(JQuickJavaParser.ParameterListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParam(JQuickLangParser.ParamContext ctx) { }
+	@Override public void enterParam(JQuickJavaParser.ParamContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParam(JQuickLangParser.ParamContext ctx) { }
+	@Override public void exitParam(JQuickJavaParser.ParamContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionVar(JQuickLangParser.FunctionVarContext ctx) { }
+	@Override public void enterFunctionVar(JQuickJavaParser.FunctionVarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunctionVar(JQuickLangParser.FunctionVarContext ctx) { }
+	@Override public void exitFunctionVar(JQuickJavaParser.FunctionVarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterClasssType(JQuickLangParser.ClasssTypeContext ctx) { }
+	@Override public void enterClasssType(JQuickJavaParser.ClasssTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitClasssType(JQuickLangParser.ClasssTypeContext ctx) { }
+	@Override public void exitClasssType(JQuickJavaParser.ClasssTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrimary(JQuickLangParser.PrimaryContext ctx) { }
+	@Override public void enterPrimary(JQuickJavaParser.PrimaryContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrimary(JQuickLangParser.PrimaryContext ctx) { }
+	@Override public void exitPrimary(JQuickJavaParser.PrimaryContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLiteralItem(JQuickLangParser.LiteralItemContext ctx) { }
+	@Override public void enterLiteralItem(JQuickJavaParser.LiteralItemContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLiteralItem(JQuickLangParser.LiteralItemContext ctx) { }
+	@Override public void exitLiteralItem(JQuickJavaParser.LiteralItemContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStaticCall(JQuickLangParser.StaticCallContext ctx) { }
+	@Override public void enterStaticCall(JQuickJavaParser.StaticCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStaticCall(JQuickLangParser.StaticCallContext ctx) { }
+	@Override public void exitStaticCall(JQuickJavaParser.StaticCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterConstructorCall(JQuickLangParser.ConstructorCallContext ctx) { }
+	@Override public void enterConstructorCall(JQuickJavaParser.ConstructorCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitConstructorCall(JQuickLangParser.ConstructorCallContext ctx) { }
+	@Override public void exitConstructorCall(JQuickJavaParser.ConstructorCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterInstanceMethodCall(JQuickLangParser.InstanceMethodCallContext ctx) { }
+	@Override public void enterInstanceMethodCall(JQuickJavaParser.InstanceMethodCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitInstanceMethodCall(JQuickLangParser.InstanceMethodCallContext ctx) { }
+	@Override public void exitInstanceMethodCall(JQuickJavaParser.InstanceMethodCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterThisMethodCall(JQuickLangParser.ThisMethodCallContext ctx) { }
+	@Override public void enterThisMethodCall(JQuickJavaParser.ThisMethodCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitThisMethodCall(JQuickLangParser.ThisMethodCallContext ctx) { }
+	@Override public void exitThisMethodCall(JQuickJavaParser.ThisMethodCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAccessStaticMethodCall(JQuickLangParser.AccessStaticMethodCallContext ctx) { }
+	@Override public void enterAccessStaticMethodCall(JQuickJavaParser.AccessStaticMethodCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAccessStaticMethodCall(JQuickLangParser.AccessStaticMethodCallContext ctx) { }
+	@Override public void exitAccessStaticMethodCall(JQuickJavaParser.AccessStaticMethodCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterThis(JQuickLangParser.ThisContext ctx) { }
+	@Override public void enterThis(JQuickJavaParser.ThisContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitThis(JQuickLangParser.ThisContext ctx) { }
+	@Override public void exitThis(JQuickJavaParser.ThisContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterInstanceName(JQuickLangParser.InstanceNameContext ctx) { }
+	@Override public void enterInstanceName(JQuickJavaParser.InstanceNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitInstanceName(JQuickLangParser.InstanceNameContext ctx) { }
+	@Override public void exitInstanceName(JQuickJavaParser.InstanceNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMethodName(JQuickLangParser.MethodNameContext ctx) { }
+	@Override public void enterMethodName(JQuickJavaParser.MethodNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMethodName(JQuickLangParser.MethodNameContext ctx) { }
+	@Override public void exitMethodName(JQuickJavaParser.MethodNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArgumentList(JQuickLangParser.ArgumentListContext ctx) { }
+	@Override public void enterArgumentList(JQuickJavaParser.ArgumentListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArgumentList(JQuickLangParser.ArgumentListContext ctx) { }
+	@Override public void exitArgumentList(JQuickJavaParser.ArgumentListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAccessStaticVariable(JQuickLangParser.AccessStaticVariableContext ctx) { }
+	@Override public void enterAccessStaticVariable(JQuickJavaParser.AccessStaticVariableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAccessStaticVariable(JQuickLangParser.AccessStaticVariableContext ctx) { }
+	@Override public void exitAccessStaticVariable(JQuickJavaParser.AccessStaticVariableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAccessObjectName(JQuickLangParser.AccessObjectNameContext ctx) { }
+	@Override public void enterAccessObjectName(JQuickJavaParser.AccessObjectNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAccessObjectName(JQuickLangParser.AccessObjectNameContext ctx) { }
+	@Override public void exitAccessObjectName(JQuickJavaParser.AccessObjectNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLiteral(JQuickLangParser.LiteralContext ctx) { }
+	@Override public void enterLiteral(JQuickJavaParser.LiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLiteral(JQuickLangParser.LiteralContext ctx) { }
+	@Override public void exitLiteral(JQuickJavaParser.LiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterListLiteral(JQuickLangParser.ListLiteralContext ctx) { }
+	@Override public void enterListLiteral(JQuickJavaParser.ListLiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitListLiteral(JQuickLangParser.ListLiteralContext ctx) { }
+	@Override public void exitListLiteral(JQuickJavaParser.ListLiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMapLiteral(JQuickLangParser.MapLiteralContext ctx) { }
+	@Override public void enterMapLiteral(JQuickJavaParser.MapLiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMapLiteral(JQuickLangParser.MapLiteralContext ctx) { }
+	@Override public void exitMapLiteral(JQuickJavaParser.MapLiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMapEntry(JQuickLangParser.MapEntryContext ctx) { }
+	@Override public void enterMapEntry(JQuickJavaParser.MapEntryContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMapEntry(JQuickLangParser.MapEntryContext ctx) { }
+	@Override public void exitMapEntry(JQuickJavaParser.MapEntryContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterImportVar(JQuickLangParser.ImportVarContext ctx) { }
+	@Override public void enterImportVar(JQuickJavaParser.ImportVarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitImportVar(JQuickLangParser.ImportVarContext ctx) { }
+	@Override public void exitImportVar(JQuickJavaParser.ImportVarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIdentifier(JQuickLangParser.IdentifierContext ctx) { }
+	@Override public void enterIdentifier(JQuickJavaParser.IdentifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIdentifier(JQuickLangParser.IdentifierContext ctx) { }
+	@Override public void exitIdentifier(JQuickJavaParser.IdentifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBool(JQuickLangParser.BoolContext ctx) { }
+	@Override public void enterBool(JQuickJavaParser.BoolContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBool(JQuickLangParser.BoolContext ctx) { }
+	@Override public void exitBool(JQuickJavaParser.BoolContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterString(JQuickLangParser.StringContext ctx) { }
+	@Override public void enterString(JQuickJavaParser.StringContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitString(JQuickLangParser.StringContext ctx) { }
+	@Override public void exitString(JQuickJavaParser.StringContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDate(JQuickLangParser.DateContext ctx) { }
+	@Override public void enterDate(JQuickJavaParser.DateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDate(JQuickLangParser.DateContext ctx) { }
+	@Override public void exitDate(JQuickJavaParser.DateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVariables(JQuickLangParser.VariablesContext ctx) { }
+	@Override public void enterVariables(JQuickJavaParser.VariablesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVariables(JQuickLangParser.VariablesContext ctx) { }
+	@Override public void exitVariables(JQuickJavaParser.VariablesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNumber(JQuickLangParser.NumberContext ctx) { }
+	@Override public void enterNumber(JQuickJavaParser.NumberContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNumber(JQuickLangParser.NumberContext ctx) { }
+	@Override public void exitNumber(JQuickJavaParser.NumberContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNull(JQuickLangParser.NullContext ctx) { }
+	@Override public void enterNull(JQuickJavaParser.NullContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNull(JQuickLangParser.NullContext ctx) { }
+	@Override public void exitNull(JQuickJavaParser.NullContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

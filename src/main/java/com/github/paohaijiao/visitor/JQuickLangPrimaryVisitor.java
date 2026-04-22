@@ -15,13 +15,13 @@
  */
 package com.github.paohaijiao.visitor;
 import com.github.paohaijiao.exception.JAssert;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.scope.Variable;
 
 public class JQuickLangPrimaryVisitor extends JQuickLangAssignVisitor {
 
     @Override
-    public Object visitPrimary(JQuickLangParser.PrimaryContext ctx) {
+    public Object visitPrimary(JQuickJavaParser.PrimaryContext ctx) {
         String t=ctx.getText();
         if(ctx.literal() != null) {
             return visitLiteral(ctx.literal());

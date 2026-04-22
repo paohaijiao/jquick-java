@@ -19,7 +19,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.executor.JQuickLangActionExecutor;
 import com.github.paohaijiao.model.*;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.scope.Variable;
 import com.github.paohaijiao.support.JObjectFactory;
 import com.github.paohaijiao.support.JReflectionFactory;
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 
 public class JQuickLangFunctionCallVisitor extends JQuickLangPrimaryVisitor {
     @Override
-    public Object  visitFunctionDefinition(JQuickLangParser.FunctionDefinitionContext ctx) {
+    public Object  visitFunctionDefinition(JQuickJavaParser.FunctionDefinitionContext ctx) {
         JAssert.notNull(ctx.IDENTIFIER(), "functionName must not be null");
         String functionName = ctx.IDENTIFIER().getText();
         List<JFunctionFieldModel> paramDefine = new ArrayList<>();
@@ -46,7 +46,7 @@ public class JQuickLangFunctionCallVisitor extends JQuickLangPrimaryVisitor {
         }
         if (ctx.parameterList() != null) {
             List<Variable> variables = new ArrayList<>();
-            for (JQuickLangParser.ParamContext paramCtx : ctx.parameterList().param()) {
+            for (JQuickJavaParser.ParamContext paramCtx : ctx.parameterList().param()) {
                 JTypeReference<?> paramType = visitClasssType(paramCtx.classsType());
                 String name = paramCtx.functionVar().getText();
                 Variable variable=new Variable(name,null,paramType);
@@ -59,9 +59,9 @@ public class JQuickLangFunctionCallVisitor extends JQuickLangPrimaryVisitor {
             ctx.action().statement().forEach(stmt -> {
                 if (stmt.expression() != null &&
                         stmt.expression().methodInvocation() != null &&
-                        stmt.expression().methodInvocation() instanceof JQuickLangParser.ConstructorCallContext) {
-                    JQuickLangParser.ConstructorCallContext constructorCtx =
-                            (JQuickLangParser.ConstructorCallContext) stmt.expression().methodInvocation();
+                        stmt.expression().methodInvocation() instanceof JQuickJavaParser.ConstructorCallContext) {
+                    JQuickJavaParser.ConstructorCallContext constructorCtx =
+                            (JQuickJavaParser.ConstructorCallContext) stmt.expression().methodInvocation();
                     Token newToken = constructorCtx.NEW().getSymbol();
                     Token nextToken = tokenStream.get(newToken.getTokenIndex() + 1);
                     String whitespace = tokenStream.getText(
@@ -85,7 +85,7 @@ public class JQuickLangFunctionCallVisitor extends JQuickLangPrimaryVisitor {
         return null;
     }
     @Override
-    public List<JFunctionFieldModel> visitParameterList(JQuickLangParser.ParameterListContext ctx) {
+    public List<JFunctionFieldModel> visitParameterList(JQuickJavaParser.ParameterListContext ctx) {
         List<JFunctionFieldModel> list=new ArrayList<>();
         for (int i = 0; i < ctx.param().size(); i++) {
             JFunctionFieldModel model=new JFunctionFieldModel();
@@ -100,7 +100,7 @@ public class JQuickLangFunctionCallVisitor extends JQuickLangPrimaryVisitor {
 
 
     @Override
-    public JfunctionParamModel visitParam(JQuickLangParser.ParamContext ctx) {
+    public JfunctionParamModel visitParam(JQuickJavaParser.ParamContext ctx) {
         JfunctionParamModel model=new JfunctionParamModel();
         if(ctx.functionVar() != null) {
             model.setName(visitFunctionVar(ctx.functionVar()));
@@ -111,7 +111,7 @@ public class JQuickLangFunctionCallVisitor extends JQuickLangPrimaryVisitor {
         return model;
     }
     @Override
-    public JTypeReferenceAndValue visitLiteralItem(JQuickLangParser.LiteralItemContext ctx) {
+    public JTypeReferenceAndValue visitLiteralItem(JQuickJavaParser.LiteralItemContext ctx) {
         JAssert.notNull(ctx.classsType(), "classsType must not be null");
         JAssert.notNull(ctx.literal(), "literal require not be null");
         String str=ctx.getText();
@@ -135,11 +135,11 @@ public class JQuickLangFunctionCallVisitor extends JQuickLangPrimaryVisitor {
 
 
     @Override
-    public JTypeReferenceAndValueModel visitArgumentList(JQuickLangParser.ArgumentListContext ctx) {
+    public JTypeReferenceAndValueModel visitArgumentList(JQuickJavaParser.ArgumentListContext ctx) {
         JTypeReferenceAndValueModel model=new JTypeReferenceAndValueModel();
         if (null != ctx.literalItem() && !ctx.literalItem().isEmpty()) {
             List<JTypeReferenceAndValue> list = new ArrayList<>();
-            for (JQuickLangParser.LiteralItemContext literalItemContext : ctx.literalItem()) {
+            for (JQuickJavaParser.LiteralItemContext literalItemContext : ctx.literalItem()) {
                 JTypeReferenceAndValue object = visitLiteralItem(literalItemContext);
                 list.add(object);
             }
@@ -148,7 +148,7 @@ public class JQuickLangFunctionCallVisitor extends JQuickLangPrimaryVisitor {
         return model;
     }
     @Override
-    public Object visitStaticCall(JQuickLangParser.StaticCallContext ctx) {
+    public Object visitStaticCall(JQuickJavaParser.StaticCallContext ctx) {
         JAssert.notNull(ctx.classsType(),"the class name is not support");
         JAssert.notNull(ctx.methodName(),"the method name is not support");
         String qualifiedName = ctx.classsType() != null ? ctx.classsType().getText() : null;
@@ -170,7 +170,7 @@ public class JQuickLangFunctionCallVisitor extends JQuickLangPrimaryVisitor {
 
     }
     @Override
-    public Object visitConstructorCall(JQuickLangParser.ConstructorCallContext ctx) {
+    public Object visitConstructorCall(JQuickJavaParser.ConstructorCallContext ctx) {
         JAssert.notNull(ctx.classsType(),"the class name is not support");
         JTypeReferenceAndValueModel model=new JTypeReferenceAndValueModel();
         if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&&ctx.argumentList().literalItem().size()>0){
@@ -189,7 +189,7 @@ public class JQuickLangFunctionCallVisitor extends JQuickLangPrimaryVisitor {
         }
     }
     @Override
-    public Object visitInstanceMethodCall(JQuickLangParser.InstanceMethodCallContext ctx) {
+    public Object visitInstanceMethodCall(JQuickJavaParser.InstanceMethodCallContext ctx) {
         JAssert.notNull(ctx.instanceName(),"the instanceName  is not support"+ctx.instanceName());
         JAssert.notNull(ctx.methodName(),"the method name is not support: "+ctx.methodName().getText());
         String methodName = visitMethodName(ctx.methodName());
@@ -212,7 +212,7 @@ public class JQuickLangFunctionCallVisitor extends JQuickLangPrimaryVisitor {
         }
     }
     @Override
-    public Object visitThisMethodCall(JQuickLangParser.ThisMethodCallContext ctx) {
+    public Object visitThisMethodCall(JQuickJavaParser.ThisMethodCallContext ctx) {
         JAssert.notNull(ctx.methodName(),"the method name not support");
         String methodName = visitMethodName(ctx.methodName());
         boolean flag=this.hasFunction(methodName);
@@ -244,7 +244,7 @@ public class JQuickLangFunctionCallVisitor extends JQuickLangPrimaryVisitor {
         }
     }
     @Override
-    public Object visitAccessStaticMethodCall(JQuickLangParser.AccessStaticMethodCallContext ctx) {
+    public Object visitAccessStaticMethodCall(JQuickJavaParser.AccessStaticMethodCallContext ctx) {
         JAssert.notNull(ctx.accessStaticVariable(),"the accessStaticVariable is not support");
         JAssert.notNull(ctx.methodName(),"the method name is not support");
         String methodName = visitMethodName(ctx.methodName());
@@ -263,21 +263,21 @@ public class JQuickLangFunctionCallVisitor extends JQuickLangPrimaryVisitor {
     }
 
     @Override
-    public Object visitInstanceName(JQuickLangParser.InstanceNameContext ctx) {
+    public Object visitInstanceName(JQuickJavaParser.InstanceNameContext ctx) {
         String instanceName=ctx.getText();
         Variable variable= currentContext().getVariable(instanceName);
         JAssert.notNull(variable,"can't find variable ["+instanceName+"]");
         return variable.getValue();
     }
     @Override
-    public String visitMethodName(JQuickLangParser.MethodNameContext ctx) {
+    public String visitMethodName(JQuickJavaParser.MethodNameContext ctx) {
         JAssert.notNull(ctx.IDENTIFIER(), "the function name  is not null");
         return ctx.IDENTIFIER().getText();
     }
 
 
     @Override
-    public String visitFunctionVar(JQuickLangParser.FunctionVarContext ctx) {
+    public String visitFunctionVar(JQuickJavaParser.FunctionVarContext ctx) {
         return ctx.IDENTIFIER().getText();
     }
 

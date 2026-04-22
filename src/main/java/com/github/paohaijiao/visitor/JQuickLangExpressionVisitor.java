@@ -16,12 +16,12 @@
 package com.github.paohaijiao.visitor;
 
 
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 
 public class JQuickLangExpressionVisitor extends JQuickLangBoolVisitor {
 
     @Override
-    public Object visitExpressionStatement(JQuickLangParser.ExpressionStatementContext ctx) {
+    public Object visitExpressionStatement(JQuickJavaParser.ExpressionStatementContext ctx) {
         if (ctx.expression() != null) {
             Object value= visitExpression(ctx.expression());
             return value;
@@ -29,7 +29,7 @@ public class JQuickLangExpressionVisitor extends JQuickLangBoolVisitor {
         throw new RuntimeException("unexpected expression statement");
     }
     @Override
-    public Object visitExpression(JQuickLangParser.ExpressionContext ctx) {
+    public Object visitExpression(JQuickJavaParser.ExpressionContext ctx) {
         if(ctx.logical()!=null) {
             Object value =visitLogical(ctx.logical());
             return value;

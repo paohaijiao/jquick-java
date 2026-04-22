@@ -25,9 +25,9 @@ import com.github.paohaijiao.factory.JFunctionRegistry;
 import com.github.paohaijiao.model.JImportContainerModel;
 import com.github.paohaijiao.model.JLiteralModel;
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.parser.JQuickLangBaseVisitor;
-import com.github.paohaijiao.parser.JQuickLangLexer;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaBaseVisitor;
+import com.github.paohaijiao.parser.JQuickJavaLexer;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.scope.VariableContext;
 import com.github.paohaijiao.support.JTypeReference;
 import com.github.paohaijiao.type.JGenericlTypeConverter;
@@ -43,15 +43,15 @@ import java.util.Map;
 import java.util.Stack;
 
 
-public class JQuickLangCoreVisitor extends JQuickLangBaseVisitor {
+public class JQuickLangCoreVisitor extends JQuickJavaBaseVisitor {
 
     protected JContext context;
 
     protected CommonTokenStream tokenStream;
 
-    protected JQuickLangLexer lexer ;
+    protected JQuickJavaLexer lexer ;
 
-    protected JQuickLangParser parser;
+    protected JQuickJavaParser parser;
 
     protected Stack<VariableContext> contextStack = new Stack<>();
 

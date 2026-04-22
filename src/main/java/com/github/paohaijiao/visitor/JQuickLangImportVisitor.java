@@ -17,7 +17,7 @@ package com.github.paohaijiao.visitor;
 
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.factory.JTypeReferenceFactory;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.support.JTypeReference;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +28,7 @@ import java.util.List;
 
 public class JQuickLangImportVisitor extends JQuickLangRegistryVisitor {
     @Override
-    public Void visitImportDeclaration(JQuickLangParser.ImportDeclarationContext ctx) {
+    public Void visitImportDeclaration(JQuickJavaParser.ImportDeclarationContext ctx) {
         JAssert.notNull(ctx.paramType(),"missing paramType ");
         JAssert.notNull(ctx.importVar(),"missing qualified import variable");
         JTypeReference<?> typeReference=null;
@@ -46,7 +46,7 @@ public class JQuickLangImportVisitor extends JQuickLangRegistryVisitor {
         return null;
     }
     @Override
-    public JTypeReference<?>  visitClasssType(JQuickLangParser.ClasssTypeContext ctx) {
+    public JTypeReference<?>  visitClasssType(JQuickJavaParser.ClasssTypeContext ctx) {
         if(ctx.importVar()!=null){
             return importContainer.get(ctx.importVar().getText());
         }else if(ctx.paramType()!=null){
@@ -57,7 +57,7 @@ public class JQuickLangImportVisitor extends JQuickLangRegistryVisitor {
     }
 
     @Override
-    public JTypeReference<?> visitParamType(JQuickLangParser.ParamTypeContext ctx) {
+    public JTypeReference<?> visitParamType(JQuickJavaParser.ParamTypeContext ctx) {
         if(ctx.simpleType()!=null){
             return   visitSimpleType(ctx.simpleType());
         }else if(ctx.genericType()!=null){
@@ -95,7 +95,7 @@ public class JQuickLangImportVisitor extends JQuickLangRegistryVisitor {
     }
 
     @Override
-    public String visitQualifiedName(JQuickLangParser.QualifiedNameContext ctx) {
+    public String visitQualifiedName(JQuickJavaParser.QualifiedNameContext ctx) {
         List<String> list=new ArrayList<>();
         if(ctx.IDENTIFIER()!=null&&!ctx.IDENTIFIER().isEmpty()){
             for (TerminalNode terminalNode:ctx.IDENTIFIER()){
@@ -106,7 +106,7 @@ public class JQuickLangImportVisitor extends JQuickLangRegistryVisitor {
         }
 
     @Override
-    public  JTypeReference<?>[] visitTypeArguments(JQuickLangParser.TypeArgumentsContext ctx) {
+    public  JTypeReference<?>[] visitTypeArguments(JQuickJavaParser.TypeArgumentsContext ctx) {
         JAssert.notNull(ctx.classsType(),"typeArgument not null");
         JTypeReference<?>[] typeReference=new JTypeReference<?>[ctx.classsType().size()];
         if(ctx.classsType()!=null&&!ctx.classsType().isEmpty()){
@@ -117,7 +117,7 @@ public class JQuickLangImportVisitor extends JQuickLangRegistryVisitor {
         return typeReference;
     }
     @Override
-    public JTypeReference visitSimpleType(JQuickLangParser.SimpleTypeContext ctx) {
+    public JTypeReference visitSimpleType(JQuickJavaParser.SimpleTypeContext ctx) {
         if(ctx.TYPESHORT()!=null){
             return JTypeReference.of(short.class);
         }else if(ctx.TYPEINT()!=null){

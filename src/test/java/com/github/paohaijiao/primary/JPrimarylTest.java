@@ -16,8 +16,8 @@ package com.github.paohaijiao.primary;/*
 
 import com.github.paohaijiao.JVariableContextBuilder;
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.parser.JQuickLangLexer;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaLexer;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -37,10 +37,10 @@ import java.io.IOException;
 public class JPrimarylTest {
     @Test
     public void literal() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("1"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("1"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.PrimaryContext tree = parser.primary();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -48,10 +48,10 @@ public class JPrimarylTest {
     }
     @Test
     public void IDENTIFIER() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("listVar"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("listVar"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.PrimaryContext tree = parser.primary();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params, JVariableContextBuilder.mockData(),lexer,tokens,parser);
         tv.getContext().put("listVar", 18);
@@ -61,10 +61,10 @@ public class JPrimarylTest {
     @Test
     public void methodInvocation() throws IOException {
         String rule = "new com.github.paohaijiao.model.JStudent(java.lang.String:\"a\", java.lang.String:\"b\", java.lang.String:\"c\");";
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.PrimaryContext tree = parser.primary();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -73,10 +73,10 @@ public class JPrimarylTest {
     @Test
     public void expression() throws IOException {
         String rule = "(3+2)";
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.PrimaryContext tree = parser.primary();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -85,10 +85,10 @@ public class JPrimarylTest {
     @Test
     public void variableDecl() throws IOException {
         String rule = "int a=1;";
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.PrimaryContext tree = parser.primary();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,JVariableContextBuilder.mockData(),lexer,tokens,parser);
         Object object = tv.visit(tree);

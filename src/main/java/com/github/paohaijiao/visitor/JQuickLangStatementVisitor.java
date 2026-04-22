@@ -19,7 +19,7 @@ import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.exception.JBreakException;
 import com.github.paohaijiao.exception.JContinueException;
 import com.github.paohaijiao.model.JReturnValueModel;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.support.JTypeReference;
 
 import java.lang.reflect.Field;
@@ -29,7 +29,7 @@ import java.util.List;
 public class JQuickLangStatementVisitor extends JQuickLangIfStatementVisitor{
 
     @Override
-    public Object visitControlStatement(JQuickLangParser.ControlStatementContext ctx) {
+    public Object visitControlStatement(JQuickJavaParser.ControlStatementContext ctx) {
         if (ctx.ifStatement() != null) {
         return  visit(ctx.ifStatement());
         } else if (ctx.forStatement() != null) {
@@ -48,7 +48,7 @@ public class JQuickLangStatementVisitor extends JQuickLangIfStatementVisitor{
         throw new RuntimeException("Unknown control statement");
     }
     @Override
-    public Object visitStatement(JQuickLangParser.StatementContext ctx) {
+    public Object visitStatement(JQuickJavaParser.StatementContext ctx) {
         String str=ctx.getText();
         if(ctx.expression() != null) {
             return visit(ctx.expression());
@@ -62,7 +62,7 @@ public class JQuickLangStatementVisitor extends JQuickLangIfStatementVisitor{
         throw new RuntimeException("Unknown  statement");
     }
     @Override
-    public Object visitAccessStaticVariable(JQuickLangParser.AccessStaticVariableContext ctx) {
+    public Object visitAccessStaticVariable(JQuickJavaParser.AccessStaticVariableContext ctx) {
         JAssert.notNull(ctx.classsType(),"can't access  className variable ["+"]");
         JAssert.notNull(ctx.accessObjectName(),"can't access static ObjectName variable ["+"]");
         JTypeReference<?> typeReference=visitClasssType(ctx.classsType());
@@ -81,7 +81,7 @@ public class JQuickLangStatementVisitor extends JQuickLangIfStatementVisitor{
     }
 
     @Override
-    public Object visitMethod(JQuickLangParser.MethodContext ctx) {
+    public Object visitMethod(JQuickJavaParser.MethodContext ctx) {
         if (ctx.functionDefinition() != null) {
             return visit(ctx.functionDefinition());
         } else if (ctx.methodInvocation() != null) {
@@ -90,19 +90,19 @@ public class JQuickLangStatementVisitor extends JQuickLangIfStatementVisitor{
         throw new RuntimeException("Unknown rule type");
     }
     @Override
-    public Object visitAction(JQuickLangParser.ActionContext ctx) {
+    public Object visitAction(JQuickJavaParser.ActionContext ctx) {
         Object result = null;
         if(ctx.variableDecl()!=null&&!ctx.variableDecl().isEmpty()){
-            for (JQuickLangParser.VariableDeclContext stmt : ctx.variableDecl()) {
+            for (JQuickJavaParser.VariableDeclContext stmt : ctx.variableDecl()) {
                 result = visit(stmt);
             }
         }
-        List<JQuickLangParser.StatementContext> statements = ctx.statement();
-        List<JQuickLangParser.ControlStatementContext> controlStatements = ctx.controlStatement();
-        for (JQuickLangParser.StatementContext stmt : statements) {
+        List<JQuickJavaParser.StatementContext> statements = ctx.statement();
+        List<JQuickJavaParser.ControlStatementContext> controlStatements = ctx.controlStatement();
+        for (JQuickJavaParser.StatementContext stmt : statements) {
             result = visit(stmt);
         }
-        for (JQuickLangParser.ControlStatementContext ctrlStmt : controlStatements) {
+        for (JQuickJavaParser.ControlStatementContext ctrlStmt : controlStatements) {
             result = visit(ctrlStmt);
             if (result instanceof JReturnValueModel) {
                 return result;
@@ -111,15 +111,15 @@ public class JQuickLangStatementVisitor extends JQuickLangIfStatementVisitor{
         return result;
     }
     @Override
-    public Void visitBreakStatement(JQuickLangParser.BreakStatementContext ctx) {
+    public Void visitBreakStatement(JQuickJavaParser.BreakStatementContext ctx) {
         throw new JBreakException(new ArrayList<>());
     }
     @Override
-    public Void visitContinueStatement(JQuickLangParser.ContinueStatementContext ctx) {
+    public Void visitContinueStatement(JQuickJavaParser.ContinueStatementContext ctx) {
         throw new JContinueException(new ArrayList<>());
     }
     @Override
-    public Object visitSout(JQuickLangParser.SoutContext ctx) {
+    public Object visitSout(JQuickJavaParser.SoutContext ctx) {
         if (ctx.expression() != null) {
             Object object=visitExpression(ctx.expression());
             System.out.println(object);

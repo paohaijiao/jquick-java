@@ -16,8 +16,8 @@ package com.github.paohaijiao.function;/*
 
 import com.github.paohaijiao.JVariableContextBuilder;
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.parser.JQuickLangLexer;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaLexer;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.scope.VariableContext;
 import com.github.paohaijiao.service.JService;
 import com.github.paohaijiao.support.JTypeReference;
@@ -57,10 +57,10 @@ public class JConstructorMethodInvocationTest {
     public void testSimpleConstructorCall() {
         String rule = "new com.github.paohaijiao.service.JService();";
         System.out.println(rule);
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -71,10 +71,10 @@ public class JConstructorMethodInvocationTest {
     public void testConstructorWithPrimitiveArguments() {
         String rule = "new com.github.paohaijiao.model.JStudent(int:42, float:3.14, boolean:true);";
         System.out.println(rule);
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -85,10 +85,10 @@ public class JConstructorMethodInvocationTest {
     public void testConstructorWithStringArgument() {
         String rule = "new com.github.paohaijiao.model.JStudent(java.lang.String:\"teststring\");";
         System.out.println(rule);
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = new JContext();
         Stack<VariableContext> contextStack = new Stack<VariableContext>();
         VariableContext variableContext=new VariableContext();
@@ -103,10 +103,10 @@ public class JConstructorMethodInvocationTest {
     public void testConstructorWithCollectionArgument() {
         String rule = "new com.github.paohaijiao.model.JStudent(List<java.lang.Integer>:listVar);";
         System.out.println(rule);
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
         Stack<VariableContext> contextStack = new Stack<VariableContext>();
         VariableContext variableContext=new VariableContext();
@@ -127,10 +127,10 @@ public class JConstructorMethodInvocationTest {
     public void testConstructorWithMixedArguments() {
         String rule = "new com.github.paohaijiao.model.JStudent(java.lang.String:\"test\", java.lang.Integer:123, java.lang.Boolean:true, List<java.lang.Integer>:listVar);";
         System.out.println(rule);
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,JVariableContextBuilder.mockData(),lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -141,10 +141,10 @@ public class JConstructorMethodInvocationTest {
     public void testConstructorWithNoArguments() {
         String rule = "new java.util.ArrayList();";
         System.out.println(rule);
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -156,10 +156,10 @@ public class JConstructorMethodInvocationTest {
     public void testConstructorWithVarArgs() {
         String rule = "new com.github.paohaijiao.model.JStudent(java.lang.String:\"a\", java.lang.String:\"b\", java.lang.String:\"c\");";
         System.out.println(rule);
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(rule));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);

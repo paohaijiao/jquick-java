@@ -15,11 +15,11 @@
  */
 package com.github.paohaijiao.visitor;
 
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 
 public class JQuickLangIfStatementVisitor  extends JQuickLangForStatementVisitor{
     @Override
-    public Object visitIfStatement(JQuickLangParser.IfStatementContext ctx) {
+    public Object visitIfStatement(JQuickJavaParser.IfStatementContext ctx) {
         if (toBoolean(visitConExpression(ctx.conExpression()))) {
             enterScope();
             Object result= visitAction(ctx.action());
@@ -40,7 +40,7 @@ public class JQuickLangIfStatementVisitor  extends JQuickLangForStatementVisitor
         return null;
     }
     @Override
-    public Object visitElseIfAction(JQuickLangParser.ElseIfActionContext ctx) {
+    public Object visitElseIfAction(JQuickJavaParser.ElseIfActionContext ctx) {
          if(ctx.action()!=null) {
              enterScope();
              Object result=visitAction(ctx.action());
@@ -51,7 +51,7 @@ public class JQuickLangIfStatementVisitor  extends JQuickLangForStatementVisitor
     }
 
     @Override
-    public Object visitElseIfConExpression(JQuickLangParser.ElseIfConExpressionContext ctx) {
+    public Object visitElseIfConExpression(JQuickJavaParser.ElseIfConExpressionContext ctx) {
         if(ctx.expression()!=null) {
             return visitExpression(ctx.expression());
         }
@@ -59,7 +59,7 @@ public class JQuickLangIfStatementVisitor  extends JQuickLangForStatementVisitor
     }
 
     @Override
-    public Object visitElseAction(JQuickLangParser.ElseActionContext ctx) {
+    public Object visitElseAction(JQuickJavaParser.ElseActionContext ctx) {
         if(null!=ctx.action()) {
             visitAction(ctx.action());
         }

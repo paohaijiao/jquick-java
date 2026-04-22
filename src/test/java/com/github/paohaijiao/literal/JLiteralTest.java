@@ -16,8 +16,8 @@ package com.github.paohaijiao.literal;/*
 
 import com.github.paohaijiao.JVariableContextBuilder;
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.parser.JQuickLangLexer;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaLexer;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -37,10 +37,10 @@ import java.io.IOException;
 public class JLiteralTest {
     @Test
     public void string() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("\"helloworld\""));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("\"helloworld\""));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -48,10 +48,10 @@ public class JLiteralTest {
     }
     @Test
     public void Long() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("1"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("1"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -59,10 +59,10 @@ public class JLiteralTest {
     }
     @Test
     public void date1() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("2025-06-07 12:00:01"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("2025-06-07 12:00:01"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -71,10 +71,10 @@ public class JLiteralTest {
 
     @Test
     public void date2() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("2025-06-07"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("2025-06-07"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -83,10 +83,10 @@ public class JLiteralTest {
 
     @Test
     public void boolean1() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("false"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("false"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -94,10 +94,10 @@ public class JLiteralTest {
     }
     @Test
     public void null1() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("null"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("null"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -105,10 +105,10 @@ public class JLiteralTest {
     }
     @Test
     public void identifier() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("testObj"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("testObj"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         params.put("type", "string");
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params, JVariableContextBuilder.mockData(),lexer,tokens,parser);
@@ -117,10 +117,10 @@ public class JLiteralTest {
     }
     @Test
     public void variables() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("${type}"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("${type}"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         params.put("type", "string");
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
@@ -129,10 +129,10 @@ public class JLiteralTest {
     }
     @Test
     public void short1() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("3"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("3"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -140,10 +140,10 @@ public class JLiteralTest {
     }
     @Test
     public void integer() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("3"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("3"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -151,10 +151,10 @@ public class JLiteralTest {
     }
     @Test
     public void float1() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("3.8"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("3.8"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -162,10 +162,10 @@ public class JLiteralTest {
     }
     @Test
     public void double1() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("1.5"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("1.5"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -173,10 +173,10 @@ public class JLiteralTest {
     }
     @Test
     public void long1() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("1"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("1"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -184,10 +184,10 @@ public class JLiteralTest {
     }
     @Test
     public void qualifiedName() throws IOException {
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString("java.lang.String.class"));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("java.lang.String.class"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -197,10 +197,10 @@ public class JLiteralTest {
     public void listLiteral() throws IOException {
         String list="[\"Alice\", \"Bob\", \"Charlie\"]";
         System.out.println(list);
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(list));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(list));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -210,10 +210,10 @@ public class JLiteralTest {
     public void map() throws IOException {
         String list="{\"name\": \"Alice\", \"age\": 25}";
         System.out.println(list);
-        JQuickLangLexer lexer = new JQuickLangLexer(CharStreams.fromString(list));
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(list));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickLangParser parser = new JQuickLangParser(tokens);
-        JQuickLangParser.LiteralContext tree = parser.literal();
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
         JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);

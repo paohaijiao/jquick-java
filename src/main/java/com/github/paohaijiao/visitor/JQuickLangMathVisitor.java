@@ -18,7 +18,7 @@ package com.github.paohaijiao.visitor;
 
 import com.github.paohaijiao.enums.JMathOp;
 import com.github.paohaijiao.exception.JAssert;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.util.JStringUtils;
 
 import java.math.BigDecimal;
@@ -26,7 +26,7 @@ import java.math.BigDecimal;
 public class JQuickLangMathVisitor extends JQuickLangFunctionCallVisitor {
 
     @Override
-    public Object visitArithmetic(JQuickLangParser.ArithmeticContext ctx) {
+    public Object visitArithmetic(JQuickJavaParser.ArithmeticContext ctx) {
         String t=ctx.getText();
         Object result = visitPrimary(ctx.primary(0));
         for (int i = 1; i < ctx.primary().size(); i++) {

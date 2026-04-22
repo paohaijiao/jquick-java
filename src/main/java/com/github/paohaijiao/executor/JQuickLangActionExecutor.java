@@ -18,8 +18,8 @@ package com.github.paohaijiao.executor;
 import com.github.paohaijiao.antlr.impl.JAbstractAntlrExecutor;
 import com.github.paohaijiao.exception.JAntlrExecutionException;
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.parser.JQuickLangLexer;
-import com.github.paohaijiao.parser.JQuickLangParser;
+import com.github.paohaijiao.parser.JQuickJavaLexer;
+import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.scope.VariableContext;
 import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
 import org.antlr.v4.runtime.*;
@@ -31,9 +31,9 @@ public class JQuickLangActionExecutor extends JAbstractAntlrExecutor<String, Obj
 
     private  JContext context;
 
-    private JQuickLangLexer lexer;
+    private JQuickJavaLexer lexer;
 
-    private JQuickLangParser parser;
+    private JQuickJavaParser parser;
 
     private TokenStream tokenStream;
 
@@ -56,14 +56,14 @@ public class JQuickLangActionExecutor extends JAbstractAntlrExecutor<String, Obj
 
     @Override
     protected Lexer createLexer(CharStream input) {
-        this.lexer= new JQuickLangLexer(input);
+        this.lexer= new JQuickJavaLexer(input);
         return lexer;
     }
 
     @Override
     protected Parser createParser(TokenStream tokens) {
         this.tokenStream=tokens;
-        this.parser= new JQuickLangParser(tokens);
+        this.parser= new JQuickJavaParser(tokens);
         return parser;
     }
     @Override
@@ -88,8 +88,8 @@ public class JQuickLangActionExecutor extends JAbstractAntlrExecutor<String, Obj
 
     @Override
     protected Object parse(Parser parser) throws JAntlrExecutionException {
-        JQuickLangParser actionPaser = (JQuickLangParser) parser;
-        JQuickLangParser.ActionContext actionContext = actionPaser.action();
+        JQuickJavaParser actionPaser = (JQuickJavaParser) parser;
+        JQuickJavaParser.ActionContext actionContext = actionPaser.action();
         CommonTokenStream commonTokenStream=(CommonTokenStream)tokenStream;
         JQuickLangCommonVisitor visitor = new JQuickLangCommonVisitor(context,this.stack,lexer,commonTokenStream,actionPaser);
         Object object =visitor.visit(actionContext);
