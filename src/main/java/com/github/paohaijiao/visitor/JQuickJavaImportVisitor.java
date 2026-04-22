@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class JQuickLangImportVisitor extends JQuickLangRegistryVisitor {
+public class JQuickJavaImportVisitor extends JQuickJavaRegistryVisitor {
     @Override
     public Void visitImportDeclaration(JQuickJavaParser.ImportDeclarationContext ctx) {
         JAssert.notNull(ctx.paramType(),"missing paramType ");

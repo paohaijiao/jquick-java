@@ -4,7 +4,7 @@ import com.github.paohaijiao.console.JConsole;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
+import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import com.github.paohaijiao.xml.invocation.JQuickXmlInvocationHandler;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -43,7 +43,7 @@ public class JQuickJavaXmlInvocationHandler extends JQuickXmlInvocationHandler {
         if(!context.isEmpty()){
             context.putAll(context);
         }
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(context,statck,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(context,statck,lexer,tokens,parser);
         Object object = tv.visit(tree);
         console.info("the result is : "+object.toString());
         return object;

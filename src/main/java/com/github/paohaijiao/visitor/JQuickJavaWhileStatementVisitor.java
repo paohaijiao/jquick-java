@@ -21,7 +21,7 @@ import com.github.paohaijiao.exception.JContinueException;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 
 
-public class JQuickLangWhileStatementVisitor extends JQuickLangReturnStatementVisitor {
+public class JQuickJavaWhileStatementVisitor extends JQuickJavaReturnStatementVisitor {
 
 
     @Override

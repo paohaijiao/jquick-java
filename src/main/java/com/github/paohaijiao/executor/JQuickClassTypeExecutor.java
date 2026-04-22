@@ -15,15 +15,13 @@
  */
 package com.github.paohaijiao.executor;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.paohaijiao.antlr.impl.JAbstractAntlrExecutor;
 import com.github.paohaijiao.exception.JAntlrExecutionException;
-import com.github.paohaijiao.model.JLiteralModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.support.JTypeReference;
-import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
+import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import org.antlr.v4.runtime.*;
 
 import java.util.Stack;
@@ -70,7 +68,7 @@ public class JQuickClassTypeExecutor extends JAbstractAntlrExecutor<String, JTyp
         JQuickJavaParser calcParser = (JQuickJavaParser) parser;
         JQuickJavaParser.ClasssTypeContext tree = calcParser.classsType();
         CommonTokenStream commonTokenStream=(CommonTokenStream)tokenStream;
-        JQuickLangCommonVisitor visitor = new JQuickLangCommonVisitor(context,new Stack<>(),lexer,commonTokenStream,calcParser);
+        JQuickJavaCommonVisitor visitor = new JQuickJavaCommonVisitor(context,new Stack<>(),lexer,commonTokenStream,calcParser);
         JTypeReference<?> object=(JTypeReference<?>)visitor.visit(tree);
         return object;
     }

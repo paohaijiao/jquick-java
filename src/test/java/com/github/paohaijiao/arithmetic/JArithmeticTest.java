@@ -18,7 +18,7 @@ package com.github.paohaijiao.arithmetic;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
+import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
@@ -42,7 +42,7 @@ public class JArithmeticTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.ArithmeticContext tree = parser.arithmetic();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,new Stack<>(),lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,new Stack<>(),lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -54,7 +54,7 @@ public class JArithmeticTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.ArithmeticContext tree = parser.arithmetic();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -66,7 +66,7 @@ public class JArithmeticTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.ArithmeticContext tree = parser.arithmetic();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -78,7 +78,7 @@ public class JArithmeticTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.ArithmeticContext tree = parser.arithmetic();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -90,7 +90,7 @@ public class JArithmeticTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.ArithmeticContext tree = parser.arithmetic();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }

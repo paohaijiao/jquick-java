@@ -1,4 +1,5 @@
-package com.github.paohaijiao.value;/*
+package com.github.paohaijiao.literal1;
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +18,7 @@ package com.github.paohaijiao.value;/*
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
+import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
@@ -33,53 +34,7 @@ import java.io.IOException;
  * @date 2025/6/16
  * @description
  */
-public class JValueTest {
-    @Test
-    public void string() throws IOException {
-        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("\"helloworld\""));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.StringContext tree = parser.string();
-        JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
-        Object object = tv.visit(tree);
-        System.out.println(object);
-    }
-    @Test
-    public void date1() throws IOException {
-        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("2025-06-07 12:00:01"));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.DateContext tree = parser.date();
-        JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
-        Object object = tv.visit(tree);
-        System.out.println(object);
-    }
-
-    @Test
-    public void date2() throws IOException {
-        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("2025-06-07"));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.DateContext tree = parser.date();
-        JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
-        Object object = tv.visit(tree);
-        System.out.println(object);
-    }
-
-    @Test
-    public void boolean1() throws IOException {
-        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("false"));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.BoolContext tree = parser.bool();
-        JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
-        Object object = tv.visit(tree);
-        System.out.println(object);
-    }
+public class JLiteralTest {
     @Test
     public void null1() throws IOException {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("null"));
@@ -87,63 +42,65 @@ public class JValueTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
 
     @Test
-    public void Long() throws IOException {
+    public void number1_long() throws IOException {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("1"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
+
+
     @Test
-    public void double1() throws IOException {
+    public void number2_double() throws IOException {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("1.5"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
     @Test
-    public void float1() throws IOException {
+    public void number3_float() throws IOException {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("3.8"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
     @Test
-    public void integer() throws IOException {
+    public void number4_integer() throws IOException {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("3"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
     @Test
-    public void short1() throws IOException {
+    public void number5_short() throws IOException {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("3"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -155,8 +112,71 @@ public class JValueTest {
         JQuickJavaParser.VariablesContext tree = parser.variables();
         JContext params = new JContext();
         params.put("type", "string");
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
+    @Test
+    public void date1() throws IOException {
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("2025-06-07 12:00:01"));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.DateContext tree = parser.date();
+        JContext params = new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
+
+    @Test
+    public void date2() throws IOException {
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("2025-06-07"));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.DateContext tree = parser.date();
+        JContext params = new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
+
+    @Test
+    public void string() throws IOException {
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("\"helloworld\""));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.StringContext tree = parser.string();
+        JContext params = new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
+
+
+    @Test
+    public void boolean1() throws IOException {
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("false"));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.BoolContext tree = parser.bool();
+        JContext params = new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
+    @Test
+    public void identifier() throws IOException {
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("a"));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.IdentifierContext tree = parser.identifier();
+        JContext params = new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
+
+
+
+
 }

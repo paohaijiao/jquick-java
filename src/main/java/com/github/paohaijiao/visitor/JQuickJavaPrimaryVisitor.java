@@ -18,7 +18,7 @@ import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.scope.Variable;
 
-public class JQuickLangPrimaryVisitor extends JQuickLangAssignVisitor {
+public class JQuickJavaPrimaryVisitor extends JQuickJavaAssignVisitor {
 
     @Override
     public Object visitPrimary(JQuickJavaParser.PrimaryContext ctx) {

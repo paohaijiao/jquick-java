@@ -20,7 +20,7 @@ import com.github.paohaijiao.exception.JBreakException;
 import com.github.paohaijiao.exception.JContinueException;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 
-public class JQuickLangForStatementVisitor  extends JQuickLangWhileStatementVisitor {
+public class JQuickJavaForStatementVisitor extends JQuickJavaWhileStatementVisitor {
 
     @Override
     public Object visitForStatement(JQuickJavaParser.ForStatementContext ctx) {

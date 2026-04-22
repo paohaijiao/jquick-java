@@ -17,7 +17,7 @@ package com.github.paohaijiao;/*
 import com.github.paohaijiao.model.JImportContainerModel;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
+import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import com.github.paohaijiao.param.JContext;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -44,7 +44,7 @@ public class JImportTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.ProgramContext tree = parser.program();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         JImportContainerModel importContainerModel=tv.getImportContainer();
         System.out.println(tv);
@@ -58,7 +58,7 @@ public class JImportTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.ProgramContext tree = parser.program();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         JImportContainerModel importContainerModel=tv.getImportContainer();
         System.out.println(tv);

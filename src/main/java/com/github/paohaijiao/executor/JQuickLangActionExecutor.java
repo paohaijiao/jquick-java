@@ -21,7 +21,7 @@ import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.scope.VariableContext;
-import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
+import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import org.antlr.v4.runtime.*;
 
 import java.io.IOException;
@@ -91,7 +91,7 @@ public class JQuickLangActionExecutor extends JAbstractAntlrExecutor<String, Obj
         JQuickJavaParser actionPaser = (JQuickJavaParser) parser;
         JQuickJavaParser.ActionContext actionContext = actionPaser.action();
         CommonTokenStream commonTokenStream=(CommonTokenStream)tokenStream;
-        JQuickLangCommonVisitor visitor = new JQuickLangCommonVisitor(context,this.stack,lexer,commonTokenStream,actionPaser);
+        JQuickJavaCommonVisitor visitor = new JQuickJavaCommonVisitor(context,this.stack,lexer,commonTokenStream,actionPaser);
         Object object =visitor.visit(actionContext);
         return object;
     }

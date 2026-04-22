@@ -24,7 +24,7 @@ import com.github.paohaijiao.support.JTypeReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JQuickLangRegistryVisitor extends JQuickLangCoreVisitor {
+public class JQuickJavaRegistryVisitor extends JQuickJavaCoreVisitor {
 
     JFunctionRegistry registry= JFunctionRegistry.getInstance();
 

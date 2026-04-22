@@ -25,7 +25,7 @@ import org.antlr.v4.runtime.Token;
 
 import java.math.BigDecimal;
 
-public class JQuickLangBoolVisitor extends JQuickLangMathVisitor {
+public class JQuickJavaBoolVisitor extends JQuickJavaMathVisitor {
 
 
 

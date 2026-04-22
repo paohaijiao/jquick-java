@@ -26,7 +26,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JQuickLangStatementVisitor extends JQuickLangIfStatementVisitor{
+public class JQuickJavaStatementVisitor extends JQuickJavaIfStatementVisitor {
 
     @Override
     public Object visitControlStatement(JQuickJavaParser.ControlStatementContext ctx) {

@@ -18,7 +18,6 @@ package com.github.paohaijiao.visitor;
 import com.github.paohaijiao.constants.JConstants;
 import com.github.paohaijiao.date.JDateUtil;
 import com.github.paohaijiao.exception.JAssert;
-import com.github.paohaijiao.model.JLiteralModel;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.scope.Variable;
 import com.github.paohaijiao.scope.VariableContext;
@@ -33,7 +32,7 @@ import java.util.Map;
 import java.util.Stack;
 
 
-public class JQuickLangValueVisitor extends JQuickLangImportVisitor {
+public class JQuickJavaValueVisitor extends JQuickJavaImportVisitor {
 
     @Override
     public Object visitVariables(JQuickJavaParser.VariablesContext ctx) {

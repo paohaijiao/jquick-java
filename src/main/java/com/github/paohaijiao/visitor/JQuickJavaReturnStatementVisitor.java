@@ -16,7 +16,7 @@
 package com.github.paohaijiao.visitor;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 
-public class JQuickLangReturnStatementVisitor extends JQuickLangExpressionVisitor {
+public class JQuickJavaReturnStatementVisitor extends JQuickJavaExpressionVisitor {
 
     @Override
     public Object visitReturnStatement(JQuickJavaParser.ReturnStatementContext ctx) {

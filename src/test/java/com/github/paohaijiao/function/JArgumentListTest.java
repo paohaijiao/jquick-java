@@ -3,7 +3,7 @@ package com.github.paohaijiao.function;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
+import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
@@ -18,7 +18,7 @@ public class JArgumentListTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.ArgumentListContext tree = parser.argumentList();
         JContext context=new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(context,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(context,lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }

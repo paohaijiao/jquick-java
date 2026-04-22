@@ -24,16 +24,16 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.util.Stack;
 
-public class JQuickLangCommonVisitor extends JQuickLangStatementVisitor {
+public class JQuickJavaCommonVisitor extends JQuickJavaStatementVisitor {
 
-    public JQuickLangCommonVisitor(JContext context, Stack<VariableContext> stack, JQuickJavaLexer lexer, CommonTokenStream tokenStream, JQuickJavaParser parser) {
+    public JQuickJavaCommonVisitor(JContext context, Stack<VariableContext> stack, JQuickJavaLexer lexer, CommonTokenStream tokenStream, JQuickJavaParser parser) {
         this.context = context;
         this.lexer = lexer;
         this.tokenStream = tokenStream;
         this.parser = parser;
         this.contextStack = stack;
     }
-    public JQuickLangCommonVisitor(JContext context, JQuickJavaLexer lexer, CommonTokenStream tokenStream, JQuickJavaParser parser) {
+    public JQuickJavaCommonVisitor(JContext context, JQuickJavaLexer lexer, CommonTokenStream tokenStream, JQuickJavaParser parser) {
         this.context = context;
         this.lexer = lexer;
         this.tokenStream = tokenStream;
@@ -41,7 +41,7 @@ public class JQuickLangCommonVisitor extends JQuickLangStatementVisitor {
         this.contextStack = new Stack<>();
     }
 
-    public JQuickLangCommonVisitor(JQuickJavaLexer lexer, CommonTokenStream tokenStream,JQuickJavaParser parser) {
+    public JQuickJavaCommonVisitor(JQuickJavaLexer lexer, CommonTokenStream tokenStream, JQuickJavaParser parser) {
         this.context = new JContext();
         this.lexer = lexer;
         this.tokenStream = tokenStream;

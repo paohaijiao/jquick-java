@@ -5,7 +5,7 @@ import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.scope.VariableContext;
 import com.github.paohaijiao.support.JTypeReference;
-import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
+import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class JForTest {
         contextStack.push(variableContext);
         JQuickJavaParser.ForStatementContext tree = parser.forStatement();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,contextStack,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,contextStack,lexer,tokens,parser);
 //        parser.exitScope();
         tv.visit(tree);
     }
@@ -59,7 +59,7 @@ public class JForTest {
         VariableContext variableContext=new VariableContext();
         variableContext.addVariable("radius", 5.0, JTypeReference.of(float.class));
         contextStack.push(variableContext);
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,contextStack,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,contextStack,lexer,tokens,parser);
         tv.visit(tree);
     }
     @Test
@@ -83,7 +83,7 @@ public class JForTest {
         VariableContext variableContext=new VariableContext();
         variableContext.addVariable("radius", 5.0, JTypeReference.of(float.class));
         contextStack.push(variableContext);
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,contextStack,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,contextStack,lexer,tokens,parser);
         tv.visit(tree);
     }
 }

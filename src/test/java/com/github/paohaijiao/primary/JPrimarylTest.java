@@ -18,7 +18,7 @@ import com.github.paohaijiao.JVariableContextBuilder;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
+import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
@@ -42,7 +42,7 @@ public class JPrimarylTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -53,7 +53,7 @@ public class JPrimarylTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params, JVariableContextBuilder.mockData(),lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params, JVariableContextBuilder.mockData(),lexer,tokens,parser);
         tv.getContext().put("listVar", 18);
         Object object = tv.visit(tree);
         System.out.println(object);
@@ -66,7 +66,7 @@ public class JPrimarylTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -78,7 +78,7 @@ public class JPrimarylTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -90,7 +90,7 @@ public class JPrimarylTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = new JContext();
-        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,JVariableContextBuilder.mockData(),lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,JVariableContextBuilder.mockData(),lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }

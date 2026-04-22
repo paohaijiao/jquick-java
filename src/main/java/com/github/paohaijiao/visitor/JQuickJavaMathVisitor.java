@@ -23,7 +23,7 @@ import com.github.paohaijiao.util.JStringUtils;
 
 import java.math.BigDecimal;
 
-public class JQuickLangMathVisitor extends JQuickLangFunctionCallVisitor {
+public class JQuickJavaMathVisitor extends JQuickJavaFunctionCallVisitor {
 
     @Override
     public Object visitArithmetic(JQuickJavaParser.ArithmeticContext ctx) {

@@ -20,7 +20,7 @@ import com.github.paohaijiao.exception.JAntlrExecutionException;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.visitor.JQuickLangCommonVisitor;
+import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import org.antlr.v4.runtime.*;
 
 import java.util.Stack;
@@ -60,7 +60,7 @@ public class JQuickLangExecutor extends JAbstractAntlrExecutor<String, Object> {
         JQuickJavaParser calcParser = (JQuickJavaParser) parser;
         JQuickJavaParser.ProgramContext tree = calcParser.program();
         CommonTokenStream commonTokenStream=(CommonTokenStream)tokenStream;
-        JQuickLangCommonVisitor visitor = new JQuickLangCommonVisitor(context,new Stack<>(),lexer,commonTokenStream,calcParser);
+        JQuickJavaCommonVisitor visitor = new JQuickJavaCommonVisitor(context,new Stack<>(),lexer,commonTokenStream,calcParser);
         Object object=visitor.visit(tree);
         return object;
     }

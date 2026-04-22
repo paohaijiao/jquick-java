@@ -30,12 +30,10 @@ import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.scope.VariableContext;
 import com.github.paohaijiao.support.JTypeReference;
-import com.github.paohaijiao.type.JGenericlTypeConverter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.antlr.v4.runtime.CommonTokenStream;
 
-import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -43,7 +41,7 @@ import java.util.Map;
 import java.util.Stack;
 
 
-public class JQuickLangCoreVisitor extends JQuickJavaBaseVisitor {
+public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
 
     protected JContext context;
 
@@ -73,6 +71,7 @@ public class JQuickLangCoreVisitor extends JQuickJavaBaseVisitor {
     protected VariableContext currentContext() {
         return contextStack.peek();
     }
+
     protected void exitScope() {
         if (contextStack.size() > 1) {
             contextStack.pop();

@@ -18,7 +18,7 @@ package com.github.paohaijiao.visitor;
 
 import com.github.paohaijiao.parser.JQuickJavaParser;
 
-public class JQuickLangExpressionVisitor extends JQuickLangBoolVisitor {
+public class JQuickJavaExpressionVisitor extends JQuickJavaBoolVisitor {
 
     @Override
     public Object visitExpressionStatement(JQuickJavaParser.ExpressionStatementContext ctx) {

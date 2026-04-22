@@ -15,7 +15,6 @@
  */
 package com.github.paohaijiao.visitor;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.executor.JQuickLangActionExecutor;
 import com.github.paohaijiao.model.*;
@@ -35,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class JQuickLangFunctionCallVisitor extends JQuickLangPrimaryVisitor {
+public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
     @Override
     public Object  visitFunctionDefinition(JQuickJavaParser.FunctionDefinitionContext ctx) {
         JAssert.notNull(ctx.IDENTIFIER(), "functionName must not be null");
