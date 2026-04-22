@@ -175,6 +175,17 @@ public class JLiteralTest {
         Object object = tv.visit(tree);
         System.out.println(object);
     }
+    @Test
+    public void importVar() throws IOException {
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("a"));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.ImportVarContext tree = parser.importVar();
+        JContext params = new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
 
 
 

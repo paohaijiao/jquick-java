@@ -19,7 +19,7 @@ import com.github.paohaijiao.model.JQuickJavaLiteralModel;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.support.JQuickJavaTypeReference;
 
-public class JQuickJavaAssignVisitor extends JQuickJavaValueVisitor {
+public class JQuickJavaAssignVisitor extends JQuickJavaLiteralVisitor {
 
     private static final Class<?> PKG = JQuickJavaAssignVisitor.class;
 

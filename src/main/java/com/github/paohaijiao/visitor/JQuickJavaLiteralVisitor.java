@@ -33,8 +33,28 @@ import java.util.Map;
 import java.util.Stack;
 
 
-public class JQuickJavaValueVisitor extends JQuickJavaImportVisitor {
-    private static final Class<?> PKG = JQuickJavaValueVisitor.class;
+public class JQuickJavaLiteralVisitor extends JQuickJavaImportVisitor {
+
+    private static final Class<?> PKG = JQuickJavaLiteralVisitor.class;
+
+    @Override
+    public String visitIdentifier(JQuickJavaParser.IdentifierContext ctx) {
+        if (ctx.IDENTIFIER() != null) {
+            return ctx.IDENTIFIER().getText();
+        }else{
+            thowEx(getMessageKeyPrefix(PKG,"identifier"));
+            return null;
+        }
+    }
+    @Override
+    public String visitImportVar(JQuickJavaParser.ImportVarContext ctx) {
+        if (ctx.IDENTIFIER() != null) {
+            return ctx.IDENTIFIER().getText();
+        }else{
+            thowEx(getMessageKeyPrefix(PKG,"identifier"));
+            return null;
+        }
+    }
 
 
     @Override
@@ -138,7 +158,6 @@ public class JQuickJavaValueVisitor extends JQuickJavaImportVisitor {
             Object value=visitExpression(ctx.expression().get(1));
             map.put(key,value);
         }
-        JAssert.throwNewException("invalidat the map entry");
         return map;
     }
 
