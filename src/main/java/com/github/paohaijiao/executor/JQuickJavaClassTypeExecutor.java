@@ -68,7 +68,7 @@ public class JQuickJavaClassTypeExecutor extends JAbstractAntlrExecutor<String, 
         JQuickJavaParser calcParser = (JQuickJavaParser) parser;
         JQuickJavaParser.ClasssTypeContext tree = calcParser.classsType();
         CommonTokenStream commonTokenStream=(CommonTokenStream)tokenStream;
-        JQuickJavaCommonVisitor visitor = new JQuickJavaCommonVisitor(context,new Stack<>(),lexer,commonTokenStream,calcParser);
+        JQuickJavaCommonVisitor visitor = new JQuickJavaCommonVisitor(context,lexer,commonTokenStream,calcParser);
         JQuickJavaTypeReference<?> object=(JQuickJavaTypeReference<?>)visitor.visit(tree);
         return object;
     }

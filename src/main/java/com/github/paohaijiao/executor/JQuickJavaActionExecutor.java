@@ -20,16 +20,14 @@ import com.github.paohaijiao.exception.JAntlrExecutionException;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.scope.JQuickJavaVariableContext;
 import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import org.antlr.v4.runtime.*;
 
 import java.io.IOException;
-import java.util.Stack;
 
 public class JQuickJavaActionExecutor extends JAbstractAntlrExecutor<String, Object> {
 
-    private  JContext context;
+    private  JContext context=new JContext();
 
     private JQuickJavaLexer lexer;
 
@@ -37,21 +35,15 @@ public class JQuickJavaActionExecutor extends JAbstractAntlrExecutor<String, Obj
 
     private TokenStream tokenStream;
 
-    private  Stack<JQuickJavaVariableContext> stack = new Stack<>();
 
     public JQuickJavaActionExecutor() {
-        this(new JContext(), new Stack<JQuickJavaVariableContext>());
     }
-    public JQuickJavaActionExecutor(JContext context) {
-        this(context, new Stack<JQuickJavaVariableContext>());
+    public JQuickJavaActionExecutor(JContext jcontext) {
+        context.putAll(jcontext);
     }
-    public JQuickJavaActionExecutor(JContext context, Stack<JQuickJavaVariableContext> contextStack) {
-        initializeContext(context, contextStack);
-    }
-    private void initializeContext(JContext context, Stack<JQuickJavaVariableContext> contextStack) {
-        this.context = context;
-        this.stack = contextStack;
 
+    private void initializeContext(JContext jcontext) {
+        context.putAll(jcontext);
     }
 
     @Override
@@ -91,12 +83,12 @@ public class JQuickJavaActionExecutor extends JAbstractAntlrExecutor<String, Obj
         JQuickJavaParser actionPaser = (JQuickJavaParser) parser;
         JQuickJavaParser.ActionContext actionContext = actionPaser.action();
         CommonTokenStream commonTokenStream=(CommonTokenStream)tokenStream;
-        JQuickJavaCommonVisitor visitor = new JQuickJavaCommonVisitor(context,this.stack,lexer,commonTokenStream,actionPaser);
+        JQuickJavaCommonVisitor visitor = new JQuickJavaCommonVisitor(context,lexer,commonTokenStream,actionPaser);
         Object object =visitor.visit(actionContext);
         return object;
     }
-    public void intExecuteEnv(JContext context, Stack<JQuickJavaVariableContext> contextStack) {
-        this.initializeContext(context, contextStack);
+    public void intExecuteEnv(JContext jcontext) {
+        this.initializeContext(jcontext);
     }
     public JContext getContext() {
         return this.context;

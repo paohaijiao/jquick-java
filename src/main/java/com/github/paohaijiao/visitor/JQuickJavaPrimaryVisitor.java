@@ -16,7 +16,7 @@
 package com.github.paohaijiao.visitor;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.scope.JQuickJavaVariable;
+//import com.github.paohaijiao.scope.JQuickJavaVariable;
 
 public class JQuickJavaPrimaryVisitor extends JQuickJavaAssignVisitor {
 

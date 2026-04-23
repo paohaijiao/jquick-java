@@ -13,7 +13,7 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.service;
+package com.github.paohaijiao.extract.service;
 
 import java.util.ArrayList;
 import java.util.List;

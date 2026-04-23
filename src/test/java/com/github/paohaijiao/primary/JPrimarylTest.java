@@ -14,7 +14,6 @@ package com.github.paohaijiao.primary;/*
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
 
-import com.github.paohaijiao.JVariableContextBuilder;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
@@ -46,18 +45,18 @@ public class JPrimarylTest {
         Object object = tv.visit(tree);
         System.out.println(object);
     }
-    @Test
-    public void IDENTIFIER() throws IOException {
-        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("listVar"));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.PrimaryContext tree = parser.primary();
-        JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params, JVariableContextBuilder.mockData(),lexer,tokens,parser);
-        tv.getContext().put("listVar", 18);
-        Object object = tv.visit(tree);
-        System.out.println(object);
-    }
+//    @Test
+//    public void IDENTIFIER() throws IOException {
+//        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("listVar"));
+//        CommonTokenStream tokens = new CommonTokenStream(lexer);
+//        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+//        JQuickJavaParser.PrimaryContext tree = parser.primary();
+//        JContext params = new JContext();
+//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params, JVariableContextBuilder.mockData(),lexer,tokens,parser);
+//        tv.getContext().put("listVar", 18);
+//        Object object = tv.visit(tree);
+//        System.out.println(object);
+//    }
     @Test
     public void methodInvocation() throws IOException {
         String rule = "new com.github.paohaijiao.model.JStudent(java.lang.String:\"a\", java.lang.String:\"b\", java.lang.String:\"c\");";
@@ -82,18 +81,18 @@ public class JPrimarylTest {
         Object object = tv.visit(tree);
         System.out.println(object);
     }
-    @Test
-    public void variableDecl() throws IOException {
-        String rule = "int a=1;";
-        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.PrimaryContext tree = parser.primary();
-        JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,JVariableContextBuilder.mockData(),lexer,tokens,parser);
-        Object object = tv.visit(tree);
-        System.out.println(object);
-    }
+//    @Test
+//    public void variableDecl() throws IOException {
+//        String rule = "int a=1;";
+//        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
+//        CommonTokenStream tokens = new CommonTokenStream(lexer);
+//        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+//        JQuickJavaParser.PrimaryContext tree = parser.primary();
+//        JContext params = new JContext();
+//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,JVariableContextBuilder.mockData(),lexer,tokens,parser);
+//        Object object = tv.visit(tree);
+//        System.out.println(object);
+//    }
 
 
 

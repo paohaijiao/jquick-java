@@ -47,10 +47,10 @@ public class JQuickJavaAssignVisitor extends JQuickJavaLiteralVisitor {
             Object value = ctx.expression() != null ? visitExpression(ctx.expression()) : null;
             if(value instanceof JQuickJavaLiteralModel){
                 JQuickJavaLiteralModel literalModel=(JQuickJavaLiteralModel)value;
-                updateVariableInStack(varName, value, literalModel.getType().getTypeReference());
+//                updateVariableInStack(varName, value, literalModel.getType().getTypeReference());
             }else{
                 JQuickJavaLiteralModel literalModel=convert(value,ctx.getText());
-                updateVariableInStack(varName, value, literalModel.getType().getTypeReference());
+//                updateVariableInStack(varName, value, literalModel.getType().getTypeReference());
             }
             return value;
         }

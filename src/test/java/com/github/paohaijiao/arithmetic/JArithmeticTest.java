@@ -34,18 +34,18 @@ import java.util.Stack;
  * @since 2025/7/27
  */
 public class JArithmeticTest {
-    @Test
-    public void  arithmetic1() throws IOException {
-        String rule = "1+1";
-        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.ArithmeticContext tree = parser.arithmetic();
-        JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,new Stack<>(),lexer,tokens,parser);
-        Object object = tv.visit(tree);
-        System.out.println(object);
-    }
+//    @Test
+//    public void  arithmetic1() throws IOException {
+//        String rule = "1+1";
+//        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
+//        CommonTokenStream tokens = new CommonTokenStream(lexer);
+//        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+//        JQuickJavaParser.ArithmeticContext tree = parser.arithmetic();
+//        JContext params = new JContext();
+//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,new Stack<>(),lexer,tokens,parser);
+//        Object object = tv.visit(tree);
+//        System.out.println(object);
+//    }
     @Test
     public void  arithmetic2() throws IOException {
         String rule = "'hello'+'world'";

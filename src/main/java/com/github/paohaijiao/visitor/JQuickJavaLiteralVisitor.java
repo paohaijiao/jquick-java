@@ -20,8 +20,6 @@ import com.github.paohaijiao.date.JDateUtil;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.i18n.I18nUtils;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.scope.JQuickJavaVariable;
-import com.github.paohaijiao.scope.JQuickJavaVariableContext;
 import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import com.github.paohaijiao.util.JStringUtils;
 

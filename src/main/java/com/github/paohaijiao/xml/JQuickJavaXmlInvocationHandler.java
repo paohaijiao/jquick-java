@@ -43,7 +43,7 @@ public class JQuickJavaXmlInvocationHandler extends JQuickXmlInvocationHandler {
         if(!context.isEmpty()){
             context.putAll(context);
         }
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(context,statck,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(context,lexer,tokens,parser);
         Object object = tv.visit(tree);
         console.info("the result is : "+object.toString());
         return object;

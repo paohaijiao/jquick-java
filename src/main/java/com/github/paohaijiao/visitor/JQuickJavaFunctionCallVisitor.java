@@ -19,7 +19,6 @@ import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.executor.JQuickJavaActionExecutor;
 import com.github.paohaijiao.model.*;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.scope.JQuickJavaVariable;
 import com.github.paohaijiao.support.JQuickJavaObjectFactory;
 import com.github.paohaijiao.support.JQuickJavaReflectionFactory;
 import com.github.paohaijiao.support.JQuickJavaTypeReference;
@@ -47,13 +46,13 @@ public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
             paramDefine=visitParameterList(ctx.parameterList())  ;
         }
         if (ctx.parameterList() != null) {
-            List<JQuickJavaVariable> variables = new ArrayList<>();
-            for (JQuickJavaParser.ParamContext paramCtx : ctx.parameterList().param()) {
-                JQuickJavaTypeReference<?> paramType = visitClasssType(paramCtx.classsType());
-                String name = paramCtx.functionVar().getText();
-                JQuickJavaVariable variable=new JQuickJavaVariable(name,null,paramType);
-                variables.add(variable);
-            }
+//            List<JQuickJavaVariable> variables = new ArrayList<>();
+//            for (JQuickJavaParser.ParamContext paramCtx : ctx.parameterList().param()) {
+//                JQuickJavaTypeReference<?> paramType = visitClasssType(paramCtx.classsType());
+//                String name = paramCtx.functionVar().getText();
+//                JQuickJavaVariable variable=new JQuickJavaVariable(name,null,paramType);
+//                variables.add(variable);
+//            }
 //            currentContext().addScopeVariable(functionName, variables);
         }
         TokenStreamRewriter rewriter = new TokenStreamRewriter(tokenStream);
@@ -237,7 +236,7 @@ public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
                 JAssert.throwNewException("the field [ "+field.getFieldName()+" ] param type mismatch in this context");
             }
         }
-        executor.intExecuteEnv(this.context,this.contextStack);
+        executor.intExecuteEnv(this.context);
         Object object=executor.execute(function.getAction());
         if(null==object){
             return null;

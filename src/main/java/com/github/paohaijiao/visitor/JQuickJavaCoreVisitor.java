@@ -30,7 +30,6 @@ import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaBaseVisitor;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.scope.JQuickJavaVariableContext;
 import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -60,9 +59,6 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
 
     protected JQuickJavaParser parser;
 
-    protected Stack<JQuickJavaVariableContext> contextStack = new Stack<>();
-
-    protected JQuickJavaVariableContext globalContext;
 
     protected Gson gson=new Gson();
 
@@ -230,12 +226,6 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
     }
     public void setImportContainer(JQuickJavaImportContainerModel importContainer) {
         this.importContainer = importContainer;
-    }
-
-    public void updateVariableInStack(String varName, Object newValue, JQuickJavaTypeReference<?> type) {
-        for (JQuickJavaVariableContext context : contextStack) {
-             context.updateVariableWithAllScopes(varName, newValue,type);
-        }
     }
 
     private String getCurrentClassFullPath(Class<?> clazz) {
