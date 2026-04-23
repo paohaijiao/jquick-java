@@ -13,7 +13,7 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.methodInvocation2;
+package com.github.paohaijiao.extract.factory;
 
 import com.github.paohaijiao.extract.model.JSchool;
 import com.github.paohaijiao.extract.model.JStudent;
@@ -29,9 +29,11 @@ import static com.github.paohaijiao.support.JQuickJavaObjectFactory.*;
 public class JObjectFactoryTest {
     @Test
     public void testCreateByConstructorNoArgs() throws Exception {
+        List<Object> list=new ArrayList<>();
+        list.add(1);
         Object result = JQuickJavaObjectFactory.createByConstructor(
-                "com.github.paohaijiao.model.JStudent",
-                new ArrayList<>());
+                "com.github.paohaijiao.extract.model.JStudent",list
+               );
         System.out.println(result);
     }
 
@@ -39,7 +41,7 @@ public class JObjectFactoryTest {
     public void testCreateByConstructorWithArgs() throws Exception {
         List<Object> args = Arrays.asList("testName", 123);
         Object result = JQuickJavaObjectFactory.createByConstructor(
-                "com.github.paohaijiao.model.JStudent", args);
+                "com.github.paohaijiao.extract.model.JStudent", args);
         JStudent testObj = (JStudent) result;
         System.out.println(testObj);
     }
@@ -47,10 +49,7 @@ public class JObjectFactoryTest {
     @Test
     public void testCreateByStaticMethod() throws Exception {
         List<Object> args = Arrays.asList("staticName", 456);
-        Object result = JQuickJavaObjectFactory.createByStaticMethod(
-                "com.github.paohaijiao.model.JStudent",
-                "create",
-                args);
+        Object result = JQuickJavaObjectFactory.createByStaticMethod("com.github.paohaijiao.extract.model.JStudent", "create", args);
         JStudent testObj = (JStudent) result;
         System.out.println(testObj);
     }
@@ -60,10 +59,7 @@ public class JObjectFactoryTest {
         JStudent existingObj = new JStudent("original", 789);
         List<Object> args =new ArrayList<>();// List.of("prefix-");
         args.add("prefix-");
-        Object result = JQuickJavaObjectFactory.createByInstanceMethod(
-                existingObj,
-                "copyWithPrefix",
-                args);
+        Object result = JQuickJavaObjectFactory.createByInstanceMethod(existingObj, "copyWithPrefix", args);
         System.out.println(result);
     }
 
@@ -71,7 +67,7 @@ public class JObjectFactoryTest {
     public void testCreateAutoDetectConstructor() throws Exception {
         List<Object> args = Arrays.asList("autoName", 100);
         Object result = JQuickJavaObjectFactory.create(
-                "com.github.paohaijiao.model.JStudent",
+                "com.github.paohaijiao.extract.model.JStudent",
                 null,
                 args,
                 null,
@@ -83,7 +79,7 @@ public class JObjectFactoryTest {
     public void testCreateAutoDetectStaticMethod() throws Exception {
         List<Object> args = Arrays.asList("staticAuto", 200);
         Object result = JQuickJavaObjectFactory.create(
-                "com.github.paohaijiao.model.JStudent",
+                "com.github.paohaijiao.extract.model.JStudent",
                 "create",
                 args,
                 true,
@@ -110,7 +106,7 @@ public class JObjectFactoryTest {
     public void testCreateWithPrimitiveTypes() throws Exception {
         List<Object> args = Arrays.asList(123, 456.789f, true);
         Object result = JQuickJavaObjectFactory.createByConstructor(
-                "com.github.paohaijiao.model.JStudent",
+                "com.github.paohaijiao.extract.model.JStudent",
                 args);
         System.out.println(result);
 
