@@ -41,7 +41,6 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Stack;
 
 @Data
 public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
@@ -50,8 +49,7 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
 
     protected JContext context;
 
-    protected Locale local= Locale.ENGLISH;
-
+    protected static Locale local= Locale.ENGLISH;
 
     protected CommonTokenStream tokenStream;
 
@@ -66,18 +64,16 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
 
     protected JQuickJavaImportContainerModel importContainer= JQuickJavaImportContainerModel.getInstance();
 
-
     JQuickJavaFunctionRegistry registry= JQuickJavaFunctionRegistry.getInstance();
 
-
-
-    protected boolean toBoolean(Object value) {
+    protected static boolean toBoolean(Object value) {
         if (value instanceof Boolean) {
             return (Boolean) value;
         } else if (value instanceof String) {
             return Boolean.parseBoolean((String) value);
         }
-        throw new RuntimeException("cannot convert value to boolean: " + value);
+        thowEx(getMessageKeyPrefix(PKG,"toBoolean.convertError"),value.toString());
+        return false;
     }
     protected JQuickJavaTypeReference<?> loadClass(String className){
         JQuickJavaClassTypeExecutor executor = new JQuickJavaClassTypeExecutor();
@@ -175,7 +171,6 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
         if (javaType.isMapLikeType()) {
             JavaType keyType = javaType.getKeyType();
             JavaType valueType = javaType.getContentType();
-
             return TypeToken.getParameterized(
                     Map.class,
                     convertJacksonTypeToGsonType(keyType),
@@ -228,23 +223,29 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
         this.importContainer = importContainer;
     }
 
-    private String getCurrentClassFullPath(Class<?> clazz) {
+    private static String getCurrentClassFullPath(Class<?> clazz) {
         return clazz.getName();
     }
-    protected String getMessageKeyPrefix(Class<?> clazz, String prefix) {
+    protected static String getMessageKeyPrefix(Class<?> clazz, String prefix) {
         JAssert.notNull(clazz, "clazz required  not null");
         return getCurrentClassFullPath(clazz) + "." + prefix;
     }
 
-    protected static String getI18N(String key,Object... value) {
+    protected static String getI18N(String key,String... value) {
         JAssert.notNull(key, "required key not null");
+        I18nUtils.setLocale(local);
         String result = I18nUtils.getMessage("i18n/messages", key, value);
         return result;
     }
-    protected static void thowEx(String key,Object... value) {
+    protected static void thowEx(String key,String... value) {
         JAssert.notNull(key, "required key not null");
         String msg=getI18N(key,value);
         JAssert.throwNewException(msg);
+    }
+
+    public static void main(String[] args) {
+        local=Locale.JAPAN;
+       toBoolean(123456.1);
     }
 
 }

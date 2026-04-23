@@ -14,13 +14,17 @@
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
 package com.github.paohaijiao.visitor;
-import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-//import com.github.paohaijiao.scope.JQuickJavaVariable;
 
 public class JQuickJavaPrimaryVisitor extends JQuickJavaAssignVisitor {
 
     private static final Class<?> PKG = JQuickJavaPrimaryVisitor.class;
+
+    @Override
+    public String visitAccessObjectName(JQuickJavaParser.AccessObjectNameContext ctx) {
+        return visitIdentifier(ctx.identifier());
+    }
+
 
     @Override
     public Object visitPrimary(JQuickJavaParser.PrimaryContext ctx) {
