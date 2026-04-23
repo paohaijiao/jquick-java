@@ -10,7 +10,7 @@ public class JScopeForTest {
     @Test
     public void scopefunc() throws IOException {
         String rule=
-                "void function a(int:a,float:b){" +
+                "void def a(int:a,float:b){" +
                         " for (int i = 0; i < 10; i = i + 1) {\n" +
                                "console.log(i)"+
                         "            if(i==2){\n" +
