@@ -23,7 +23,7 @@ public class JScopeForTest {
                         "float d=8.1;" +
                         "this.a(int:c,float:d);" ;
         System.out.println(rule);
-        JQuickJavaExecutor executor = new JQuickJavaExecutor();
+        JQuickJavaExecutor executor = JQuickJavaExecutor.getInstance();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
@@ -44,7 +44,7 @@ public class JScopeForTest {
                         "float d=8.1;" +
                         "this.a(int:c,float:d);" ;
         System.out.println(rule);
-        JQuickJavaExecutor executor = new JQuickJavaExecutor();
+        JQuickJavaExecutor executor =JQuickJavaExecutor.getInstance();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
@@ -65,7 +65,7 @@ public class JScopeForTest {
                         "float d=8.1;" +
                         "this.a(int:c,float:d);" ;
         System.out.println(rule);
-        JQuickJavaExecutor executor = new JQuickJavaExecutor();
+        JQuickJavaExecutor executor = JQuickJavaExecutor.getInstance();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
@@ -86,7 +86,7 @@ public class JScopeForTest {
                         "float d=8.1;" +
                         "this.a(int:c,float:d);" ;
         System.out.println(rule);
-        JQuickJavaExecutor executor = new JQuickJavaExecutor();
+        JQuickJavaExecutor executor =JQuickJavaExecutor.getInstance();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
@@ -108,7 +108,7 @@ public class JScopeForTest {
                         "float d=8.1;" +
                         "this.a(int:c,float:d);" ;
         System.out.println(rule);
-        JQuickJavaExecutor executor = new JQuickJavaExecutor();
+        JQuickJavaExecutor executor = JQuickJavaExecutor.getInstance();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
@@ -130,7 +130,7 @@ public class JScopeForTest {
                         "float d=8.1;" +
                         "this.a(int:c,float:d);" ;
         System.out.println(rule);
-        JQuickJavaExecutor executor = new JQuickJavaExecutor();
+        JQuickJavaExecutor executor =JQuickJavaExecutor.getInstance();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
@@ -156,7 +156,7 @@ public class JScopeForTest {
                         "    float d=8.1;\n" +
                         "    this.a(int:c,float:d);" ;
         System.out.println(rule);
-        JQuickJavaExecutor executor = new JQuickJavaExecutor();
+        JQuickJavaExecutor executor = JQuickJavaExecutor.getInstance();
         Object result=executor.execute(rule);
         System.out.println(result);
     }

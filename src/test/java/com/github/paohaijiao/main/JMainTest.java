@@ -30,7 +30,7 @@ public class JMainTest {
                 "    int b=2;\n" +
                 "    int c=this.getSquare(int:a,int:b);";
         System.out.println(rule);
-        JQuickJavaExecutor executor = new JQuickJavaExecutor();
+        JQuickJavaExecutor executor = JQuickJavaExecutor.getInstance();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
@@ -46,7 +46,7 @@ public class JMainTest {
                 "    int b=2;\n" +
                 "    string c=this.getSquare(string:a,int:b);";
         System.out.println(rule);
-        JQuickJavaExecutor executor = new JQuickJavaExecutor();
+        JQuickJavaExecutor executor =JQuickJavaExecutor.getInstance();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
@@ -63,7 +63,7 @@ public class JMainTest {
                 "    int b=2;\n" +
                 "    string c=this.getSquare(string:a,int:b);";
         System.out.println(rule);
-        JQuickJavaExecutor executor = new JQuickJavaExecutor();
+        JQuickJavaExecutor executor =JQuickJavaExecutor.getInstance();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
@@ -84,7 +84,7 @@ public class JMainTest {
                 "int b=2;\n" +
                 "java.lang.Object c=this.getSquare(int:a,int:b);";
         System.out.println(rule);
-        JQuickJavaExecutor executor = new JQuickJavaExecutor();
+        JQuickJavaExecutor executor = JQuickJavaExecutor.getInstance();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
@@ -109,7 +109,7 @@ public class JMainTest {
                 "int b=2;\n" +
                 "int c=this.getSquare(int:a,int:b);";
         System.out.println(rule);
-        JQuickJavaExecutor executor = new JQuickJavaExecutor();
+        JQuickJavaExecutor executor =JQuickJavaExecutor.getInstance();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
@@ -138,7 +138,7 @@ public class JMainTest {
                 "int b=2;\n" +
                 "int c=this.getSquare(int:a,int:b);";
         System.out.println(rule);
-        JQuickJavaExecutor executor = new JQuickJavaExecutor();
+        JQuickJavaExecutor executor = JQuickJavaExecutor.getInstance();
         Object result=executor.execute(rule);
         System.out.println(result);
     }
