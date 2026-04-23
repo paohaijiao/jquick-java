@@ -28,10 +28,11 @@ public class JQuickJavaPrimaryVisitor extends JQuickJavaAssignVisitor {
         if(ctx.literal() != null) {
             return visitLiteral(ctx.literal());
         } else if (ctx.IDENTIFIER() != null) {
-            String identifier=ctx.IDENTIFIER().getText();
-            JQuickJavaVariable variable=currentContext().getVariable(identifier);
-            JAssert.isTrue(null!=variable,"variable "+identifier+" not found");;
-            return variable.getValue();
+//            String identifier=ctx.IDENTIFIER().getText();
+//            JQuickJavaVariable variable=currentContext().getVariable(identifier);
+//            JAssert.isTrue(null!=variable,"variable "+identifier+" not found");;
+//            return variable.getValue();
+            return null;
         }else if (ctx.expression()!=null) {
             return visitExpression(ctx.expression());
         } else if (ctx.variableDecl()!=null) {

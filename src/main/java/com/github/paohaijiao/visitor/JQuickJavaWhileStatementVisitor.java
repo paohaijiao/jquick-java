@@ -28,7 +28,7 @@ public class JQuickJavaWhileStatementVisitor extends JQuickJavaReturnStatementVi
     public Object visitWhileStatement(JQuickJavaParser.WhileStatementContext ctx) {
         Object result = null;
         while (toBoolean(visit(ctx.expression()))) {
-            enterScope();
+//            enterScope();
             try {
                 result = visitAction(ctx.action());
             } catch (Exception e) {
@@ -40,7 +40,7 @@ public class JQuickJavaWhileStatementVisitor extends JQuickJavaReturnStatementVi
                     e.printStackTrace();
                 }
             }finally{
-                exitScope();
+//                exitScope();
             }
         }
         return result;

@@ -73,19 +73,7 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
 
     JQuickJavaFunctionRegistry registry= JQuickJavaFunctionRegistry.getInstance();
 
-    protected void enterScope() {
-        JQuickJavaVariableContext current = contextStack.peek();
-        contextStack.push(new JQuickJavaVariableContext(current));
-    }
-    protected JQuickJavaVariableContext currentContext() {
-        return contextStack.peek();
-    }
 
-    protected void exitScope() {
-        if (contextStack.size() > 1) {
-            contextStack.pop();
-        }
-    }
 
     protected boolean toBoolean(Object value) {
         if (value instanceof Boolean) {

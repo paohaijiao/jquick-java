@@ -37,11 +37,11 @@ public class JQuickJavaAssignVisitor extends JQuickJavaLiteralVisitor {
             Object express=visitExpression(ctx.expression());
             String string=null==express?null:express.toString();
             Object value=mergeDataWithTypeReference(string,typeRef);
-            if(global){
-                updateVariableInStack(varName, value, typeRef);
-            }else{
-                currentContext().addVariable(varName, value, typeRef);
-            }
+//            if(global){
+//                updateVariableInStack(varName, value, typeRef);
+//            }else{
+//                currentContext().addVariable(varName, value, typeRef);
+//            }
             return value;
         }else{//update
             Object value = ctx.expression() != null ? visitExpression(ctx.expression()) : null;

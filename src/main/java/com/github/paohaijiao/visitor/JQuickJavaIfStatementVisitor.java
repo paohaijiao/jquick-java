@@ -24,16 +24,16 @@ public class JQuickJavaIfStatementVisitor extends JQuickJavaForStatementVisitor 
     @Override
     public Object visitIfStatement(JQuickJavaParser.IfStatementContext ctx) {
         if (toBoolean(visitConExpression(ctx.conExpression()))) {
-            enterScope();
+//            enterScope();
             Object result= visitAction(ctx.action());
-            exitScope();
+//            exitScope();
             return result;
         }
         for (int i = 0; i < ctx.elseIfConExpression().size(); i++) {
             if (toBoolean(visitElseIfConExpression(ctx.elseIfConExpression(i)))) {
-                enterScope();
+//                enterScope();
                 Object result =  visitElseIfAction(ctx.elseIfAction(i));
-                exitScope();
+//                exitScope();
                 return result;
             }
         }
@@ -45,9 +45,9 @@ public class JQuickJavaIfStatementVisitor extends JQuickJavaForStatementVisitor 
     @Override
     public Object visitElseIfAction(JQuickJavaParser.ElseIfActionContext ctx) {
          if(ctx.action()!=null) {
-             enterScope();
+//             enterScope();
              Object result=visitAction(ctx.action());
-             exitScope();
+//             exitScope();
              return result;
          }
          return null;

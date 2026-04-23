@@ -26,7 +26,7 @@ public class JQuickJavaForStatementVisitor extends JQuickJavaWhileStatementVisit
 
     @Override
     public Object visitForStatement(JQuickJavaParser.ForStatementContext ctx) {
-        enterScope();
+//        enterScope();
         Object result = null;
         try{
             if (ctx.variableDecl() != null) {
@@ -59,7 +59,7 @@ public class JQuickJavaForStatementVisitor extends JQuickJavaWhileStatementVisit
             e.printStackTrace();
 
         }finally {
-            exitScope();
+//            exitScope();
         }
         return result;
     }

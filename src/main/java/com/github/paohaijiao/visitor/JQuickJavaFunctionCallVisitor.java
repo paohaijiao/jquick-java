@@ -54,7 +54,7 @@ public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
                 JQuickJavaVariable variable=new JQuickJavaVariable(name,null,paramType);
                 variables.add(variable);
             }
-            currentContext().addScopeVariable(functionName, variables);
+//            currentContext().addScopeVariable(functionName, variables);
         }
         TokenStreamRewriter rewriter = new TokenStreamRewriter(tokenStream);
         if (ctx.action() != null) {
@@ -232,7 +232,7 @@ public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
             JQuickJavaFunctionFieldModel field=function.getFields().get(i);
             Object value=data.get(i);
             if(field.getType().targetAssignableFrom(value)){
-                this.currentContext().addVariable(field.getFieldName(),value,field.getType());
+//                this.currentContext().addVariable(field.getFieldName(),value,field.getType());
             }else{
                 JAssert.throwNewException("the field [ "+field.getFieldName()+" ] param type mismatch in this context");
             }
@@ -267,9 +267,10 @@ public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
     @Override
     public Object visitInstanceName(JQuickJavaParser.InstanceNameContext ctx) {
         String instanceName=ctx.getText();
-        JQuickJavaVariable variable= currentContext().getVariable(instanceName);
-        JAssert.notNull(variable,"can't find variable ["+instanceName+"]");
-        return variable.getValue();
+//        JQuickJavaVariable variable= currentContext().getVariable(instanceName);
+//        JAssert.notNull(variable,"can't find variable ["+instanceName+"]");
+//        return variable.getValue();
+        return null;
     }
     @Override
     public String visitMethodName(JQuickJavaParser.MethodNameContext ctx) {

@@ -27,10 +27,7 @@ import com.github.paohaijiao.util.JStringUtils;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 
 public class JQuickJavaLiteralVisitor extends JQuickJavaImportVisitor {
@@ -90,6 +87,16 @@ public class JQuickJavaLiteralVisitor extends JQuickJavaImportVisitor {
         JAssert.throwNewException("invalid string: " + ctx.getText());
         return null;
     }
+    @Override 
+    public List<Object> visitListLiteral(JQuickJavaParser.ListLiteralContext ctx) {
+        List<Object> list=new ArrayList<>();
+        ctx.expression().stream().forEach(item->{
+            Object object=visitExpression(item);
+            list.add(object);
+        });
+        return list;
+
+    }
 
 
     @Override
@@ -120,12 +127,9 @@ public class JQuickJavaLiteralVisitor extends JQuickJavaImportVisitor {
                 e.printStackTrace();
             }
         }else  if(null!=ctx.identifier()){
-            String identifier=ctx.identifier().getText();
-            JQuickJavaVariable variable = currentContext().getVariable(identifier);
-            Stack<JQuickJavaVariableContext> ss= this.contextStack;
-            JAssert.notNull(variable,"can't find variable ["+identifier+"]");
+            String identifier=visitIdentifier(ctx.identifier());
             //console.log(JLogLevel.DEBUG,"identifier="+identifier+"value:"+gson.toJson(variable));
-            return variable.getValue();
+            return identifier;
         }else  if(null!=ctx.listLiteral()){
             return ctx.listLiteral().getText();
         } else  if(null!=ctx.mapLiteral()){
