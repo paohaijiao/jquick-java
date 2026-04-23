@@ -1,4 +1,4 @@
-package com.github.paohaijiao.model;
+package com.github.paohaijiao.extract.model;
 
 import com.google.gson.Gson;
 

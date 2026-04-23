@@ -1,4 +1,4 @@
-package com.github.paohaijiao.function;/*
+package com.github.paohaijiao.methodInvocation2;/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,7 +18,6 @@ import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.extract.service.JService;
-import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;

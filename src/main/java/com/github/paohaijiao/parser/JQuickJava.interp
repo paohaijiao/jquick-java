@@ -30,7 +30,7 @@ null
 'var'
 'as'
 'return'
-'function'
+'def'
 'while'
 'for'
 '='
@@ -112,7 +112,7 @@ NEW
 VAR
 AS
 RETURN
-FUNCTION
+DEF
 WHILE
 FOR
 ASSIGN

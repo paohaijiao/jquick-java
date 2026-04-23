@@ -13,10 +13,10 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.function;
+package com.github.paohaijiao.methodInvocation2;
 
-import com.github.paohaijiao.model.JSchool;
-import com.github.paohaijiao.model.JStudent;
+import com.github.paohaijiao.extract.model.JSchool;
+import com.github.paohaijiao.extract.model.JStudent;
 import com.github.paohaijiao.support.JQuickJavaObjectFactory;
 import org.junit.Test;
 

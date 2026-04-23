@@ -30,7 +30,7 @@ public class JQuickJavaParser extends Parser {
 		T__9=10, T__10=11, T__11=12, DOT=13, GLOBAL=14, TYPESHORT=15, TYPENULL=16, 
 		THIS=17, CONTINUE=18, BREAK=19, TYPEINT=20, TYPEFLOAT=21, TYPEDOUBLE=22, 
 		TYPELONG=23, TYPEBOOLEAN=24, TYPEBYTE=25, IMPORT=26, NEW=27, VAR=28, AS=29, 
-		RETURN=30, FUNCTION=31, WHILE=32, FOR=33, ASSIGN=34, SEMICOLON=35, WITH=36, 
+		RETURN=30, DEF=31, WHILE=32, FOR=33, ASSIGN=34, SEMICOLON=35, WITH=36, 
 		IF=37, THEN=38, ELSEIF=39, ELSE=40, DOLLAR=41, LPAREN=42, RPAREN=43, LBRACE=44, 
 		RBRACE=45, GT=46, GE=47, LT=48, LE=49, EQ=50, NE=51, AND=52, OR=53, ADD=54, 
 		MINUS=55, MUL=56, DIV=57, CONTAIN=58, NOTCONTAIN=59, START=60, NOTSTART=61, 
@@ -79,11 +79,11 @@ public class JQuickJavaParser extends Parser {
 			"'else'", "'console.log('", "'@'", "'.class'", "'.'", "'global'", "'short'", 
 			"'null'", "'this'", "'continue'", "'break'", "'int'", "'float'", "'double'", 
 			"'long'", "'boolean'", "'byte'", "'import'", "'new'", "'var'", "'as'", 
-			"'return'", "'function'", "'while'", "'for'", "'='", "';'", "'WITH'", 
-			"'IF'", "'THEN'", "'ELSEIF'", "'ELSE'", "'$'", "'('", "')'", "'{'", "'}'", 
-			"'>'", "'>='", "'<'", "'<='", "'=='", "'!='", "'&&'", "'||'", "'+'", 
-			"'-'", "'*'", "'/'", "'CONTAIN'", "'NOTCONTAIN'", "'START'", "'NOTSTART'", 
-			"'END'", "'NOTEND'", "'true'", "'false'", "':'"
+			"'return'", "'def'", "'while'", "'for'", "'='", "';'", "'WITH'", "'IF'", 
+			"'THEN'", "'ELSEIF'", "'ELSE'", "'$'", "'('", "')'", "'{'", "'}'", "'>'", 
+			"'>='", "'<'", "'<='", "'=='", "'!='", "'&&'", "'||'", "'+'", "'-'", 
+			"'*'", "'/'", "'CONTAIN'", "'NOTCONTAIN'", "'START'", "'NOTSTART'", "'END'", 
+			"'NOTEND'", "'true'", "'false'", "':'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -92,7 +92,7 @@ public class JQuickJavaParser extends Parser {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, "DOT", "GLOBAL", "TYPESHORT", "TYPENULL", "THIS", "CONTINUE", "BREAK", 
 			"TYPEINT", "TYPEFLOAT", "TYPEDOUBLE", "TYPELONG", "TYPEBOOLEAN", "TYPEBYTE", 
-			"IMPORT", "NEW", "VAR", "AS", "RETURN", "FUNCTION", "WHILE", "FOR", "ASSIGN", 
+			"IMPORT", "NEW", "VAR", "AS", "RETURN", "DEF", "WHILE", "FOR", "ASSIGN", 
 			"SEMICOLON", "WITH", "IF", "THEN", "ELSEIF", "ELSE", "DOLLAR", "LPAREN", 
 			"RPAREN", "LBRACE", "RBRACE", "GT", "GE", "LT", "LE", "EQ", "NE", "AND", 
 			"OR", "ADD", "MINUS", "MUL", "DIV", "CONTAIN", "NOTCONTAIN", "START", 
@@ -2698,7 +2698,7 @@ public class JQuickJavaParser extends Parser {
 		public ClasssTypeContext classsType() {
 			return getRuleContext(ClasssTypeContext.class,0);
 		}
-		public TerminalNode FUNCTION() { return getToken(JQuickJavaParser.FUNCTION, 0); }
+		public TerminalNode DEF() { return getToken(JQuickJavaParser.DEF, 0); }
 		public TerminalNode IDENTIFIER() { return getToken(JQuickJavaParser.IDENTIFIER, 0); }
 		public TerminalNode LPAREN() { return getToken(JQuickJavaParser.LPAREN, 0); }
 		public TerminalNode RPAREN() { return getToken(JQuickJavaParser.RPAREN, 0); }
@@ -2737,7 +2737,7 @@ public class JQuickJavaParser extends Parser {
 			setState(390);
 			classsType();
 			setState(391);
-			match(FUNCTION);
+			match(DEF);
 			setState(392);
 			match(IDENTIFIER);
 			setState(393);

@@ -13,7 +13,7 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.model;
+package com.github.paohaijiao.extract.model;
 
 import java.util.List;
 import java.util.Map;

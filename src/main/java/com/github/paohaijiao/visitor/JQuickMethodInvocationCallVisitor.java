@@ -33,9 +33,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class JQuickJavaFunctionCallVisitor extends JQuickJavaPrimaryVisitor {
+public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor {
 
-    private static final Class<?> PKG = JQuickJavaFunctionCallVisitor.class;
+    private static final Class<?> PKG = JQuickMethodInvocationCallVisitor.class;
+
+
+    @Override
+    public String visitAccessObjectName(JQuickJavaParser.AccessObjectNameContext ctx) {
+        if (ctx.identifier()!=null) {
+            return visitIdentifier(ctx.identifier());
+        }else{
+            return null;
+        }
+    }
+
 
     @Override
     public Object  visitFunctionDefinition(JQuickJavaParser.FunctionDefinitionContext ctx) {

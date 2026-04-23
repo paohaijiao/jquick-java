@@ -23,7 +23,7 @@ import com.github.paohaijiao.util.JStringUtils;
 
 import java.math.BigDecimal;
 
-public class JQuickJavaMathVisitor extends JQuickJavaFunctionCallVisitor {
+public class JQuickJavaMathVisitor extends JQuickMethodInvocationCallVisitor {
 
     private static final Class<?> PKG = JQuickJavaMathVisitor.class;
 

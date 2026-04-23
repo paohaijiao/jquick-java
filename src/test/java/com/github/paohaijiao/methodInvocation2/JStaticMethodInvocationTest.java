@@ -1,4 +1,4 @@
-package com.github.paohaijiao.function;/*
+package com.github.paohaijiao.methodInvocation2;/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -53,7 +53,7 @@ public class JStaticMethodInvocationTest {
     }
 
     @Test
-    public void testSimpleStaticMethodCall() {
+    public void methodInvocation_staticCall1() {
         String rule = "java.lang.Math::max(int:5, int:10);";
         System.out.println(rule);
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
@@ -67,10 +67,10 @@ public class JStaticMethodInvocationTest {
     }
 
     @Test
-    public void testStaticMethodWithPrimitiveArguments() {
-        String rule = "java.lang.Math::pow(double:2, double:3);";
-        System.out.println(rule);
-        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
+    public void methodInvocation_staticCall2() {
+        String lexerStr = "java.lang.Math::pow(double:2, double:3);";
+        System.out.println(lexerStr);
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(lexerStr));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
@@ -81,9 +81,8 @@ public class JStaticMethodInvocationTest {
     }
 
     @Test
-    public void testStaticMethodWithStringArgument() {
+    public void methodInvocation_staticCall3() {
         String rule = "java.lang.String::valueOf(int:123);";
-        System.out.println(rule);
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
@@ -95,27 +94,23 @@ public class JStaticMethodInvocationTest {
     }
 
     @Test
-    public void testStaticMethodWithCollectionArgument() {
-//        java.util.List collections=null;
-//        //String rule = "java.util.Collections::sort<java.util.List<java.lang.Integer>>(listVar);";
-//        String rule = "java.util.Collections::sort(List<java.lang.Integer>:listVar);";
-//        System.out.println(rule);
-//        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
-//        CommonTokenStream tokens = new CommonTokenStream(lexer);
-//        JQuickJavaParser parser = new JQuickJavaParser(tokens);
-//        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
-//        JContext params = setUp();
-//        JQuickLangCommonVisitor tv = new JQuickLangCommonVisitor(params,lexer,tokens,parser);
-//        List<Integer> listVar = new ArrayList<Integer>() ;
-//        listVar.add(5);
-//        listVar.add(2);
-//        listVar.add(3);
-//        VariableContext variableTree=new VariableContext("root");
-//        JTypeReference<List<Integer>> typeRef = JTypeReference.listOf(Integer.class);
-//        variableTree.addVariable("listVar",listVar,typeRef);
-//        tv.setCurrent(variableTree);
-//        Object result = tv.visit(tree);
-//        System.out.println(result);
+    public void methodInvocation_staticCall4() {
+        java.util.List collections=null;
+        //String rule = "java.util.Collections::sort<java.util.List<java.lang.Integer>>(listVar);";
+        String rule = "java.util.Collections::sort(List<java.lang.Integer>:listVar);";
+        System.out.println(rule);
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JContext params = setUp();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        List<Integer> listVar = new ArrayList<Integer>() ;
+        listVar.add(5);
+        listVar.add(2);
+        listVar.add(3);
+        Object result = tv.visit(tree);
+        System.out.println(result);
     }
 
     @Test

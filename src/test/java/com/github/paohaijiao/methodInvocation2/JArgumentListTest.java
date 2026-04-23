@@ -1,4 +1,4 @@
-package com.github.paohaijiao.function;
+package com.github.paohaijiao.methodInvocation2;
 
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;

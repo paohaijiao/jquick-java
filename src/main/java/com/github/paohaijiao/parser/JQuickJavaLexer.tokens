@@ -28,7 +28,7 @@ NEW=27
 VAR=28
 AS=29
 RETURN=30
-FUNCTION=31
+DEF=31
 WHILE=32
 FOR=33
 ASSIGN=34
@@ -107,7 +107,7 @@ NEWLINE=79
 'var'=28
 'as'=29
 'return'=30
-'function'=31
+'def'=31
 'while'=32
 'for'=33
 '='=34

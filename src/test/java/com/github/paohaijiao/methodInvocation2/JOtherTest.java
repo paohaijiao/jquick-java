@@ -13,7 +13,7 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.function;
+package com.github.paohaijiao.methodInvocation2;
 
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
@@ -151,7 +151,7 @@ public class JOtherTest {
     }
     @Test
     public void  functionDefinition() throws IOException {
-        String rule = "function.txt name(int:a,float:b){var a=1;}";
+        String rule = "function name(int:a,float:b){int a=1;}";
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
