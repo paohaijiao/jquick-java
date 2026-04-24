@@ -15,9 +15,11 @@
  */
 package com.github.paohaijiao.visitor;
 
+import com.github.paohaijiao.builtins.JQuickJavaBuiltinFunctionManager;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.executor.JQuickJavaActionExecutor;
 import com.github.paohaijiao.model.*;
+import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.support.JQuickJavaObjectFactory;
 import com.github.paohaijiao.support.JQuickJavaReflectionFactory;
@@ -31,6 +33,8 @@ import org.antlr.v4.runtime.misc.Interval;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor {
@@ -69,16 +73,11 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         TokenStreamRewriter rewriter = new TokenStreamRewriter(tokenStream);
         if (ctx.action() != null) {
             ctx.action().statement().forEach(stmt -> {
-                if (stmt.expression() != null &&
-                        stmt.expression().methodInvocation() != null &&
-                        stmt.expression().methodInvocation() instanceof JQuickJavaParser.ConstructorCallContext) {
-                    JQuickJavaParser.ConstructorCallContext constructorCtx =
-                            (JQuickJavaParser.ConstructorCallContext) stmt.expression().methodInvocation();
+                if (stmt.expression() != null && stmt.expression().methodInvocation() != null && stmt.expression().methodInvocation() instanceof JQuickJavaParser.ConstructorCallContext) {
+                    JQuickJavaParser.ConstructorCallContext constructorCtx = (JQuickJavaParser.ConstructorCallContext) stmt.expression().methodInvocation();
                     Token newToken = constructorCtx.NEW().getSymbol();
                     Token nextToken = tokenStream.get(newToken.getTokenIndex() + 1);
-                    String whitespace = tokenStream.getText(
-                            Interval.of(newToken.getTokenIndex(), nextToken.getTokenIndex() - 1)
-                    );
+                    String whitespace = tokenStream.getText(Interval.of(newToken.getTokenIndex(), nextToken.getTokenIndex() - 1));
                     if (whitespace.trim().isEmpty()) {
                         rewriter.insertAfter(newToken, " ");
                     }
@@ -270,6 +269,21 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
             throw new RuntimeException("please double check static method invocation : " + methodName, e);
         }
 
+    }
+    @Override
+    public Object visitBuiltinMethodCall(JQuickJavaParser.BuiltinMethodCallContext ctx) {
+        JQuickJavaBuiltinFunctionManager manager=new JQuickJavaBuiltinFunctionManager();
+        JAssert.notNull(ctx.methodName(),"the method name is not support");
+        String methodName = visitMethodName(ctx.methodName());
+        JAssert.notNull(methodName,"the method name is not support");
+        JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
+        if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&& !ctx.argumentList().literalItem().isEmpty()){
+            model=visitArgumentList(ctx.argumentList());
+        }
+        List<Object>  args=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).collect(Collectors.toList());
+        JContext context=this.parser.getJContext();
+        Stack<Map<String, Object>> stack= this.parser.deepCopyScopeStack();
+        return  JQuickJavaBuiltinFunctionManager.invoke(methodName,context,stack,args);
     }
 
     @Override

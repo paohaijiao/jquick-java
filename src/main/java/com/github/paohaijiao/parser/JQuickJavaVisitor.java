@@ -1,4 +1,4 @@
-// Generated from D:/my/jthornruleGrammer/QuickJava/JQuickJava.g4 by ANTLR 4.13.2
+// Generated from D:/idea/jthornruleGrammer/QuickJava/JQuickJava.g4 by ANTLR 4.13.2
 
 package com.github.paohaijiao.parser;
 
@@ -286,6 +286,13 @@ public interface JQuickJavaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitThisMethodCall(JQuickJavaParser.ThisMethodCallContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code builtinMethodCall}
+	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBuiltinMethodCall(JQuickJavaParser.BuiltinMethodCallContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code accessStaticMethodCall}
 	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.

@@ -1,4 +1,4 @@
-// Generated from D:/my/jthornruleGrammer/QuickJava/JQuickJava.g4 by ANTLR 4.13.2
+// Generated from D:/idea/jthornruleGrammer/QuickJava/JQuickJava.g4 by ANTLR 4.13.2
 
 package com.github.paohaijiao.parser;
 
@@ -467,6 +467,18 @@ public interface JQuickJavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitThisMethodCall(JQuickJavaParser.ThisMethodCallContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code builtinMethodCall}
+	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
+	 * @param ctx the parse tree
+	 */
+	void enterBuiltinMethodCall(JQuickJavaParser.BuiltinMethodCallContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code builtinMethodCall}
+	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
+	 * @param ctx the parse tree
+	 */
+	void exitBuiltinMethodCall(JQuickJavaParser.BuiltinMethodCallContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code accessStaticMethodCall}
 	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.

@@ -1,4 +1,4 @@
-// Generated from D:/my/jthornruleGrammer/QuickJava/JQuickJava.g4 by ANTLR 4.13.2
+// Generated from D:/idea/jthornruleGrammer/QuickJava/JQuickJava.g4 by ANTLR 4.13.2
 
 package com.github.paohaijiao.parser;
 
@@ -553,6 +553,18 @@ public class JQuickJavaBaseListener implements JQuickJavaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitThisMethodCall(JQuickJavaParser.ThisMethodCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBuiltinMethodCall(JQuickJavaParser.BuiltinMethodCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBuiltinMethodCall(JQuickJavaParser.BuiltinMethodCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
