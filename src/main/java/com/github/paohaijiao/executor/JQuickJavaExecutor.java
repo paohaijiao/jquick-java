@@ -134,6 +134,7 @@ public class JQuickJavaExecutor extends JAbstractAntlrExecutor<String, Object> {
     @Override
     protected Object parse(Parser parser) throws JAntlrExecutionException {
         JQuickJavaParser calcParser = (JQuickJavaParser) parser;
+        calcParser.enterScope();
         JQuickJavaParser.ProgramContext tree = calcParser.program();
         CommonTokenStream commonTokenStream=(CommonTokenStream)tokenStream;
         JQuickJavaCommonVisitor visitor = new JQuickJavaCommonVisitor(context,lexer,commonTokenStream,calcParser);

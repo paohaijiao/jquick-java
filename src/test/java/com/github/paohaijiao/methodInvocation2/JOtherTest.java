@@ -83,6 +83,18 @@ public class JOtherTest {
         System.out.println(object);
     }
     @Test
+    public void primary_this() {
+        String rule = "this";
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.ThisContext tree = parser.this_();
+        JContext context=new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(context,lexer,tokens,parser);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
+    @Test
     public void testConstructorWithNoArguments() {
         String rule = "int:1,float:2";
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));

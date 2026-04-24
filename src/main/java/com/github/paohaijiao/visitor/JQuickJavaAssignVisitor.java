@@ -27,31 +27,17 @@ public class JQuickJavaAssignVisitor extends JQuickJavaLiteralVisitor {
     public Object visitVariableDecl(JQuickJavaParser.VariableDeclContext ctx) {
         JAssert.notNull(ctx.IDENTIFIER(),"identifier required not null");
         JAssert.notNull(ctx.expression(),"expression required not null");
-        boolean global=false;
-        if(ctx.GLOBAL()!=null){
-            global=true;
-        }
         String varName = ctx.IDENTIFIER().getText();
         if(ctx.classsType() != null){// define
             JQuickJavaTypeReference<?> typeRef=visitClasssType(ctx.classsType());
             Object express=visitExpression(ctx.expression());
             String string=null==express?null:express.toString();
             Object value=mergeDataWithTypeReference(string,typeRef);
-//            if(global){
-//                updateVariableInStack(varName, value, typeRef);
-//            }else{
-//                currentContext().addVariable(varName, value, typeRef);
-//            }
+            this.parser.declareVar(varName,value);
             return value;
         }else{//update
             Object value = ctx.expression() != null ? visitExpression(ctx.expression()) : null;
-            if(value instanceof JQuickJavaLiteralModel){
-                JQuickJavaLiteralModel literalModel=(JQuickJavaLiteralModel)value;
-//                updateVariableInStack(varName, value, literalModel.getType().getTypeReference());
-            }else{
-                JQuickJavaLiteralModel literalModel=convert(value,ctx.getText());
-//                updateVariableInStack(varName, value, literalModel.getType().getTypeReference());
-            }
+            this.parser.declareVar(varName,value);
             return value;
         }
     }

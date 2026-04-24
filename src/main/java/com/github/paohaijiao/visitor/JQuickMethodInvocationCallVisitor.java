@@ -126,7 +126,6 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
     public JQuickJavaTypeReferenceAndValue visitLiteralItem(JQuickJavaParser.LiteralItemContext ctx) {
         JAssert.notNull(ctx.classsType(), "classsType must not be null");
         JAssert.notNull(ctx.literal(), "literal require not be null");
-        String str=ctx.getText();
         JQuickJavaTypeReferenceAndValue typeReferenceAndValue=new JQuickJavaTypeReferenceAndValue();
         JQuickJavaTypeReference<?> classType=visitClasssType(ctx.classsType());
         Object literal=visitLiteral(ctx.literal());
@@ -137,7 +136,6 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
                 jsonString = gson.toJson(literal);
             }
         }
-
         typeReferenceAndValue.setTypeArguments(classType);
         Object value=this.mergeDataWithTypeReference(jsonString,classType);
         typeReferenceAndValue.setData(value);
@@ -166,7 +164,7 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         String qualifiedName = ctx.classsType() != null ? ctx.classsType().getText() : null;
         String methodName = visitMethodName(ctx.methodName());
         JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
-        if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&&ctx.argumentList().literalItem().size()>0){
+        if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&& !ctx.argumentList().literalItem().isEmpty()){
             model=visitArgumentList(ctx.argumentList());
         }
         try {
@@ -242,7 +240,7 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
             JQuickJavaFunctionFieldModel field=function.getFields().get(i);
             Object value=data.get(i);
             if(field.getType().targetAssignableFrom(value)){
-//                this.currentContext().addVariable(field.getFieldName(),value,field.getType());
+               //this.currentContext().addVariable(field.getFieldName(),value,field.getType());
             }else{
                 JAssert.throwNewException("the field [ "+field.getFieldName()+" ] param type mismatch in this context");
             }
@@ -263,12 +261,13 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         try {
             Object target=visitAccessStaticVariable(ctx.accessStaticVariable());
             JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
-            if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&&ctx.argumentList().literalItem().size()>0){
+            if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&& !ctx.argumentList().literalItem().isEmpty()){
                 model=visitArgumentList(ctx.argumentList());
             }
             List<Object>  args=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).collect(Collectors.toList());
             return  JQuickJavaObjectFactory.createByInstanceMethod(target, methodName, args);
         } catch (Exception e) {
+            console.error("please double check static method invocation : " + methodName, e);
             throw new RuntimeException("please double check static method invocation : " + methodName, e);
         }
 
@@ -286,6 +285,11 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         JAssert.notNull(ctx.IDENTIFIER(), "the function name  is not null");
         return ctx.IDENTIFIER().getText();
     }
+    @Override
+    public String  visitThis(JQuickJavaParser.ThisContext ctx) {
+        return ctx.THIS().getText();
+    }
+
 
 
     @Override

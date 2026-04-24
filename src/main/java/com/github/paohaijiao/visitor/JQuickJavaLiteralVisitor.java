@@ -126,8 +126,9 @@ public class JQuickJavaLiteralVisitor extends JQuickJavaImportVisitor {
             }
         }else  if(null!=ctx.identifier()){
             String identifier=visitIdentifier(ctx.identifier());
-            //console.log(JLogLevel.DEBUG,"identifier="+identifier+"value:"+gson.toJson(variable));
-            return identifier;
+            Object object= this.parser.findVar(identifier);
+            JAssert.notNull(object,"identifier["+identifier+"] not found");
+            return object;
         }else  if(null!=ctx.listLiteral()){
             return ctx.listLiteral().getText();
         } else  if(null!=ctx.mapLiteral()){

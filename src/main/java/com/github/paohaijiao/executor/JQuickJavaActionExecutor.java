@@ -39,11 +39,16 @@ public class JQuickJavaActionExecutor extends JAbstractAntlrExecutor<String, Obj
     public JQuickJavaActionExecutor() {
     }
     public JQuickJavaActionExecutor(JContext jcontext) {
-        context.putAll(jcontext);
+        if(jcontext!=null){
+            context.putAll(jcontext);
+        }
+
     }
 
     private void initializeContext(JContext jcontext) {
-        context.putAll(jcontext);
+        if(jcontext!=null){
+            context.putAll(jcontext);
+        }
     }
 
     @Override
