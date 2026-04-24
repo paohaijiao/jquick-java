@@ -20,11 +20,6 @@ public class JQuickJavaPrimaryVisitor extends JQuickJavaAssignVisitor {
 
     private static final Class<?> PKG = JQuickJavaPrimaryVisitor.class;
 
-    @Override
-    public String visitAccessObjectName(JQuickJavaParser.AccessObjectNameContext ctx) {
-        return visitIdentifier(ctx.identifier());
-    }
-
 
     @Override
     public Object visitPrimary(JQuickJavaParser.PrimaryContext ctx) {

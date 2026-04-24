@@ -277,10 +277,9 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
     @Override
     public Object visitInstanceName(JQuickJavaParser.InstanceNameContext ctx) {
         String instanceName=ctx.getText();
-//        JQuickJavaVariable variable= currentContext().getVariable(instanceName);
-//        JAssert.notNull(variable,"can't find variable ["+instanceName+"]");
-//        return variable.getValue();
-        return null;
+        Object instance=parser.findVar(instanceName);
+        JAssert.notNull(instance, "the instance not initialize ["+instanceName+"]");
+        return instance;
     }
     @Override
     public String visitMethodName(JQuickJavaParser.MethodNameContext ctx) {

@@ -15,6 +15,7 @@
  */
 package com.github.paohaijiao.methodInvocation2;
 
+import com.github.paohaijiao.model.JQuickJavaImportContainerModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
@@ -30,6 +31,57 @@ import java.lang.invoke.MethodType;
 
 public class JOtherTest {
 
+
+    @Test
+    public void accessObjectName() {
+        String rule = "q";
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.AccessObjectNameContext tree = parser.accessObjectName();
+        JContext context=new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(context,lexer,tokens,parser);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
+    @Test
+    public void accessStaticVariable() {
+        String rule = "com.github.paohaijiao.extract.model.JStudent@hello";
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.AccessStaticVariableContext tree = parser.accessStaticVariable();
+        JContext context=new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(context,lexer,tokens,parser);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
+    @Test
+    public void methodName() {
+        String rule = "methoda";
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.MethodNameContext tree = parser.methodName();
+        JContext context=new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(context,lexer,tokens,parser);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
+    @Test
+    public void instanceName() {
+        String rule = "a";
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.InstanceNameContext tree = parser.instanceName();
+        JContext context=new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(context,lexer,tokens,parser);
+        parser.enterScope();
+        parser.declareVar("a",10);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
     @Test
     public void testConstructorWithNoArguments() {
         String rule = "int:1,float:2";
@@ -164,7 +216,7 @@ public class JOtherTest {
     }
     @Test
     public void  functionDefinition() throws IOException {
-        String rule = "function name(int:a,float:b){int a=1;}";
+        String rule = "int def name(int:a,float:b){int a=1;}";
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);

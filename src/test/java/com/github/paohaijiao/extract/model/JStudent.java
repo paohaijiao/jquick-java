@@ -18,6 +18,7 @@ package com.github.paohaijiao.extract.model;
 import java.util.List;
 
 public class JStudent {
+    public static String hello="hello word";
 
     private String name;
 

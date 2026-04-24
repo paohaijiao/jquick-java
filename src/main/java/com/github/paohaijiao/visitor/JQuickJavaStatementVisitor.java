@@ -27,7 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JQuickJavaStatementVisitor extends JQuickJavaIfStatementVisitor {
+
     private static final Class<?> PKG = JQuickJavaStatementVisitor.class;
+
     @Override
     public Object visitControlStatement(JQuickJavaParser.ControlStatementContext ctx) {
         if (ctx.ifStatement() != null) {
@@ -75,7 +77,6 @@ public class JQuickJavaStatementVisitor extends JQuickJavaIfStatementVisitor {
         }catch (Exception e){
             e.printStackTrace();
         }
-
         throw new RuntimeException("Unknown  accessStaticVariable");
 
     }

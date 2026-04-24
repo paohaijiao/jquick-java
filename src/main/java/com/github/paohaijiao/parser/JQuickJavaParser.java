@@ -1,8 +1,9 @@
-// Generated from D:/idea/jthornruleGrammer/QuickJava/JQuickJava.g4 by ANTLR 4.13.2
+// Generated from D:/my/jthornruleGrammer/QuickJava/JQuickJava.g4 by ANTLR 4.13.2
 
 package com.github.paohaijiao.parser;
 
 import com.github.paohaijiao.console.JConsole;
+import com.github.paohaijiao.param.JContext;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATN;
 import org.antlr.v4.runtime.atn.ATNDeserializer;
@@ -148,22 +149,32 @@ public class JQuickJavaParser extends Parser {
 	public ATN getATN() { return _ATN; }
 
 
+
 	    public static boolean banner=true;
+
 	    public static JConsole console=new JConsole();
+
+	    public static JContext context=new JContext();
+
 	    private Stack<Map<String, Object>> scopes = new Stack<>();
 
-	    void start(){
+	    public void start(){
 	        enterScope(); // 进入全局作用域
 	     }
+	    public  void init(JContext jContext) {
+	    	if(!jContext.isEmpty()){
+	    		context.putAll(jContext);
+	    	}
+	    }
 	      // 进入新作用域
-	     void enterScope() {
+	   public  void enterScope() {
 	        scopes.push(new HashMap<>());
 	     }
-	     void exitScope() {
+	   public  void exitScope() {
 	        scopes.pop();
-	     }
+	   }
 	     // 声明变量
-	    void declareVar(String name, Object value) {
+	    public void declareVar(String name, Object value) {
 	        Map<String, Object> current = scopes.peek();
 	        if (current.containsKey(name)) {
 	            console.error("Variable " + name + " already declared");
@@ -172,18 +183,22 @@ public class JQuickJavaParser extends Parser {
 	        }
 	    }
 	     // 查找变量（从内向外）
-	    Object findVar(String name) {
+	    public Object findVar(String name) {
+	    	if(context.containsKey(name)) {
+	    		return context.get(name);
+	    	}
 	        for (int i = scopes.size() - 1; i >= 0; i--) {
 	            if (scopes.get(i).containsKey(name)) {
 	                return scopes.get(i).get(name);
 	            }
 	        }
+
 	        console.error("Undefined variable: " + name);
 	        return null;
 	    }
 
 	      // 赋值变量（从内向外找，找不到就在当前作用域创建）
-	    void assignVar(String name, Object value) {
+	   public  void assignVar(String name, Object value) {
 	         for (int i = scopes.size() - 1; i >= 0; i--) {
 	              if (scopes.get(i).containsKey(name)) {
 	                    scopes.get(i).put(name, value);
