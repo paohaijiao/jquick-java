@@ -13,9 +13,8 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.methodInvocation2;
+package com.github.paohaijiao.primary2;
 
-import com.github.paohaijiao.model.JQuickJavaImportContainerModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;

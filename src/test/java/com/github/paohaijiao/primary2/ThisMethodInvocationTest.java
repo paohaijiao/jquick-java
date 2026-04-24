@@ -1,4 +1,4 @@
-package com.github.paohaijiao.methodInvocation2;
+package com.github.paohaijiao.primary2;
 
 import com.github.paohaijiao.executor.JQuickJavaExecutor;
 import org.junit.Test;
