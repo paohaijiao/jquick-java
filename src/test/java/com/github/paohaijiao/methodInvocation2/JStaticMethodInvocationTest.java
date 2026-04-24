@@ -61,7 +61,7 @@ public class JStaticMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object result = tv.visit(tree);
         System.out.println(result);
     }
@@ -75,7 +75,7 @@ public class JStaticMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object result = tv.visit(tree);
         System.out.println(result);
     }
@@ -88,7 +88,7 @@ public class JStaticMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object result = tv.visit(tree);
         System.out.println(result);
     }
@@ -104,7 +104,7 @@ public class JStaticMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         List<Integer> listVar = new ArrayList<Integer>() ;
         listVar.add(5);
         listVar.add(2);
@@ -122,7 +122,7 @@ public class JStaticMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object result = tv.visit(tree);
         System.out.println(result);
     }
@@ -137,7 +137,7 @@ public class JStaticMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object result = tv.visit(tree);
         System.out.println(result);
         assertEquals("Number: 42, String: test", result);
@@ -152,7 +152,7 @@ public class JStaticMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object result = tv.visit(tree);
         System.out.println(result);
     }
@@ -166,7 +166,7 @@ public class JStaticMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object result = tv.visit(tree);
         System.out.println(result);
     }
@@ -180,7 +180,7 @@ public class JStaticMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object result = tv.visit(tree);
         System.out.println(result);
     }
@@ -194,7 +194,7 @@ public class JStaticMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object result = tv.visit(tree);
         System.out.println(result);
     }
@@ -207,7 +207,7 @@ public class JStaticMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object result = tv.visit(tree);
         System.out.println(result);
     }
@@ -220,7 +220,7 @@ public class JStaticMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object result = tv.visit(tree);
         System.out.println(result);
     }

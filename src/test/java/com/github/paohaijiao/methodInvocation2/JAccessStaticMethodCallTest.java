@@ -50,7 +50,7 @@ public class JAccessStaticMethodCallTest {
         JContext params = new JContext();
         parser.enterScope();
         parser.declareVar("a", "hello world");
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object result = tv.visit(tree);
         System.out.println(result);
     }

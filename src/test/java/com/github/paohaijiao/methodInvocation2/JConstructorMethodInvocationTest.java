@@ -59,7 +59,7 @@ public class JConstructorMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -73,7 +73,7 @@ public class JConstructorMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -87,7 +87,7 @@ public class JConstructorMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -105,7 +105,7 @@ public class JConstructorMethodInvocationTest {
 //        };
 //        listVar.addAll(Arrays.asList(1, 2, 3));
 //
-//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params, JVariableContextBuilder.mockData(),lexer,tokens,parser);
+//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor( JVariableContextBuilder.mockData(),lexer,tokens,parser);
 //        Object object = tv.visit(tree);
 //        System.out.println(object);
     }
@@ -122,7 +122,7 @@ public class JConstructorMethodInvocationTest {
 //        JQuickJavaParser parser = new JQuickJavaParser(tokens);
 //        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
 //        JContext params = setUp();
-//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,JVariableContextBuilder.mockData(),lexer,tokens,parser);
+//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(JVariableContextBuilder.mockData(),lexer,tokens,parser);
 //        Object object = tv.visit(tree);
 //        System.out.println(object);
     }
@@ -136,7 +136,7 @@ public class JConstructorMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
         assert (object instanceof ArrayList);
@@ -151,7 +151,7 @@ public class JConstructorMethodInvocationTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
         JContext params = setUp();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }

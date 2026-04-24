@@ -25,15 +25,7 @@ public class JQuickJavaCommonVisitor extends JQuickJavaStatementVisitor {
 
     private static final Class<?> PKG = JQuickJavaCommonVisitor.class;
 
-    public JQuickJavaCommonVisitor(JContext context ,JQuickJavaLexer lexer, CommonTokenStream tokenStream, JQuickJavaParser parser) {
-        this.context = context;
-        this.lexer = lexer;
-        this.tokenStream = tokenStream;
-        this.parser = parser;
-    }
-
     public JQuickJavaCommonVisitor(JQuickJavaLexer lexer, CommonTokenStream tokenStream, JQuickJavaParser parser) {
-        this.context = new JContext();
         this.lexer = lexer;
         this.tokenStream = tokenStream;
         this.parser = parser;

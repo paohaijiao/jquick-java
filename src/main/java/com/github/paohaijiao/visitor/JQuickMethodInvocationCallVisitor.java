@@ -234,8 +234,7 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         JQuickJavaTypeReference<?>[] references=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getTypeArguments).toArray(JQuickJavaTypeReference[]::new);
         JQuickJavaFunctionDefinitionModel function = registry.lookupFunction(methodName,references);//find the best match method
         JAssert.notNull(function,"can't find function ["+methodName+"] based the parameter [ "+references+" ] you gived");
-        JQuickJavaActionExecutor executor=new JQuickJavaActionExecutor();
-        executor.intExecuteEnv(this.parser.getJContext());
+        JQuickJavaActionExecutor executor=new JQuickJavaActionExecutor(this.parser.getJContext(),this.parser.copyCurrentScope());
         List<Object> data= model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).collect(Collectors.toList());
         for (int i=0;i<function.getFields().size();i++){
             JQuickJavaFunctionFieldModel field=function.getFields().get(i);
@@ -246,7 +245,6 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
                 JAssert.throwNewException("the field [ "+field.getFieldName()+" ] param type mismatch in this context");
             }
         }
-        executor.intExecuteEnv(this.context);
         Object object=executor.execute(function.getAction());
         if(null==object){
             return null;

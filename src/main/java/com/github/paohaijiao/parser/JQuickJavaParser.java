@@ -178,6 +178,9 @@ public class JQuickJavaParser extends Parser {
 	   }
 	     // 声明变量
 	    public void declareVar(String name, Object value) {
+	        if (!scopes.isEmpty()) {
+	        	enterScope();
+	        }
 	        Map<String, Object> current = scopes.peek();
 	        if (current.containsKey(name)) {
 	            console.error("Variable " + name + " already declared");
@@ -195,13 +198,12 @@ public class JQuickJavaParser extends Parser {
 	                return scopes.get(i).get(name);
 	            }
 	        }
-
 	        console.error("Undefined variable: " + name);
 	        return null;
 	    }
 
 	      // 赋值变量（从内向外找，找不到就在当前作用域创建）
-	   public  void assignVar(String name, Object value) {
+	    public  void assignVar(String name, Object value) {
 	         for (int i = scopes.size() - 1; i >= 0; i--) {
 	              if (scopes.get(i).containsKey(name)) {
 	                    scopes.get(i).put(name, value);
@@ -211,7 +213,22 @@ public class JQuickJavaParser extends Parser {
 	         // 隐式声明
 	         scopes.peek().put(name, value);
 	    }
-
+	    public Stack<Map<String, Object>> deepCopyScopeStack() {
+	        Stack<Map<String, Object>> newStack = new Stack<>();
+	            for (Map<String, Object> scope : scopes) {
+	                Map<String, Object> newScope = new HashMap<>();
+	                newScope.putAll(scope);
+	                newStack.add(newScope);
+	            }
+	        return newStack;
+	    }
+	     public Map<String, Object> copyCurrentScope() {
+	        Stack<Map<String, Object>> copyStack=deepCopyScopeStack();
+	            if (copyStack.isEmpty()) {
+	                return new HashMap<>();
+	            }
+	            return new HashMap<>(copyStack.peek());
+	       }
 
 	public JQuickJavaParser(TokenStream input) {
 		super(input);

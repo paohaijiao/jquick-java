@@ -42,7 +42,7 @@ public class JLiteralTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -54,7 +54,7 @@ public class JLiteralTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -67,7 +67,7 @@ public class JLiteralTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -78,7 +78,7 @@ public class JLiteralTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -89,7 +89,7 @@ public class JLiteralTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -100,7 +100,7 @@ public class JLiteralTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.LiteralContext tree = parser.literal();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -112,7 +112,7 @@ public class JLiteralTest {
         JQuickJavaParser.VariablesContext tree = parser.variables();
         JContext params = new JContext();
         params.put("type", "string");
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -123,7 +123,7 @@ public class JLiteralTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.DateContext tree = parser.date();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -135,7 +135,7 @@ public class JLiteralTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.DateContext tree = parser.date();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -147,7 +147,7 @@ public class JLiteralTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.StringContext tree = parser.string();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -160,7 +160,7 @@ public class JLiteralTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.BoolContext tree = parser.bool();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -171,7 +171,7 @@ public class JLiteralTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.IdentifierContext tree = parser.identifier();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -182,7 +182,7 @@ public class JLiteralTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.ImportVarContext tree = parser.importVar();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }

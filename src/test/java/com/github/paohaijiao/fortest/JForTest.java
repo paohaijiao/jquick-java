@@ -35,7 +35,7 @@
 //        contextStack.push(variableContext);
 //        JQuickJavaParser.ForStatementContext tree = parser.forStatement();
 //        JContext params = new JContext();
-//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,contextStack,lexer,tokens,parser);
+//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(contextStack,lexer,tokens,parser);
 ////        parser.exitScope();
 //        tv.visit(tree);
 //    }
@@ -59,7 +59,7 @@
 //        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
 //        variableContext.addVariable("radius", 5.0, JQuickJavaTypeReference.of(float.class));
 //        contextStack.push(variableContext);
-//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,contextStack,lexer,tokens,parser);
+//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(contextStack,lexer,tokens,parser);
 //        tv.visit(tree);
 //    }
 //    @Test
@@ -83,7 +83,7 @@
 //        JQuickJavaVariableContext variableContext=new JQuickJavaVariableContext();
 //        variableContext.addVariable("radius", 5.0, JQuickJavaTypeReference.of(float.class));
 //        contextStack.push(variableContext);
-//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,contextStack,lexer,tokens,parser);
+//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(contextStack,lexer,tokens,parser);
 //        tv.visit(tree);
 //    }
 //}

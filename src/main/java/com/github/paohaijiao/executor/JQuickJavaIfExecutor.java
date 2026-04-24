@@ -70,11 +70,8 @@ public class JQuickJavaIfExecutor extends JAbstractAntlrExecutor<String, Object>
         JQuickJavaParser actionPaser = (JQuickJavaParser) parser;
         JQuickJavaParser.IfStatementContext actionContext = actionPaser.ifStatement();
         CommonTokenStream commonTokenStream=(CommonTokenStream)tokenStream;
-        JQuickJavaCommonVisitor visitor = new JQuickJavaCommonVisitor(context,lexer,commonTokenStream,actionPaser);
+        JQuickJavaCommonVisitor visitor = new JQuickJavaCommonVisitor(lexer,commonTokenStream,actionPaser);
         return visitor.visit(actionContext);
-    }
-    public void intExecuteEnv(JContext context) {
-        this.initializeContext(context);
     }
     public JContext getContext() {
         return this.context;

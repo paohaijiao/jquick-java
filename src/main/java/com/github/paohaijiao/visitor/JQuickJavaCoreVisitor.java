@@ -47,8 +47,6 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
 
     private static final Class<?> PKG = JQuickJavaCoreVisitor.class;
 
-    protected JContext context;
-
     protected static Locale local= Locale.ENGLISH;
 
     protected CommonTokenStream tokenStream;
@@ -212,12 +210,6 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
 
     public JQuickJavaImportContainerModel getImportContainer() {
         return importContainer;
-    }
-    public JContext getContext() {
-        return context;
-    }
-    public void setContext(JContext context) {
-        this.context = context;
     }
     public void setImportContainer(JQuickJavaImportContainerModel importContainer) {
         this.importContainer = importContainer;

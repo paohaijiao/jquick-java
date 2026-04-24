@@ -44,7 +44,7 @@ public class JImportTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.ProgramContext tree = parser.program();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         JQuickJavaImportContainerModel importContainerModel=tv.getImportContainer();
         System.out.println(tv);
@@ -58,7 +58,7 @@ public class JImportTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.ProgramContext tree = parser.program();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         JQuickJavaImportContainerModel importContainerModel=tv.getImportContainer();
         System.out.println(tv);

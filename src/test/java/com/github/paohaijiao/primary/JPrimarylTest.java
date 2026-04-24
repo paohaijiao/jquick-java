@@ -41,7 +41,7 @@ public class JPrimarylTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -52,7 +52,7 @@ public class JPrimarylTest {
 //        JQuickJavaParser parser = new JQuickJavaParser(tokens);
 //        JQuickJavaParser.PrimaryContext tree = parser.primary();
 //        JContext params = new JContext();
-//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params, JVariableContextBuilder.mockData(),lexer,tokens,parser);
+//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor( JVariableContextBuilder.mockData(),lexer,tokens,parser);
 //        tv.getContext().put("listVar", 18);
 //        Object object = tv.visit(tree);
 //        System.out.println(object);
@@ -65,7 +65,7 @@ public class JPrimarylTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -77,7 +77,7 @@ public class JPrimarylTest {
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = new JContext();
-        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,lexer,tokens,parser);
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
@@ -89,7 +89,7 @@ public class JPrimarylTest {
 //        JQuickJavaParser parser = new JQuickJavaParser(tokens);
 //        JQuickJavaParser.PrimaryContext tree = parser.primary();
 //        JContext params = new JContext();
-//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,JVariableContextBuilder.mockData(),lexer,tokens,parser);
+//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(JVariableContextBuilder.mockData(),lexer,tokens,parser);
 //        Object object = tv.visit(tree);
 //        System.out.println(object);
 //    }

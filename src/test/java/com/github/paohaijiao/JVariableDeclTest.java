@@ -41,7 +41,7 @@
 //        JQuickJavaParser parser = new JQuickJavaParser(tokens);
 //        JQuickJavaParser.VariableDeclContext tree = parser.variableDecl();
 //        JContext params = new JContext();
-//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(params,JVariableContextBuilder.mockData(),lexer,tokens,parser);
+//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(JVariableContextBuilder.mockData(),lexer,tokens,parser);
 //        Object object = tv.visit(tree);
 //        System.out.println(object);
 //    }

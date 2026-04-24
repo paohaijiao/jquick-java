@@ -19,6 +19,7 @@ import com.github.paohaijiao.constants.JConstants;
 import com.github.paohaijiao.date.JDateUtil;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.i18n.I18nUtils;
+import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import com.github.paohaijiao.util.JStringUtils;
@@ -55,7 +56,8 @@ public class JQuickJavaLiteralVisitor extends JQuickJavaImportVisitor {
     @Override
     public Object visitVariables(JQuickJavaParser.VariablesContext ctx) {
         String identifier = ctx.IDENTIFIER().getText();
-        Object value= this.context.get(identifier);
+        JContext context=this.parser.getJContext();
+        Object value= context.get(identifier);
         return value;
     }
 

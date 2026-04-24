@@ -69,7 +69,7 @@ public class JQuickJavaWhileExecutor extends JAbstractAntlrExecutor<String, Obje
         JQuickJavaParser actionPaser = (JQuickJavaParser) parser;
         JQuickJavaParser.WhileStatementContext actionContext = actionPaser.whileStatement();
         CommonTokenStream commonTokenStream=(CommonTokenStream)tokenStream;
-        JQuickJavaCommonVisitor visitor = new JQuickJavaCommonVisitor(context,lexer,commonTokenStream,actionPaser);
+        JQuickJavaCommonVisitor visitor = new JQuickJavaCommonVisitor(lexer,commonTokenStream,actionPaser);
         return visitor.visit(actionContext);
     }
     public void intExecuteEnv(JContext context) {

@@ -17,6 +17,7 @@ package com.github.paohaijiao.executor;
 
 import com.github.paohaijiao.antlr.impl.JAbstractAntlrExecutor;
 import com.github.paohaijiao.exception.JAntlrExecutionException;
+import com.github.paohaijiao.model.JQuickJavaTypeReferenceAndValue;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
@@ -24,10 +25,14 @@ import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import org.antlr.v4.runtime.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JQuickJavaActionExecutor extends JAbstractAntlrExecutor<String, Object> {
 
     private  JContext context=new JContext();
+
+    private  Map<String,Object> env=new HashMap<>();
 
     private JQuickJavaLexer lexer;
 
@@ -45,9 +50,12 @@ public class JQuickJavaActionExecutor extends JAbstractAntlrExecutor<String, Obj
 
     }
 
-    private void initializeContext(JContext jcontext) {
+    public  JQuickJavaActionExecutor(JContext jcontext, Map<String,Object> map) {
         if(jcontext!=null){
             context.putAll(jcontext);
+        }
+        if(null!=map&&!map.isEmpty()){
+            env.putAll(map);
         }
     }
 
@@ -86,14 +94,15 @@ public class JQuickJavaActionExecutor extends JAbstractAntlrExecutor<String, Obj
     @Override
     protected Object parse(Parser parser) throws JAntlrExecutionException {
         JQuickJavaParser actionPaser = (JQuickJavaParser) parser;
+        for (String key: env.keySet()) {
+            actionPaser.declareVar(key, env.get(key));
+        }
+        actionPaser.init(context);
         JQuickJavaParser.ActionContext actionContext = actionPaser.action();
         CommonTokenStream commonTokenStream=(CommonTokenStream)tokenStream;
-        JQuickJavaCommonVisitor visitor = new JQuickJavaCommonVisitor(context,lexer,commonTokenStream,actionPaser);
+        JQuickJavaCommonVisitor visitor = new JQuickJavaCommonVisitor(lexer,commonTokenStream,actionPaser);
         Object object =visitor.visit(actionContext);
         return object;
-    }
-    public void intExecuteEnv(JContext jcontext) {
-        this.initializeContext(jcontext);
     }
     public JContext getContext() {
         return this.context;
