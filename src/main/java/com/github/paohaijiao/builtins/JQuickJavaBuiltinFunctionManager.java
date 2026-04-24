@@ -1,6 +1,9 @@
 package com.github.paohaijiao.builtins;
 
+import com.github.paohaijiao.context.JQuickJavaBuiltFunctionInfo;
 import com.github.paohaijiao.context.JQuickJavaBuiltInFunctionContext;
+import com.github.paohaijiao.error.JQuickJavaBuiltInExecuteException;
+import com.github.paohaijiao.error.JQuickJavaBuiltInFunctionNotFoundException;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.spi.ServiceLoader;
 import com.github.paohaijiao.console.JConsole;
@@ -13,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 内置函数动态调用管理器
  * 使用SPI机制动态发现和执行内置函数
  */
-public class BuiltinFunctionManager {
+public class JQuickJavaBuiltinFunctionManager {
 
     private static final JConsole console = new JConsole();
 
@@ -61,8 +64,8 @@ public class BuiltinFunctionManager {
      * @param scopes 作用域栈
      * @param args 函数参数列表
      * @return 执行结果
-     * @throws FunctionNotFoundException 函数未找到异常
-     * @throws FunctionExecutionException 函数执行异常
+     * @throws JQuickJavaBuiltInFunctionNotFoundException 函数未找到异常
+     * @throws JQuickJavaBuiltInExecuteException 函数执行异常
      */
     public static Object invoke(String functionName, JContext context, Stack<Map<String, Object>> scopes, List<Object> args) {
         if (!initialized) {
@@ -73,7 +76,7 @@ public class BuiltinFunctionManager {
         if (function == null) {
             String errorMsg = String.format("内置函数 '%s' 未找到", functionName);
             console.log(JLogLevel.ERROR, errorMsg);
-            throw new FunctionNotFoundException(errorMsg);
+            throw new JQuickJavaBuiltInFunctionNotFoundException(errorMsg);
         }
         // 构建执行上下文
         JQuickJavaBuiltInFunctionContext ctx = new JQuickJavaBuiltInFunctionContext();
@@ -89,7 +92,7 @@ public class BuiltinFunctionManager {
         } catch (Exception e) {
             String errorMsg = String.format("执行内置函数 '%s' 时发生异常: %s", functionName, e.getMessage());
             console.log(JLogLevel.ERROR, errorMsg);
-            throw new FunctionExecutionException(errorMsg, e);
+            throw new JQuickJavaBuiltInExecuteException(errorMsg, e);
         }
     }
 
@@ -116,7 +119,7 @@ public class BuiltinFunctionManager {
     /**
      * 获取函数信息
      */
-    public static FunctionInfo getFunctionInfo(String functionName) {
+    public static JQuickJavaBuiltFunctionInfo getFunctionInfo(String functionName) {
         if (!initialized) {
             initialize();
         }
@@ -124,7 +127,7 @@ public class BuiltinFunctionManager {
         if (function == null) {
             return null;
         }
-        return new FunctionInfo(function.getName(), function.getDescription(), getFunctionPriority(function));
+        return new JQuickJavaBuiltFunctionInfo(function.getName(), function.getDescription(), getFunctionPriority(function));
     }
 
     /**

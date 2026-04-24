@@ -1,12 +1,12 @@
 package com.github.paohaijiao.error;
 
-public class JQuickJavaExecuteException extends RuntimeException{
+public class JQuickJavaBuiltInExecuteException extends RuntimeException{
 
-    public JQuickJavaExecuteException(String message) {
+    public JQuickJavaBuiltInExecuteException(String message) {
         super(message);
     }
 
-    public JQuickJavaExecuteException(String message, Throwable cause) {
+    public JQuickJavaBuiltInExecuteException(String message, Throwable cause) {
         super(message, cause);
     }
 }
