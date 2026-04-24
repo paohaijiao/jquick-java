@@ -235,6 +235,7 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         JQuickJavaFunctionDefinitionModel function = registry.lookupFunction(methodName,references);//find the best match method
         JAssert.notNull(function,"can't find function ["+methodName+"] based the parameter [ "+references+" ] you gived");
         JQuickJavaActionExecutor executor=new JQuickJavaActionExecutor();
+        executor.intExecuteEnv(this.parser.getJContext());
         List<Object> data= model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).collect(Collectors.toList());
         for (int i=0;i<function.getFields().size();i++){
             JQuickJavaFunctionFieldModel field=function.getFields().get(i);

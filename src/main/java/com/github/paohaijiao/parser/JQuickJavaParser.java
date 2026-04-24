@@ -166,7 +166,10 @@ public class JQuickJavaParser extends Parser {
 	    		context.putAll(jContext);
 	    	}
 	    }
-	      // 进入新作用域
+	    public  JContext getJContext() {
+	        return this.context;
+	    }
+	   // 进入新作用域
 	   public  void enterScope() {
 	        scopes.push(new HashMap<>());
 	     }
