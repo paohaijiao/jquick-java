@@ -178,7 +178,7 @@ public class JQuickJavaParser extends Parser {
 	   }
 	     // 声明变量
 	    public void declareVar(String name, Object value) {
-	        if (!scopes.isEmpty()) {
+	        if (scopes.isEmpty()) {
 	        	enterScope();
 	        }
 	        Map<String, Object> current = scopes.peek();
