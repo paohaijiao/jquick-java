@@ -17,10 +17,12 @@ package com.github.paohaijiao.executor;
 
 import com.github.paohaijiao.antlr.impl.JAbstractAntlrExecutor;
 import com.github.paohaijiao.exception.JAntlrExecutionException;
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.model.JQuickJavaTypeReferenceAndValue;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
+import com.github.paohaijiao.runtime.JQuickJavaRuntimeEnvironment;
 import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import org.antlr.v4.runtime.*;
 
@@ -40,22 +42,13 @@ public class JQuickJavaActionExecutor extends JAbstractAntlrExecutor<String, Obj
 
     private TokenStream tokenStream;
 
-
-    public JQuickJavaActionExecutor() {
-    }
-    public JQuickJavaActionExecutor(JContext jcontext) {
-        if(jcontext!=null){
-            context.putAll(jcontext);
+    public  JQuickJavaActionExecutor(JQuickJavaRuntimeEnvironment environment) {
+        JAssert.notNull(environment,"environment must not be null");
+        if(environment.getContext()!=null&& !environment.getContext().isEmpty()){
+            context.putAll(environment.getContext());
         }
-
-    }
-
-    public  JQuickJavaActionExecutor(JContext jcontext, Map<String,Object> map) {
-        if(jcontext!=null){
-            context.putAll(jcontext);
-        }
-        if(null!=map&&!map.isEmpty()){
-            env.putAll(map);
+        if(null!=environment.getEnvironment()&&!environment.getEnvironment().isEmpty()){
+            env.putAll(environment.getEnvironment());
         }
     }
 

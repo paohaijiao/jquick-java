@@ -21,6 +21,7 @@ import com.github.paohaijiao.executor.JQuickJavaActionExecutor;
 import com.github.paohaijiao.model.*;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaParser;
+import com.github.paohaijiao.runtime.JQuickJavaRuntimeEnvironment;
 import com.github.paohaijiao.support.JQuickJavaObjectFactory;
 import com.github.paohaijiao.support.JQuickJavaReflectionFactory;
 import com.github.paohaijiao.support.JQuickJavaTypeReference;
@@ -231,7 +232,8 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         JQuickJavaTypeReference<?>[] references=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getTypeArguments).toArray(JQuickJavaTypeReference[]::new);
         JQuickJavaFunctionDefinitionModel function = registry.lookupFunction(methodName,references);//find the best match method
         JAssert.notNull(function,"can't find function ["+methodName+"] based the parameter [ "+references+" ] you gived");
-        JQuickJavaActionExecutor executor=new JQuickJavaActionExecutor(this.parser.getJContext(),this.parser.copyCurrentScope());
+        JQuickJavaRuntimeEnvironment environment=new JQuickJavaRuntimeEnvironment(this.parser.getJContext(),this.parser.copyRuntimeEnvironment());
+        JQuickJavaActionExecutor executor=new JQuickJavaActionExecutor(environment);
         List<Object> data= model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).collect(Collectors.toList());
         for (int i=0;i<function.getFields().size();i++){
             JQuickJavaFunctionFieldModel field=function.getFields().get(i);

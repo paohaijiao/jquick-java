@@ -230,9 +230,20 @@ public class JQuickJavaParser extends Parser {
 	            }
 	            return new HashMap<>(copyStack.peek());
 	      }
-	      public void register(JQuickJavaFunctionDefinitionModel define){
-	          registry.registerFunction(define);
-	      }
+	   public Map<String, Object> copyRuntimeEnvironment() {
+	       Stack<Map<String, Object>> copyStack=deepCopyScopeStack();
+	            if (copyStack.isEmpty()) {
+	                return new HashMap<>();
+	            }
+	        Map<String, Object> result = new HashMap<>();
+	        for (Map<String, Object> scope : copyStack) {
+	            result.putAll(scope);
+	        }
+	        return result;
+	   }
+	   public void register(JQuickJavaFunctionDefinitionModel define){
+	       registry.registerFunction(define);
+	   }
 
 	public JQuickJavaParser(TokenStream input) {
 		super(input);
