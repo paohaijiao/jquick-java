@@ -13,7 +13,7 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.arithmetic;
+package com.github.paohaijiao.expression3;
 
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
@@ -24,71 +24,70 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Stack;
 
 /**
- * packageName com.github.paohaijiao.arithmetic
+ * packageName com.github.paohaijiao.expression
  *
  * @author Martin
  * @version 1.0.0
  * @since 2025/7/27
  */
-public class JArithmeticTest {
-//    @Test
-//    public void  arithmetic1() throws IOException {
-//        String rule = "1+1";
-//        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
-//        CommonTokenStream tokens = new CommonTokenStream(lexer);
-//        JQuickJavaParser parser = new JQuickJavaParser(tokens);
-//        JQuickJavaParser.ArithmeticContext tree = parser.arithmetic();
-//        JContext params = new JContext();
-//        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(new Stack<>(),lexer,tokens,parser);
-//        Object object = tv.visit(tree);
-//        System.out.println(object);
-//    }
+public class JExpressionTest {
     @Test
-    public void  arithmetic2() throws IOException {
-        String rule = "'hello'+'world'";
+    public void  expression() throws IOException {
+        String rule = "1+1";
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.ArithmeticContext tree = parser.arithmetic();
+        JQuickJavaParser.ExpressionContext tree = parser.expression();
         JContext params = new JContext();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
     @Test
-    public void  arithmetic3() throws IOException {
-        String rule = "6-1";
+    public void  expression1() throws IOException {
+        String rule = "true&&false";
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.ArithmeticContext tree = parser.arithmetic();
+        JQuickJavaParser.ExpressionContext tree = parser.expression();
         JContext params = new JContext();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
     @Test
-    public void  MUL() throws IOException {
-        String rule = "6*2";
+    public void  expression2() throws IOException {
+        String rule = "java.lang.System::currentTimeMillis();";
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.ArithmeticContext tree = parser.arithmetic();
+        JQuickJavaParser.ExpressionContext tree = parser.expression();
         JContext params = new JContext();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
         System.out.println(object);
     }
     @Test
-    public void  DIV() throws IOException {
-        String rule = "6/2";
+    public void  expression3() throws IOException {
+        String rule = "5";
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.ArithmeticContext tree = parser.arithmetic();
+        JQuickJavaParser.ExpressionContext tree = parser.expression();
+        JContext params = new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
+    @Test
+    public void  expressionStatement() throws IOException {
+        String rule = "5;";
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.ExpressionStatementContext tree = parser.expressionStatement();
         JContext params = new JContext();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
