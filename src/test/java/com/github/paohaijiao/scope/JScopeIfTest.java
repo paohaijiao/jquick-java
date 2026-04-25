@@ -10,7 +10,7 @@ public class JScopeIfTest {
     @Test
     public void scopefunc() throws IOException {
             String rule=
-                    "void function a(int:a,float:b){\n" +
+                    "void def a(int:a,float:b){\n" +
                             "}\n" +
                             "int c=1;\n" +
                             "float d=8.1;" ;
@@ -23,7 +23,7 @@ public class JScopeIfTest {
     @Test
     public void scopeFuncIf1() throws IOException {
         String rule=
-                "int function a(int:a,float:b){\n" +
+                "int def a(int:a,float:b){\n" +
                         "    if(a==2){\n" +
                         "      int c=3;\n" +
                         "    }else if(a==3){\n" +
@@ -42,7 +42,7 @@ public class JScopeIfTest {
     @Test
     public void scopeFuncIf2() throws IOException {
         String rule=
-                "int function a(int:a,float:b){\n" +
+                "int def a(int:a,float:b){\n" +
                         "    console.log(g)\n" +
                         "    if(a==2){\n" +
                         "      int c=3;\n" +
@@ -62,7 +62,7 @@ public class JScopeIfTest {
     @Test
     public void scopeFuncIf3() throws IOException {
         String rule=
-                "int function a(int:a,float:b){\n" +
+                "int def a(int:a,float:b){\n" +
                         "    if(a==2){\n" +
                         "      int c=3;\n" +
                         "    console.log(99)\n" +
@@ -82,7 +82,7 @@ public class JScopeIfTest {
     @Test
     public void scopeFuncIf4() throws IOException {
         String rule=
-                "int function a(int:a,float:b){\n" +
+                "int def a(int:a,float:b){\n" +
                         "    console.log(g)\n" +
                         "    if(a==2){\n" +
                         "      int c=3;\n" +
@@ -106,7 +106,7 @@ public class JScopeIfTest {
     @Test
     public void scope4() throws IOException {
         String rule=
-                "int function a(int:a,float:b){\n" +
+                "int def a(int:a,float:b){\n" +
                         "    console.log(g)\n" +
                         "    if(a==2){\n" +
                         "      int c=3;\n" +

@@ -10,7 +10,7 @@ public class JScopeWhileTest {
     @Test
     public void scopefunc() throws IOException {
         String rule=
-                "void function a(int:a,float:b){\n" +
+                "void def a(int:a,float:b){\n" +
                         "  while (a<10) {\n" +
                         "         console.log(\"before:\"+a)\n" +
                         "          a=a+1;\n" +

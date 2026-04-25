@@ -1,4 +1,4 @@
-package com.github.paohaijiao.typeReference;
+package com.github.paohaijiao.extract.typeReference;
 
 import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import org.junit.Test;

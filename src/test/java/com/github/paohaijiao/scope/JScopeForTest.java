@@ -31,7 +31,7 @@ public class JScopeForTest {
     @Test
     public void scopefunc1() throws IOException {
         String rule=
-                "void function a(int:a,float:b){" +
+                "void def a(int:a,float:b){" +
                         " for (int i = 0; i < 10; i = i + 1) {\n" +
                             "console.log(d)"+
                         "            if(i==2){\n" +
@@ -51,7 +51,7 @@ public class JScopeForTest {
     @Test
     public void scopefunc2() throws IOException {
         String rule=
-                "void function a(int:a,float:b){" +
+                "void def a(int:a,float:b){" +
                         "console.log(b)"+
                         " for (int i = 0; i < 10; i = i + 1) {\n" +
 
@@ -72,7 +72,7 @@ public class JScopeForTest {
     @Test
     public void scopefunc3() throws IOException {
         String rule=
-                "void function a(int:a,float:b){" +
+                "void def a(int:a,float:b){" +
                         "int k=1000;"+
                         " for (int i = 0; i < 10; i = i + 1) {\n" +
                         "console.log(k)"+
@@ -115,7 +115,7 @@ public class JScopeForTest {
     @Test
     public void scopefunc5() throws IOException {
         String rule=
-                "void function a(int:a,float:b){" +
+                "void def  a(int:a,float:b){" +
                         "int k=1000;"+
                         " for (int i = 0; i < 10; i = i + 1) {\n" +
                         "            if(i==2){\n" +
