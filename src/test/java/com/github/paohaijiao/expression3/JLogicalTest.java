@@ -143,11 +143,13 @@ public class JLogicalTest {
     }
     @Test
     public void  functionDefinition() throws IOException {
-        String rule = "console.log(1)";
+        String rule = "int def call(int:a,int:b){" +
+                "return a;"+
+                "}";
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.SoutContext tree = parser.sout();
+        JQuickJavaParser.FunctionDefinitionContext tree = parser.functionDefinition();
         JContext params = new JContext();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
