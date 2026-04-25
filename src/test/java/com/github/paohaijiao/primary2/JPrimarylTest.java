@@ -35,6 +35,17 @@ import java.io.IOException;
  */
 public class JPrimarylTest {
     @Test
+    public void literalItem() throws IOException {
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("int:1"));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.LiteralItemContext tree = parser.literalItem();
+        JContext params = new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
+    @Test
     public void literal() throws IOException {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("1"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -83,6 +94,18 @@ public class JPrimarylTest {
     }
     @Test
     public void variableDecl() throws IOException {
+        String rule = "int a=1;";
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.VariableDeclContext tree = parser.variableDecl();
+        JContext params = new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
+    @Test
+    public void primary() throws IOException {
         String rule = "int a=1;";
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
