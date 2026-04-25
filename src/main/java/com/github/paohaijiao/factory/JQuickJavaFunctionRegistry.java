@@ -63,7 +63,6 @@ public class JQuickJavaFunctionRegistry {
                 }
             }
             return functionDefinitionModel;
-
         }
         return null;
     }

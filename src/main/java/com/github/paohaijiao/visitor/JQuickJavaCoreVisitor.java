@@ -62,7 +62,6 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
 
     protected JQuickJavaImportContainerModel importContainer= JQuickJavaImportContainerModel.getInstance();
 
-    JQuickJavaFunctionRegistry registry= JQuickJavaFunctionRegistry.getInstance();
 
     protected static boolean toBoolean(Object value) {
         if (value instanceof Boolean) {
@@ -203,9 +202,6 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
         }
 
         return javaType.getRawClass();
-    }
-    public JQuickJavaFunctionRegistry getRegistry() {
-        return registry;
     }
 
     public JQuickJavaImportContainerModel getImportContainer() {

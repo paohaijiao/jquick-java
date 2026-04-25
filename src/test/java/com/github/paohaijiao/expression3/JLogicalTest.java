@@ -13,7 +13,7 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.logical;
+package com.github.paohaijiao.expression3;
 
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
@@ -124,6 +124,30 @@ public class JLogicalTest {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.LogicalContext tree = parser.logical();
+        JContext params = new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
+    @Test
+    public void  consoleLog() throws IOException {
+        String rule = "console.log(1)";
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.SoutContext tree = parser.sout();
+        JContext params = new JContext();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
+        Object object = tv.visit(tree);
+        System.out.println(object);
+    }
+    @Test
+    public void  functionDefinition() throws IOException {
+        String rule = "console.log(1)";
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.SoutContext tree = parser.sout();
         JContext params = new JContext();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);

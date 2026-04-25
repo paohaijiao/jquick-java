@@ -3,6 +3,8 @@
 package com.github.paohaijiao.parser;
 
 import com.github.paohaijiao.console.JConsole;
+import com.github.paohaijiao.factory.JQuickJavaFunctionRegistry;
+import com.github.paohaijiao.model.JQuickJavaFunctionDefinitionModel;
 import com.github.paohaijiao.param.JContext;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATN;
@@ -158,6 +160,9 @@ public class JQuickJavaParser extends Parser {
 
 	    private Stack<Map<String, Object>> scopes = new Stack<>();
 
+	    public static  JQuickJavaFunctionRegistry registry= JQuickJavaFunctionRegistry.getInstance();
+
+
 	    public void start(){
 	        enterScope(); // 进入全局作用域
 	     }
@@ -182,11 +187,7 @@ public class JQuickJavaParser extends Parser {
 	        	enterScope();
 	        }
 	        Map<String, Object> current = scopes.peek();
-	        if (current.containsKey(name)) {
-	            console.error("Variable " + name + " already declared");
-	        } else {
-	            current.put(name, value);
-	        }
+	        current.put(name, value);
 	    }
 	     // 查找变量（从内向外）
 	    public Object findVar(String name) {
@@ -228,7 +229,10 @@ public class JQuickJavaParser extends Parser {
 	                return new HashMap<>();
 	            }
 	            return new HashMap<>(copyStack.peek());
-	       }
+	      }
+	      public void register(JQuickJavaFunctionDefinitionModel define){
+	          registry.registerFunction(define);
+	      }
 
 	public JQuickJavaParser(TokenStream input) {
 		super(input);

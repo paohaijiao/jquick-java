@@ -84,15 +84,13 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
                 }
             });
         }
-        String modifiedBody = rewriter.getText(
-                Interval.of(ctx.action().start.getTokenIndex(), ctx.action().stop.getTokenIndex())
-        );
+        String modifiedBody = rewriter.getText(Interval.of(ctx.action().start.getTokenIndex(), ctx.action().stop.getTokenIndex()));
         JQuickJavaTypeReference<?> type=null;
         if (null!=ctx.classsType()){
             type= visitClasssType(ctx.classsType());
         }
         JQuickJavaFunctionDefinitionModel jFunctionDefinitionModel =createFunctionDefinition(functionName,paramDefine,modifiedBody,type);
-        registry.registerFunction(jFunctionDefinitionModel);
+        parser.register(jFunctionDefinitionModel);
         return null;
     }
     @Override
