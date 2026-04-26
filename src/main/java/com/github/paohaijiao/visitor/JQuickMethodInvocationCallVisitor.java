@@ -232,18 +232,18 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         JQuickJavaTypeReference<?>[] references=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getTypeArguments).toArray(JQuickJavaTypeReference[]::new);
         JQuickJavaFunctionDefinitionModel function = registry.lookupFunction(methodName,references);//find the best match method
         JAssert.notNull(function,"can't find function ["+methodName+"] based the parameter [ "+references+" ] you gived");
-        JQuickJavaRuntimeEnvironment environment=new JQuickJavaRuntimeEnvironment(this.parser.getJContext(),this.parser.copyRuntimeEnvironment());
-        JQuickJavaActionExecutor executor=new JQuickJavaActionExecutor(environment);
         List<Object> data= model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).collect(Collectors.toList());
         for (int i=0;i<function.getFields().size();i++){
             JQuickJavaFunctionFieldModel field=function.getFields().get(i);
             Object value=data.get(i);
             if(field.getType().targetAssignableFrom(value)){
-               //this.currentContext().addVariable(field.getFieldName(),value,field.getType());
+               this.parser.declareVar(field.getFieldName(),value);
             }else{
                 JAssert.throwNewException("the field [ "+field.getFieldName()+" ] param type mismatch in this context");
             }
         }
+        JQuickJavaRuntimeEnvironment environment=new JQuickJavaRuntimeEnvironment(this.parser.getJContext(),this.parser.copyRuntimeEnvironment());
+        JQuickJavaActionExecutor executor=new JQuickJavaActionExecutor(environment);
         Object object=executor.execute(function.getAction());
         if(null==object){
             return null;

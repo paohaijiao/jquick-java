@@ -33,7 +33,7 @@ public class JScopeForTest {
         String rule=
                 "void def a(int:a,float:b){" +
                         " for (int i = 0; i < 10; i = i + 1) {\n" +
-                            "console.log(d)"+
+                            "console.log(b)"+
                         "            if(i==2){\n" +
                         "                break;\n" +
                         "            }else{\n" +
