@@ -5,6 +5,7 @@ import com.github.paohaijiao.context.JQuickJavaBuiltInFunctionContext;
 import com.github.paohaijiao.error.JQuickJavaBuiltInExecuteException;
 import com.github.paohaijiao.error.JQuickJavaBuiltInFunctionNotFoundException;
 import com.github.paohaijiao.param.JContext;
+import com.github.paohaijiao.runtime.JQuickJavaRuntimeEnvironment;
 import com.github.paohaijiao.spi.ServiceLoader;
 import com.github.paohaijiao.console.JConsole;
 import com.github.paohaijiao.enums.JLogLevel;
@@ -60,33 +61,25 @@ public class JQuickJavaBuiltinFunctionManager {
      * 调用内置函数
      *
      * @param functionName 函数名称
-     * @param context 全局上下文
-     * @param scopes 作用域栈
+     * @param ctx 全局上下文
      * @param args 函数参数列表
      * @return 执行结果
      * @throws JQuickJavaBuiltInFunctionNotFoundException 函数未找到异常
      * @throws JQuickJavaBuiltInExecuteException 函数执行异常
      */
-    public static Object invoke(String functionName, JContext context, Stack<Map<String, Object>> scopes, List<Object> args) {
+    public static Object invoke(String functionName,JQuickJavaRuntimeEnvironment ctx, List<Object> args) {
         if (!initialized) {
             initialize();
         }
-        // 查找函数
         JQuickBuiltinFunctionProvider function = FUNCTION_REGISTRY.get(functionName);
         if (function == null) {
             String errorMsg = String.format("内置函数 '%s' 未找到", functionName);
             console.log(JLogLevel.ERROR, errorMsg);
             throw new JQuickJavaBuiltInFunctionNotFoundException(errorMsg);
         }
-        // 构建执行上下文
-        JQuickJavaBuiltInFunctionContext ctx = new JQuickJavaBuiltInFunctionContext();
-        ctx.setContext(context);
-        ctx.setScopes(scopes);
-        ctx.setArgs(args != null ? args : Collections.emptyList());
         try {
-            console.log(JLogLevel.DEBUG, String.format("执行内置函数: %s, 参数数量: %d", functionName, ctx.getArgs().size()));
-            // 执行函数
-            Object result = function.execute(ctx);
+            console.log(JLogLevel.DEBUG, String.format("执行内置函数: %s, 参数数量: %d", functionName,args.size()));
+            Object result = function.execute(ctx,args);
             console.log(JLogLevel.DEBUG, String.format("函数 %s 执行完成，返回结果: %s", functionName, result));
             return result;
         } catch (Exception e) {

@@ -26,7 +26,7 @@ public class JMainTest {
     public void methodDefine1() throws IOException {
         String rule="    import java.lang.String as string;\n" +
                 "     import java.lang.System as system;\n" +
-                "   string function getSquare(java.lang.String:a,int:b){\n" +
+                "   string def getSquare(java.lang.String:a,int:b){\n" +
                 "        system@out.println(string:a);\n" +
                 "        return a+b;\n" +
                 "    }\n" +
@@ -42,7 +42,7 @@ public class JMainTest {
     public void methodDefine2() throws IOException {
         String rule="   import java.lang.String as string;\n" +
                 "     import java.lang.System as system;\n" +
-                "    string function getSquare(java.lang.String:a,int:b){\n" +
+                "    string def getSquare(java.lang.String:a,int:b){\n" +
                 "        system@out.println(string:a);\n" +
                 "        string d= a+b;\n" +
                 "        return d;\n" +
@@ -59,7 +59,7 @@ public class JMainTest {
     public void methodDefine3() throws IOException {
         String rule="import java.lang.String as string;\n" +
                 "import java.lang.System as system;\n" +
-                "java.lang.Object function getSquare(int:a,int:b){\n" +
+                "java.lang.Object def getSquare(int:a,int:b){\n" +
                 "    system@out.println(int:a);\n" +
                 "\tif(a.equals(int:b)){\n" +
                 "\t\tfloat f=3; \n" +
@@ -105,7 +105,7 @@ public class JMainTest {
     public void while1() throws IOException {
         String rule="import java.lang.String as string;\n" +
                 "import java.lang.System as system;\n" +
-                "int function getSquare(int:a,int:b){\n" +
+                "int def getSquare(int:a,int:b){\n" +
                 "\t       console.log(1);\n" +
                 "\t       boolean s=true;\n" +
                 "\t       console.log(2);\n" +

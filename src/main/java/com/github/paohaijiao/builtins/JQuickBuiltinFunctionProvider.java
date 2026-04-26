@@ -1,6 +1,8 @@
 package com.github.paohaijiao.builtins;
 
-import com.github.paohaijiao.context.JQuickJavaBuiltInFunctionContext;
+import com.github.paohaijiao.runtime.JQuickJavaRuntimeEnvironment;
+
+import java.util.List;
 
 /**
  * JQuick 内置函数接口
@@ -12,7 +14,7 @@ public interface JQuickBuiltinFunctionProvider {
      * @param ctx 执行上下文（包含 args、context、scopes 等所有信息）
      * @return 执行结果
      */
-    Object execute(JQuickJavaBuiltInFunctionContext ctx);
+    Object execute(JQuickJavaRuntimeEnvironment ctx, List<Object> args);
 
     /**
      * 获取函数名称

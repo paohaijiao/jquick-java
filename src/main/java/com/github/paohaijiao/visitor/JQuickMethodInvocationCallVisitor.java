@@ -272,7 +272,6 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
     }
     @Override
     public Object visitBuiltinMethodCall(JQuickJavaParser.BuiltinMethodCallContext ctx) {
-        JQuickJavaBuiltinFunctionManager manager=new JQuickJavaBuiltinFunctionManager();
         JAssert.notNull(ctx.methodName(),"the method name is not support");
         String methodName = visitMethodName(ctx.methodName());
         JAssert.notNull(methodName,"the method name is not support");
@@ -281,9 +280,8 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
             model=visitArgumentList(ctx.argumentList());
         }
         List<Object>  args=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).collect(Collectors.toList());
-        JContext context=this.parser.getJContext();
-        Stack<Map<String, Object>> stack= this.parser.deepCopyScopeStack();
-        return  JQuickJavaBuiltinFunctionManager.invoke(methodName,context,stack,args);
+        JQuickJavaRuntimeEnvironment javaRuntimeEnvironment=new JQuickJavaRuntimeEnvironment(this.parser.getJContext(),this.parser.copyCurrentScope());
+        return  JQuickJavaBuiltinFunctionManager.invoke(methodName,javaRuntimeEnvironment,args);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.github.paohaijiao.builtins.impl;
 import com.github.paohaijiao.builtins.JQuickBuiltinFunctionProvider;
 import com.github.paohaijiao.context.JQuickJavaBuiltInFunctionContext;
+import com.github.paohaijiao.runtime.JQuickJavaRuntimeEnvironment;
+
 import java.util.List;
 import java.util.Map;
 
@@ -12,11 +14,11 @@ public class JQuickJavaBuiltInLengthFunction implements JQuickBuiltinFunctionPro
     }
 
     @Override
-    public Object execute(JQuickJavaBuiltInFunctionContext ctx) {
-        if (ctx.getArgs() == null || ctx.getArgs().isEmpty()) {
+    public Object execute(JQuickJavaRuntimeEnvironment ctx,List<Object> args) {
+        if (args== null || args.isEmpty()) {
             return 0;
         }
-        Object obj = ctx.getArgs().get(0);
+        Object obj =args.get(0);
         return getLength(obj);
     }
 
