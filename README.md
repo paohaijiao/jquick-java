@@ -1,6 +1,4 @@
 # JQuick Java 语法参考手册
-
-
 简体中文 | [ENGLISH](./README-EN.md)
 ## 项目进度
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
@@ -8,88 +6,62 @@
 [![Build Status](https://img.shields.io/github/actions/workflow/status/paohaijiao/jquick-java/build.yml?branch=main)](https://github.com/paohaijiao/jquick-java/actions)
 [![Stars](https://img.shields.io/github/stars/paohaijiao/jquick-java.svg?style=social)](https://github.com/paohaijiao/jquick-java)
 [![Issues](https://img.shields.io/github/issues/paohaijiao/jquick-java.svg)](https://github.com/paohaijiao/jquick-java/issues)
-## 概述
- 
+<div>
+✨ 轻量级类 Java 脚本语言｜专为规则引擎设计｜动态规则编排 ✨
+</div>
+## 📘 项目概述
  <b>JQuick Java 是一种轻量级类 Java 脚本语言，天生为规则引擎而生</b>。它完美融合了 Java 的强类型安全
 与 JavaScript 的动态灵活性，支持在<b>运行时动态加载、解析和执行业务规则</b>。无论是复杂的逻辑判断、
 数据校验还是流程编排，JQuick Java 都能让您<b>像配置参数一样调整业务规则</b>，无需重启应用，无需重新部署，
-让您的系统真正实现<b>规则与代码分离</b>。
+让您的系统真正实现<b>规则与代码分离</b>，适用于：
+- 复杂逻辑判断
+- 数据校验
+- 流程编排
+- 评分卡 / 决策引擎
 
-## 目录
-- [概述](#概述)
-- [核心特性](#核心特性)
-    - [1. 简化类型系统](#1-简化类型系统)
-- [程序结构](#程序结构)
-    - [导入声明](#导入声明)
-    - [变量声明](#变量声明)
-- [数据类型](#数据类型)
-    - [基本类型（simpleType）](#基本类型-simpletype)
-    - [复合类型](#复合类型)
-- [表达式](#表达式)
-    - [运算符分组](#运算符分组)
-    - [示例代码](#示例代码)
-- [控制结构](#控制结构)
-    - [if 语句](#if-语句)
-    - [循环语句](#循环语句)
-        - [for 循环](#for-循环)
-        - [while 循环](#while-循环)
-    - [方法定义](#方法定义)
-- [调用方式](#调用方式)
-    - [静态方法](#静态方法)
-    - [构造方法](#构造方法)
-    - [实例方法](#实例方法)
-- [输出](#输出)
-- [注释](#注释)
-- [代码示例](#代码示例)
-    - [示例 1](#示例-1)
-    - [示例 2](#示例-2)
-    - [示例 3](#示例-3)
-    - [示例 4](#示例-4)
-- [附录](#附录)
-    - [保留关键字](#保留关键字)
-    - [标识符规则](#标识符规则)
+## 📑 目录
+- [📘 项目概述](#-项目概述)
+- [✨ 核心特性](#-核心特性)
+  - [1. 🚀 简化类型系统](#1--简化类型系统)
+  - [1.2 🔗 动态规则引擎](#12--动态规则引擎)
+- [2. 🏗️ 程序结构](#2-程序结构)
+  - [2.1 📦 导入声明](#21-导入声明)
+  - [2.2 ⚙️ 变量声明](#22-变量声明)
+  - [⚙️ 2.3 表达式与运算符](#️-23表达式与运算符)
+    - [2.3.1 复杂表达式](#231-复杂表达式)
+    - [2.3.2 控制结构](#232-控制结构)
+      - [2.3.2.1 if 语句](#2321-if-语句)
+      - [2.3.2.2 循环语句](#2322-循环-语句)
+      - [2.3.2.3 while 循环语句](#2323-while循环-语句)
+      - [2.3.2.4 方法定义语句](#2324-方法定义语句)
+    - [☕ 2.3.3 Java 方法调用](#-233-java-方法调用)
+      - [2.3.3.1 静态方法](#2331-静态方法)
+      - [2.3.3.2 构造方法](#2332-构造方法)
+      - [2.3.3.3 实例方法](#2333-实例方法)
+      - [2.3.3.4 内置方法(预留)](#2334-内置方法预留)
+      - [2.3.3.5 注释](#2335-注释)
+      - [2.3.3.6 代码示例](#2336-代码示例)
+      - [2.3.3.7 保留关键字](#2337-保留关键字)
+  - [标识符规则](#标识符规则)
 - [完整示例](#完整示例)
-    1. [示例 1](#示例-1-1)
-    2. [示例 2](#示例-2-1)
-    3. [示例 3](#示例-3-1)
-    4. [示例 4](#示例-4-1)
+  - [示例 1](#示例-1)
+  - [示例 2](#示例-2)
+  - [示例 3](#示例-3)
+  - [示例 4](#示例-4)
+- [3. XML 配置场景](#3-xml-配置场景)
+  - [🏦 企业信用评分卡](#-企业信用评分卡)
+- [捐献 ☕](#捐献-)
 
-## 核心特性
-### 1. 简化类型系统
-- **7 种基本类型**内置支持
-- **完整的泛型**支持
-- **灵活的集合**（List/Set/Map）
-- **多维数组**
+## ✨ 核心特性
 
-```jquick  
-// 基本类型  
-int counter = 0;  
-boolean enabled = true;  
+### 1.  🚀 简化类型系统
 
-// 泛型集合  
-List<String> names = ["Alice", "Bob"];  
-Map<String, Integer> scores = {"数学":90, "英语":85};  
-```
-## 程序结构
-```jquick
-import com.example.pkg as pkgAlias;
-int x = 10;
-console.log(x);
-```
-### 导入声明
-
-| Component      | Description                                 |
-|----------------|---------------------------------------------|
-| qualified.name | dot-separated path (e.g., java.lang.String) |
-| as             | alias name                                  |
-### 变量声明
-
-| Keyword    | Example            | Description                     |
-|------------|--------------------|---------------------------------|
-| simpleType | `int x = 10;`      | Type inferred                   |
-| TypeName   | `String s = "hi";` | Explicit type (optional)        |
-### 数据类型
-### 基本类型（原生类型）
+- 内置 7 种基本类型
+- 完整支持泛型
+- 原生支持 List/Set/Map 集合
+- 支持多维数组
+#### 1.1 🧩数据类型
+##### 1.1.1 基本类型（原生类型）
 | Type Keyword | Data Type        | Example                     |
 |--------------|------------------|-----------------------------|
 | short        | Short integer    | `short s = 100;`            |
@@ -102,7 +74,7 @@ console.log(x);
 | Null         | null             | `null`                      |
 | Date         | Date             | `2025-06-07`                |
 | Date         | Date             | `2025-06-07 12:00:01`       |
-### 复合类型
+##### 1.1.2复合类型
 | Type Format               | Example                          |
 |--------------------------|----------------------------------|
 | Generic (Type<T>)         | `List<String> names;`            |
@@ -112,11 +84,44 @@ console.log(x);
 | Array                     | `int[] numbers = {1,2,3};`       |
 | Custom Class              | `MyClass obj = new MyClass();`   |
 | Import Alias              | `import java.util.Date as JDate;`|
+
+```jquick
+// 基本类型
+int counter = 0;
+boolean enabled = true;
+
+// 泛型集合
+List<String> names = ["Alice", "Bob"];
+Map<String, Integer> scores = {"数学":90, "英语":85};
+```
+### 1.2  🔗 动态规则引擎
+- 运行时动态加载规则
+- XML 配置化定义业务逻辑
+- 规则热更新，无需重启应用
+- 无缝 Java 互通(直接调用 Java 方法、兼容 Java 生态)
+## 2.🏗️ 程序结构
+```jquick
+import com.example.pkg as pkgAlias;
+int x = 10;
+console.log(x);
+```
+### 2.1 📦 导入声明
+| 组件 | 说明 | 示例 |
+|------|------|------|
+| qualified.name | 点分路径 | `java.lang.String` |
+| as | 别名 | `import java.util.Date as JDate;` |
+### 2.2 ⚙️ 变量声明
+| 类型 | 示例 | 说明 |
+|------|------|------|
+| 基本类型 | `int x = 10;` | 支持类型推导 |
+| 引用类型 | `String s = "hi";` | 可显式声明 |
+
+
 ```jquick
 import List<java.lang.String> as StringList ;
 StringList list=["A","B","C"];
 ```
-###  表达式
+###  ⚙️ 2.3表达式与运算符
 | Operator Group | Operators    | Example                  | Desc                          |
 |----------------|--------------|--------------------------|-------------------------------|
 | Mul            | `*`          | 1*1                      | number * number               | 
@@ -132,12 +137,12 @@ StringList list=["A","B","C"];
 | AND            | `&&`         | true&& true              | boolean  && boolean           |
 | OR             | \|\|      | true \|\| false              | boolean\|\| boolean           |
 | PAREN          | (expression) | (a + b) * 2 > 10 && x != y | (expression)                  |
-#### 样例
+### 2.3.1 复杂表达式
 ```jquick
 (a + b) * 2 > 10 && x != y
 ```
-### 控制结构
-#### if 语句
+### 2.3.2 控制结构
+#### 2.3.2.1 if 语句
 ```jquick
  if(false){
             console.log(1);
@@ -149,7 +154,7 @@ StringList list=["A","B","C"];
             console.log(4);
         }
 ```
-#### 循环 语句
+####  2.3.2.2 循环 语句
 ```jquick
         for (int i = 0; i < 10; i = i + 1) {
             for (int j = 0; j < 10; j = j + 1){
@@ -160,6 +165,7 @@ StringList list=["A","B","C"];
             }
         };
 ```
+####  2.3.2.3 while循环 语句
 ```jquick
  while(true){
             for (int a = 0; a<10; a=a+1){
@@ -172,7 +178,7 @@ StringList list=["A","B","C"];
             break;
         }
 ```
-#### 方法定义
+####  2.3.2.4 方法定义语句
 ```jquick
 返回类型 def 函数名(参数类型:参数名, ...) {
     // 函数体
@@ -188,111 +194,45 @@ StringList def funtionName(StringList:a, int:b) {
     return a;
 }
 ```
-### 如何调用java 方法
-| Type                    | Example                     |
-|-------------------------|-----------------------------|
-| 静态函数调用                  | `Math::max(1, 2)`           |
-| 构造函数调用                  | `new ArrayList()`           |
-| 实例方法调用                  | `list.add("item")`          |
-| 调用jquick自定义函数           | `this.doSomething()`        |
-### 静态方法
-1. sample
+### ☕2.3.3 Java 方法调用
+| Type           | Example                                 |
+|----------------|-----------------------------------------|
+| 静态函数调用         | `Math::max(1, 2)`                       |
+| 构造函数调用         | `new ArrayList()`                       |
+| 实例方法调用         | `list.add("item")`                      |
+| 调用jquick自定义函数  | `this.doSomething()`                    |
+| 调用jquick内置函数（） | `Builtin::方法名(参数类型1:参数1, 参数类型2:参数2...)` |
+### 2.3.3.1 静态方法
+使用方法:
+  类名:: 方法名(参数类型1:参数1，参数类型2:参数2...)
 ```jquick
-java.lang.Math::max(int:5, int:10);
-output:10
+java.lang.Math::max(int:5, int:10); // 10
+java.lang.String::format("Hello %s", "JQuick");
 ```
-2. sample
-```jquick
-java.lang.Math::pow(double:2, double:3);
-output:8.0
-```
-3. sample
-```jquick
-java.lang.String::valueOf(int:123);
-output:123
-```
-4. sample
-```jquick
-java.util.Objects::toString(java.lang.String:null);
-output:null
-```
-5. sample
-```jquick
-java.lang.String::format(java.lang.String:"Number: %d, String: %s",int: 42, java.lang.String:"test");
-output:Number: 42, String: test
-```
-6. sample
-```jquick
-java.lang.System::currentTimeMillis();
-output:1754713207541
-```
-7. sample
-```jquick
-java.lang.String::join(java.lang.CharSequence:",", java.lang.CharSequence:"a",java.lang.CharSequence: "b", java.lang.CharSequence:"c");
-output:a,b,c
-```
-8. sample
-```jquick
-com.github.paohaijiao.service.JService::sum(int:1,int:2);
-   output:3
-```
-### 构造方法
-1. sample
-```jquick
-new com.github.paohaijiao.service.JService();
-```
-2. sample
-```jquick
-new com.github.paohaijiao.model.JStudent(int:42, float:3.14, boolean:true);
-```
-3. sample
-```jquick
-new com.github.paohaijiao.model.JStudent(java.lang.String:"test string");
-```
-4. sample
-```jquick
-new com.github.paohaijiao.model.JStudent(List<java.lang.Integer>:listVar);
-```
-5. sample
-```jquick
-new com.github.paohaijiao.model.JStudent(java.lang.String:"test", java.lang.Integer:123, java.lang.Boolean:true, List<java.lang.Integer>:listVar);
-```
-6. sample
+### 2.3.3.2 构造方法
+使用方法:
+  new 构造类(参数类型1:参数1，参数类型2:参数2...)
 ```jquick
 new java.util.ArrayList();
-```
-7. sample
+new com.github.paohaijiao.model.JStudent(int:42);
+```  
+### 2.3.3.3实例方法
+使用方法:
+  对象名:: 方法名(参数类型1:参数1，参数类型2:参数2...)
+  
 ```jquick
-new com.github.paohaijiao.model.JStudent(java.lang.String:"a", java.lang.String:"b", java.lang.String:"c");
+testObj.isEven(int:4); // true
+str1.toUpperCase();
 ```
-### 实例方法
-1. sample
+### 2.3.3.4内置方法(预留)
+使用方法:
+Builtin:: 方法名(参数类型1:参数1，参数类型2:参数2...)
 ```jquick
-testObj.isEven(int:4);
-output: true
-```
-2. sample
-```jquick
-testObj.noReturn();
-```
-3. sample
-```jquick
-testObj.addToList(java.util.ArrayList<java.lang.Integer>:listVar, java.lang.Integer:4);
-```
-4. sample
-```jquick
-testObj.methodWithMixedArgs(java.lang.String:"Test", int:42, boolean:true);
-```
-5. sample
-```jquick
-testObj.methodWithVarArgs(java.lang.String:"a", java.lang.String:"b", java.lang.String:"c");
+testObj.isEven(int:4); // true
+str1.toUpperCase();
 ```
 
-### 输出
-```jquick
-console.log("Result: " + result);
-```
-### 注释
+### 2.3.3.5 注释
 ```jquick
 // single-line
 ```
@@ -301,19 +241,9 @@ console.log("Result: " + result);
   multi-line
 */
 ```
-### 代码示例
-
+### 2.3.3.6 代码示例
 ```jquick
-java.lang.String function a(int:a,float:b) {
-    java.lang.String p=java.lang.String::format(java.lang.String:"Number: %d, String: %s",int: 42, java.lang.String:"test"); 
-    return p;    
-}
-    int c=1;
-    float d=8.1;
-    this.a(int:c,float:d);
-```
-```jquick
-java.util.HashMap<java.lang.String,java.lang.String> function a(int:a,float:b) {
+java.util.HashMap<java.lang.String,java.lang.String> def a(int:a,float:b) {
     java.lang.String str1 = new java.lang.String(java.lang.String:"Hello");
     console.log(str1); 
     java.lang.String upperStr = str1.toUpperCase(); 
@@ -331,7 +261,7 @@ java.util.HashMap<java.lang.String,java.lang.String> function a(int:a,float:b) {
     float d=8.1;
     this.a(int:c,float:d);
 ```
-### 保留关键字
+### 2.3.3.7保留关键字
 
 | 类别 | 关键字 |
 |------|--------|
@@ -342,12 +272,12 @@ java.util.HashMap<java.lang.String,java.lang.String> function a(int:a,float:b) {
 | 内置 | `console`, `Builtin` |
 ### 标识符规则
 ```string
-1.starts with letter/underscore
-2.may contain letters, digits, underscores
-3.case-sensitive
+1.以英文字符开始
+2.可以包含英文数字
+3.大小写敏感
 ```
 ### 完整示例
-1. sample 1
+1. 示例 1
 ```jquick
 int function getSquare(int:a,int:b){
     return a*b;
@@ -356,7 +286,7 @@ int a=1;
 int b=2;
 int c=this.getSquare(int:a,int:b);
 ```
-2. sample 2
+2. 示例 2
 ```jquick
 java.util.HashMap<java.lang.String,java.lang.String>   function a(int:a,float:b) {
     java.lang.String str1 = new java.lang.String(java.lang.String:"Hello");
@@ -373,7 +303,7 @@ int c=1;
 float d=8.1;
 this.a(int:c,float:d);
 ```
-3. sample 3
+3. 示例 3
 ```jquick
 java.lang.String function a(int:a,float:b) {
         java.lang.String p=java.lang.String::format(java.lang.String:"Number: %d, String: %s",int: 42, java.lang.String:"test"); 
@@ -383,7 +313,7 @@ java.lang.String function a(int:a,float:b) {
    float d=8.1;
    this.a(int:c,float:d);
 ```
-4. sample 4
+4. 示例 4
 ```jquick
 import java.lang.String as type1; 
 type1 function a(int:a,float:b) {
@@ -394,7 +324,11 @@ type1 function a(int:a,float:b) {
    float d=8.1;
    this.a(int:c,float:d);
 ```
-###  企业信用评分卡
+
+### 3.XML 配置场景
+🏦 企业信用评分卡
+JQuick Java 最典型场景：信用评分、风险决策、规则引擎。
+
 | 一级维度 | 二级维度 | 评分细则         | 得分 |
 |----------|----------|------------------|------|
 | 经营状况 | 经营年限 | ≥10 年           | 3    |
@@ -445,6 +379,12 @@ type1 function a(int:a,float:b) {
 | 风险管理 | 行政处罚 | 轻微已整改       | 1    |
 | 风险管理 | 行政处罚 | 重大处罚         | 0    |
 
+## 信用分构成
+ - 经营状况
+ - 财务状况
+ - 履约记录
+ - 企业资质
+ - 风险管理
 ###  企业信用评分卡
 ```java
  @Test
