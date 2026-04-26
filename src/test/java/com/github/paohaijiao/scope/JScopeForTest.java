@@ -93,7 +93,7 @@ public class JScopeForTest {
     @Test
     public void scopefunc4() throws IOException {
         String rule=
-                "void function a(int:a,float:b){" +
+                "void def a(int:a,float:b){" +
                         "int k=1000;"+
                         " for (int i = 0; i < 10; i = i + 1) {\n" +
                         "            if(i==2){\n" +
@@ -123,7 +123,7 @@ public class JScopeForTest {
                         "                console.log(q);\n" +
                         "                break;\n" +
                         "            }else{\n" +
-                        "                console.log(q);\n" +
+                        "                console.log(a);\n" +
                         "            }\n" +
                         "   };}\n" +
                         "int c=1;\n" +
@@ -137,7 +137,7 @@ public class JScopeForTest {
     @Test
     public void scopefunc6() throws IOException {
         String rule=
-                "  void   function a(int:a,float:b) {\n" +
+                "  void   def a(int:a,float:b) {\n" +
                         "        int k = 1000;\n" +
                         "        for (int i = 0; i < 10; i = i + 1) {\n" +
                         "            for (int j = 0; j < 10; j = j + 1) {\n" +
