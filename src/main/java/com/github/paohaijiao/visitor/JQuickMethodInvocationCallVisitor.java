@@ -61,16 +61,6 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         if (ctx.parameterList() != null) {
             paramDefine=visitParameterList(ctx.parameterList())  ;
         }
-        if (ctx.parameterList() != null) {
-//            List<JQuickJavaVariable> variables = new ArrayList<>();
-//            for (JQuickJavaParser.ParamContext paramCtx : ctx.parameterList().param()) {
-//                JQuickJavaTypeReference<?> paramType = visitClasssType(paramCtx.classsType());
-//                String name = paramCtx.functionVar().getText();
-//                JQuickJavaVariable variable=new JQuickJavaVariable(name,null,paramType);
-//                variables.add(variable);
-//            }
-//            currentContext().addScopeVariable(functionName, variables);
-        }
         TokenStreamRewriter rewriter = new TokenStreamRewriter(tokenStream);
         if (ctx.action() != null) {
             ctx.action().statement().forEach(stmt -> {
@@ -92,7 +82,7 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         }
         JQuickJavaFunctionDefinitionModel jFunctionDefinitionModel =createFunctionDefinition(functionName,paramDefine,modifiedBody,type);
         parser.register(jFunctionDefinitionModel);
-        return null;
+        return jFunctionDefinitionModel;
     }
     @Override
     public List<JQuickJavaFunctionFieldModel> visitParameterList(JQuickJavaParser.ParameterListContext ctx) {

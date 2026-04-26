@@ -4,7 +4,7 @@
 <javas namespace="com.github.paohaijiao.xml.UserMapper">
     <java name="all" returnClass="java.util.List">
        <![CDATA[
-        java.util.HashMap<java.lang.String,java.lang.String>   function a(int:a,float:b) {
+        java.util.HashMap<java.lang.String,java.lang.String>   def a(int:a,float:b) {
             java.lang.String str1 = new java.lang.String(java.lang.String:"Hello");
             console.log(str1);
             java.lang.String upperStr = str1.toUpperCase();
@@ -21,6 +21,13 @@
             int c=1;
             float d=8.1;
             this.a(int:c,float:d);
+        ]]>
+    </java>
+    <java name="sum" returnClass="java.util.List">
+        <![CDATA[
+           int def sum(int:a,int:b) {
+              return a+b;
+            }
         ]]>
     </java>
 </javas>

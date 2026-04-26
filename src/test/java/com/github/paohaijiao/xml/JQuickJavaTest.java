@@ -13,8 +13,8 @@ public class JQuickJavaTest {
         JQuickJavaXmlParseFactory handler=new JQuickJavaXmlParseFactory();
         JQuickFactory factory = new JQuickXmlFactory(handler,"jquick-java.xml");
         UserMapper userApi = factory.createApi(UserMapper.class);
-        HashMap<String,String> map= userApi.all();
-        System.out.println(map);
+        int sum= userApi.sum(1,2);
+        System.out.println(sum);
     }
 
 }
