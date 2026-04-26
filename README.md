@@ -2,10 +2,12 @@
 简体中文 | [ENGLISH](./README-EN.md)
 ## 项目进度
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](CHANGELOG.md)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/paohaijiao/jquick-java/build.yml?branch=main)](https://github.com/paohaijiao/jquick-java/actions)
+[![Version](https://img.shields.io/badge/version-1.4.0-brightgreen.svg)](CHANGELOG.md)
+[![Java Version](https://img.shields.io/badge/Java-8%2B-orange.svg)]()
 [![Stars](https://img.shields.io/github/stars/paohaijiao/jquick-java.svg?style=social)](https://github.com/paohaijiao/jquick-java)
 [![Issues](https://img.shields.io/github/issues/paohaijiao/jquick-java.svg)](https://github.com/paohaijiao/jquick-java/issues)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.paohaijiao/jquick-java)](https://central.sonatype.com/artifact/io.github.paohaijiao/jquick-java)
+
 <div>
 ✨ 轻量级类 Java 脚本语言｜专为规则引擎设计｜动态规则编排 ✨
 </div>
