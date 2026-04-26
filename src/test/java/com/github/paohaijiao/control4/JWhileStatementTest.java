@@ -1,17 +1,14 @@
 package com.github.paohaijiao.control4;
 
 
-import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
-import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import com.github.paohaijiao.visitor.JQuickJavaCommonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Stack;
 
 public class JWhileStatementTest {
     @Test

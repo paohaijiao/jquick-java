@@ -1,4 +1,4 @@
-package com.github.paohaijiao;/*
+package com.github.paohaijiao.program5;/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,9 +43,8 @@ public class JImportTest {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
         JQuickJavaParser.ProgramContext tree = parser.program();
-        JContext params = new JContext();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
-        Object object = tv.visit(tree);
+        tv.visit(tree);
         JQuickJavaImportContainerModel importContainerModel=tv.getImportContainer();
         System.out.println(tv);
     }

@@ -123,7 +123,7 @@ public class JQuickJavaStatementVisitor extends JQuickJavaIfStatementVisitor {
     public Object visitSout(JQuickJavaParser.SoutContext ctx) {
         if (ctx.expression() != null) {
             Object object=visitExpression(ctx.expression());
-            System.out.println(object);
+            console.info(null==object?null:object.toString());
         }
         return null;
     }

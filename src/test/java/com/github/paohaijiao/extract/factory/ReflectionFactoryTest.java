@@ -1,4 +1,4 @@
-package com.github.paohaijiao;
+package com.github.paohaijiao.extract.factory;
 
 import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import com.github.paohaijiao.support.JQuickJavaReflectionFactory;

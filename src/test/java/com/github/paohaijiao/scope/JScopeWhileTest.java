@@ -14,7 +14,7 @@ public class JScopeWhileTest {
                         "  while (a<10) {\n" +
                         "         console.log(\"before:\"+a)\n" +
                         "          a=a+1;\n" +
-                        "         console.log(a)\n" +
+                            "         console.log(a)\n" +
                         "         if(a==2){\n" +
                         "            break;\n" +
                         "          } else{\n" +
