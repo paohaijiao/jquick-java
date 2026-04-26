@@ -1,0 +1,457 @@
+// ============================================================
+// 企业信用评分系统
+// ============================================================
+import java.lang.String as str;
+import java.lang.System as sys;
+// ============================================================
+// 一、经营状况评分 (满分10分)
+// ============================================================
+int def scoreOperatingYears(int:years) {
+    // 经营年限评分
+    if (years >= 10) {
+        return 3;
+    } else if (years >= 5) {
+        return 2;
+    } else if (years >= 3) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+int def scoreAnnualRevenue(double:revenue) {
+    // 年营收评分 (单位：万元)
+    if (revenue >= 5000) {
+        return 4;
+    } else if (revenue >= 1000) {
+        return 3;
+    } else if (revenue >= 500) {
+        return 2;
+    } else {
+        return 1;
+    }
+}
+int def scoreProfitability(str:profitStatus) {
+    // 盈利能力评分
+    // profitStatus: "3years", "2years", "current", "loss"
+    if (profitStatus == "3years") {
+        return 3;
+    } else if (profitStatus == "2years") {
+        return 2;
+    } else if (profitStatus == "current") {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+int def calculateBusinessScore(int:years, double:revenue, str:profitStatus) {
+    int score = 0;
+    score = score + this.scoreOperatingYears(int:years);
+    score = score + this.scoreAnnualRevenue(double:revenue);
+    score = score + this.scoreProfitability(str:profitStatus);
+    return score;
+}
+// ============================================================
+// 二、财务状况评分 (满分10分)
+// ============================================================
+int def scoreDebtRatio(double:ratio) {
+    // 资产负债率评分
+    if (ratio <= 50) {
+        return 4;
+    } else if (ratio <= 70) {
+        return 3;
+    } else if (ratio <= 85) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+int def scoreCurrentRatio(double:ratio) {
+    // 流动比率评分
+    if (ratio >= 2.0) {
+        return 3;
+    } else if (ratio >= 1.5) {
+        return 2;
+    } else if (ratio >= 1.0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int def scoreCashFlow(str:cashFlowStatus) {
+    // 现金流状况评分
+    // cashFlowStatus: "excellent", "normal", "tight", "negative"
+    if (cashFlowStatus == "excellent") {
+        return 3;
+    } else if (cashFlowStatus == "normal") {
+        return 2;
+    } else if (cashFlowStatus == "tight") {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+int def calculateFinancialScore(double:debtRatio, double:currentRatio, str:cashFlowStatus) {
+    int score = 0;
+    score = score + this.scoreDebtRatio(double:debtRatio);
+    score = score + this.scoreCurrentRatio(double:currentRatio);
+    score = score + this.scoreCashFlow(str:cashFlowStatus);
+    return score;
+}
+// ============================================================
+// 三、履约记录评分 (满分8分)
+// ============================================================
+int def scoreBankCredit(int:overdueCount) {
+    // 银行信贷记录评分
+    if (overdueCount == 0) {
+        return 4;
+    } else if (overdueCount <= 2) {
+        return 2;
+    } else {
+        return 0;
+    }
+}
+int def scoreCommercialCompliance(str:breachType) {
+    // 商业履约评分
+    // breachType: "none", "minor", "major"
+    if (breachType == "none") {
+        return 4;
+    } else if (breachType == "minor") {
+        return 2;
+    } else {
+        return 0;
+    }
+}
+int def calculateComplianceScore(int:overdueCount, str:breachType) {
+    int score = 0;
+    score = score + this.scoreBankCredit(int:overdueCount);
+    score = score + this.scoreCommercialCompliance(str:breachType);
+    return score;
+}
+// ============================================================
+// 四、企业资质评分 (满分6分)
+// ============================================================
+
+int def scoreIndustryCertification(str:certLevel) {
+    // 行业资质评分
+    // certLevel: "national", "provincial", "basic", "none"
+    if (certLevel == "national") {
+        return 2;
+    } else if (certLevel == "provincial") {
+        return 1;
+    } else if (certLevel == "basic") {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int def scoreIntellectualProperty(int:patentCount, str:ipType) {
+    // 知识产权评分
+    // ipType: "invention", "utility", "soft", "none"
+    if (patentCount >= 3) {
+        return 2;
+    } else if (patentCount >= 1) {
+        return 1;
+    } else if (ipType == "soft") {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int def scoreCreditRating(str:rating) {
+    // 信用评级评分
+    if (rating == "AAA") {
+        return 2;
+    } else if (rating == "AA") {
+        return 1;
+    } else if (rating == "A") {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int def calculateQualificationScore(str:certLevel, int:patentCount, str:ipType, str:rating) {
+    int score = 0;
+    score = score + this.scoreIndustryCertification(str:certLevel);
+    score = score + this.scoreIntellectualProperty(int:patentCount, str:ipType);
+    score = score + this.scoreCreditRating(str:rating);
+    return score;
+}
+
+
+// ============================================================
+// 五、风险管理评分 (满分6分)
+// ============================================================
+
+int def scoreLegalLitigation(int:pendingCount, str:litigationStatus) {
+    // 法律诉讼评分
+    // litigationStatus: "none", "resolved", "pending"
+    if (pendingCount == 0) {
+        return 3;
+    } else if (litigationStatus == "resolved") {
+        return 2;
+    } else {
+        return 0;
+    }
+}
+
+int def scorePenalty(str:penaltyType) {
+    // 行政处罚评分
+    // penaltyType: "none", "minor", "major"
+    if (penaltyType == "none") {
+        return 3;
+    } else if (penaltyType == "minor") {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int def calculateRiskScore(int:pendingLitigations, str:litigationStatus, str:penaltyType) {
+    int score = 0;
+    score = score + this.scoreLegalLitigation(int:pendingLitigations, str:litigationStatus);
+    score = score + this.scorePenalty(str:penaltyType);
+    return score;
+}
+
+
+// ============================================================
+// 六、总分计算
+// ============================================================
+
+int def calculateTotalScore(
+    // 经营状况参数
+    int:operatingYears,
+    double:annualRevenue,
+    str:profitStatus,
+    // 财务状况参数
+    double:debtRatio,
+    double:currentRatio,
+    str:cashFlowStatus,
+    // 履约记录参数
+    int:overdueCount,
+    str:breachType,
+    // 企业资质参数
+    str:certLevel,
+    int:patentCount,
+    str:ipType,
+    str:creditRating,
+    // 风险管理参数
+    int:pendingLitigations,
+    str:litigationStatus,
+    str:penaltyType
+) {
+    // 基础分
+    int baseScore = 60;
+
+    // 计算各维度得分
+    int businessScore = this.calculateBusinessScore(int:operatingYears, double:annualRevenue, str:profitStatus);
+    int financialScore = this.calculateFinancialScore(double:debtRatio, double:currentRatio, str:cashFlowStatus);
+    int complianceScore = this.calculateComplianceScore(int:overdueCount, str:breachType);
+    int qualificationScore = this.calculateQualificationScore(str:certLevel, int:patentCount, str:ipType, str:creditRating);
+    int riskScore = this.calculateRiskScore(int:pendingLitigations, str:litigationStatus, str:penaltyType);
+
+    // 总分
+    int totalScore = baseScore + businessScore + financialScore + complianceScore + qualificationScore + riskScore;
+    return totalScore;
+}
+
+
+// ============================================================
+// 七、信用等级评定
+// ============================================================
+
+str def getCreditRating(int:score) {
+    if (score >= 90) {
+        return "AAA";
+    } else if (score >= 80) {
+        return "AA";
+    } else if (score >= 70) {
+        return "A";
+    } else if (score >= 60) {
+        return "BBB";
+    } else if (score >= 50) {
+        return "BB";
+    } else if (score >= 40) {
+        return "B";
+    } else {
+        return "C";
+    }
+}
+
+str def getRiskLevel(str:rating) {
+    if (rating == "AAA") {
+        return "低风险";
+    } else if (rating == "AA") {
+        return "较低风险";
+    } else if (rating == "A") {
+        return "可控风险";
+    } else if (rating == "BBB") {
+        return "一般风险";
+    } else if (rating == "BB") {
+        return "较高风险";
+    } else if (rating == "B") {
+        return "高风险";
+    } else {
+        return "极高风险";
+    }
+}
+
+str def getSuggestion(str:rating) {
+    if (rating == "AAA") {
+        return "绿色通道，额度放宽20%";
+    } else if (rating == "AA") {
+        return "优先审批，标准额度";
+    } else if (rating == "A") {
+        return "正常审批，常规额度";
+    } else if (rating == "BBB") {
+        return "标准审批，适当风控";
+    } else if (rating == "BB") {
+        return "加强审查，缩减额度30%";
+    } else if (rating == "B") {
+        return "严格审查，要求担保";
+    } else {
+        return "审慎准入或拒绝";
+    }
+}
+
+
+// ============================================================
+// 八、详细评分报告
+// ============================================================
+
+void def printScoreDetail(
+    int:operatingYears,
+    double:annualRevenue,
+    str:profitStatus,
+    double:debtRatio,
+    double:currentRatio,
+    str:cashFlowStatus,
+    int:overdueCount,
+    str:breachType,
+    str:certLevel,
+    int:patentCount,
+    str:ipType,
+    str:creditRating,
+    int:pendingLitigations,
+    str:litigationStatus,
+    str:penaltyType
+) {
+    console.log("========== 企业信用评分报告 ==========");
+    console.log("");
+
+    // 经营状况
+    int businessScore = this.calculateBusinessScore(int:operatingYears, double:annualRevenue, str:profitStatus);
+    console.log("【经营状况】");
+    console.log("  经营年限: " + operatingYears + "年 → " + this.scoreOperatingYears(int:operatingYears) + "分");
+    console.log("  年营收: " + annualRevenue + "万 → " + this.scoreAnnualRevenue(double:annualRevenue) + "分");
+    console.log("  盈利能力: " + profitStatus + " → " + this.scoreProfitability(str:profitStatus) + "分");
+    console.log("  小计: " + businessScore + "/10分");
+    console.log("");
+
+    // 财务状况
+    int financialScore = this.calculateFinancialScore(double:debtRatio, double:currentRatio, str:cashFlowStatus);
+    console.log("【财务状况】");
+    console.log("  资产负债率: " + debtRatio + "% → " + this.scoreDebtRatio(double:debtRatio) + "分");
+    console.log("  流动比率: " + currentRatio + " → " + this.scoreCurrentRatio(double:currentRatio) + "分");
+    console.log("  现金流: " + cashFlowStatus + " → " + this.scoreCashFlow(str:cashFlowStatus) + "分");
+    console.log("  小计: " + financialScore + "/10分");
+    console.log("");
+
+    // 履约记录
+    int complianceScore = this.calculateComplianceScore(int:overdueCount, str:breachType);
+    console.log("【履约记录】");
+    console.log("  银行信贷: 逾期" + overdueCount + "次 → " + this.scoreBankCredit(int:overdueCount) + "分");
+    console.log("  商业履约: " + breachType + " → " + this.scoreCommercialCompliance(str:breachType) + "分");
+    console.log("  小计: " + complianceScore + "/8分");
+    console.log("");
+
+    // 企业资质
+    int qualificationScore = this.calculateQualificationScore(str:certLevel, int:patentCount, str:ipType, str:creditRating);
+    console.log("【企业资质】");
+    console.log("  行业资质: " + certLevel + " → " + this.scoreIndustryCertification(str:certLevel) + "分");
+    console.log("  知识产权: 专利" + patentCount + "项," + ipType + " → " + this.scoreIntellectualProperty(int:patentCount, str:ipType) + "分");
+    console.log("  信用评级: " + creditRating + " → " + this.scoreCreditRating(str:creditRating) + "分");
+    console.log("  小计: " + qualificationScore + "/6分");
+    console.log("");
+
+    // 风险管理
+    int riskScore = this.calculateRiskScore(int:pendingLitigations, str:litigationStatus, str:penaltyType);
+    console.log("【风险管理】");
+    console.log("  法律诉讼: " + litigationStatus + "(" + pendingLitigations + "起) → " + this.scoreLegalLitigation(int:pendingLitigations, str:litigationStatus) + "分");
+    console.log("  行政处罚: " + penaltyType + " → " + this.scorePenalty(str:penaltyType) + "分");
+    console.log("  小计: " + riskScore + "/6分");
+    console.log("");
+
+    // 总分
+    int totalScore = 60 + businessScore + financialScore + complianceScore + qualificationScore + riskScore;
+    str rating = this.getCreditRating(int:totalScore);
+    str riskLevel = this.getRiskLevel(str:rating);
+    str suggestion = this.getSuggestion(str:rating);
+
+    console.log("========== 最终结果 ==========");
+    console.log("基础分: 60分");
+    console.log("动态调整分: " + (totalScore - 60) + "/40分");
+    console.log("总分: " + totalScore + "/100分");
+    console.log("信用等级: " + rating);
+    console.log("风险程度: " + riskLevel);
+    console.log("建议措施: " + suggestion);
+    console.log("================================");
+}
+
+
+// ============================================================
+// 九、使用示例
+// ============================================================
+
+// 示例1：优秀企业
+console.log("【示例1：优秀企业】");
+int totalScore1 = this.calculateTotalScore(
+    int:12, double:8000, str:"3years",
+    double:45, double:2.5, str:"excellent",
+    int:0, str:"none",
+    str:"national", int:5, str:"invention", str:"AAA",
+    int:0, str:"none", str:"none"
+);
+str rating1 = this.getCreditRating(int:totalScore1);
+console.log("总分: " + totalScore1 + ", 等级: " + rating1);
+console.log("");
+
+//一般企业
+console.log("【示例2：一般企业】");
+int totalScore2 = this.calculateTotalScore(
+    int:6, double:2000, str:"current",
+    double:60, double:1.6, str:"normal",
+    int:1, str:"none",
+    str:"provincial", int:0, str:"soft", str:"A",
+    int:0, str:"none", str:"none"
+);
+str rating2 = this.getCreditRating(int:totalScore2);
+console.log("总分: " + totalScore2 + ", 等级: " + rating2);
+console.log("");
+
+//高风险企业
+console.log("【示例3：高风险企业】");
+int totalScore3 = this.calculateTotalScore(
+    int:2, double:300, str:"loss",
+    double:90, double:0.8, str:"negative",
+    int:5, str:"major",
+    str:"none", int:0, str:"none", str:"BBB",
+    int:3, str:"pending", str:"major"
+);
+str rating3 = this.getCreditRating(int:totalScore3);
+console.log("总分: " + totalScore3 + ", 等级: " + rating3);
+console.log("");
+
+//完整详细报告
+console.log("【示例4：完整详细报告】");
+this.printScoreDetail(
+    int:8, double:3500, str:"2years",
+    double:55, double:1.9, str:"normal",
+    int:0, str:"none",
+    str:"provincial", int:2, str:"invention", str:"AA",
+    int:0, str:"none", str:"none"
+);

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.xml.CreditScoreMapper">
+
+    <!-- ============================================================ -->
+    <!-- 评分维度函数（各维度独立评分） -->
+    <!-- ============================================================ -->
+
+    <!-- 1. 经营状况评分（满分10分） -->
+    <java name="scoreOperatingYears" returnClass="int">
+        <![CDATA[
+            int def scoreOperatingYears(int:years) {
+                if (years >= 10) {
+                    return 3;
+                } else if (years >= 5) {
+                    return 2;
+                } else if (years >= 3) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreAnnualRevenue" returnClass="int">
+        <![CDATA[
+            int def scoreAnnualRevenue(double:revenue) {
+                if (revenue >= 5000) {
+                    return 4;
+                } else if (revenue >= 1000) {
+                    return 3;
+                } else if (revenue >= 500) {
+                    return 2;
+                } else {
+                    return 1;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreProfitability" returnClass="int">
+        <![CDATA[
+            int def scoreProfitability(str:profitStatus) {
+                if (profitStatus == "3years") {
+                    return 3;
+                } else if (profitStatus == "2years") {
+                    return 2;
+                } else if (profitStatus == "current") {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 2. 财务状况评分（满分10分） -->
+    <java name="scoreDebtRatio" returnClass="int">
+        <![CDATA[
+            int def scoreDebtRatio(double:ratio) {
+                if (ratio <= 50) {
+                    return 4;
+                } else if (ratio <= 70) {
+                    return 3;
+                } else if (ratio <= 85) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreCurrentRatio" returnClass="int">
+        <![CDATA[
+            int def scoreCurrentRatio(double:ratio) {
+                if (ratio >= 2.0) {
+                    return 3;
+                } else if (ratio >= 1.5) {
+                    return 2;
+                } else if (ratio >= 1.0) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreCashFlow" returnClass="int">
+        <![CDATA[
+            int def scoreCashFlow(str:cashFlowStatus) {
+                if (cashFlowStatus == "excellent") {
+                    return 3;
+                } else if (cashFlowStatus == "normal") {
+                    return 2;
+                } else if (cashFlowStatus == "tight") {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 3. 履约记录评分（满分8分） -->
+    <java name="scoreBankCredit" returnClass="int">
+        <![CDATA[
+            int def scoreBankCredit(int:overdueCount) {
+                if (overdueCount == 0) {
+                    return 4;
+                } else if (overdueCount <= 2) {
+                    return 2;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreCommercialCompliance" returnClass="int">
+        <![CDATA[
+            int def scoreCommercialCompliance(str:breachType) {
+                if (breachType == "none") {
+                    return 4;
+                } else if (breachType == "minor") {
+                    return 2;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 4. 企业资质评分（满分6分） -->
+    <java name="scoreIndustryCertification" returnClass="int">
+        <![CDATA[
+            int def scoreIndustryCertification(str:certLevel) {
+                if (certLevel == "national") {
+                    return 2;
+                } else if (certLevel == "provincial") {
+                    return 1;
+                } else if (certLevel == "basic") {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreIntellectualProperty" returnClass="int">
+        <![CDATA[
+            int def scoreIntellectualProperty(int:patentCount, str:ipType) {
+                if (patentCount >= 3) {
+                    return 2;
+                } else if (patentCount >= 1) {
+                    return 1;
+                } else if (ipType == "soft") {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreCreditRating" returnClass="int">
+        <![CDATA[
+            int def scoreCreditRating(str:rating) {
+                if (rating == "AAA") {
+                    return 2;
+                } else if (rating == "AA") {
+                    return 1;
+                } else if (rating == "A") {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 5. 风险管理评分（满分6分） -->
+    <java name="scoreLegalLitigation" returnClass="int">
+        <![CDATA[
+            int def scoreLegalLitigation(int:pendingCount, str:litigationStatus) {
+                if (pendingCount == 0) {
+                    return 3;
+                } else if (litigationStatus == "resolved") {
+                    return 2;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scorePenalty" returnClass="int">
+        <![CDATA[
+            int def scorePenalty(str:penaltyType) {
+                if (penaltyType == "none") {
+                    return 3;
+                } else if (penaltyType == "minor") {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- ============================================================ -->
+    <!-- 总分计算函数 -->
+    <!-- ============================================================ -->
+    <java name="calculateTotalScore" returnClass="int">
+        <![CDATA[
+        int def calculateTotalScore(
+            int:businessScore,
+            int:financialScore,
+            int:complianceScore,
+            int:qualificationScore,
+            int:riskScore
+        ) {
+            // 权重配置（百分比）
+            // 经营状况: 25%, 财务状况: 25%, 履约记录: 20%, 企业资质: 15%, 风险管理: 15%
+            // 各维度满分: 经营状况10分, 财务状况10分, 履约记录8分, 企业资质6分, 风险管理6分
+
+            int baseScore = 60;
+
+            // 应用权重计算各维度实际得分
+            // 经营状况权重 25% → 满分10分 × 25% = 2.5分，实际得分按比例计算
+            int weightedBusinessScore = (businessScore * 25) / 10;
+
+            // 财务状况权重 25% → 满分10分 × 25% = 2.5分
+            int weightedFinancialScore = (financialScore * 25) / 10;
+
+            // 履约记录权重 20% → 满分8分 × 20% = 1.6分
+            int weightedComplianceScore = (complianceScore * 20) / 8;
+
+            // 企业资质权重 15% → 满分6分 × 15% = 0.9分
+            int weightedQualificationScore = (qualificationScore * 15) / 6;
+
+            // 风险管理权重 15% → 满分6分 × 15% = 0.9分
+            int weightedRiskScore = (riskScore * 15) / 6;
+
+            int totalScore = baseScore
+                + weightedBusinessScore
+                + weightedFinancialScore
+                + weightedComplianceScore
+                + weightedQualificationScore
+                + weightedRiskScore;
+
+            return totalScore;
+        }
+    ]]>
+    </java>
+
+    <!-- ============================================================ -->
+    <!-- 信用等级评定函数 -->
+    <!-- ============================================================ -->
+    <java name="getCreditRating" returnClass="java.lang.String">
+        <![CDATA[
+            str def getCreditRating(int:score) {
+                if (score >= 90) {
+                    return "AAA";
+                } else if (score >= 80) {
+                    return "AA";
+                } else if (score >= 70) {
+                    return "A";
+                } else if (score >= 60) {
+                    return "BBB";
+                } else if (score >= 50) {
+                    return "BB";
+                } else if (score >= 40) {
+                    return "B";
+                } else {
+                    return "C";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="getRiskLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def getRiskLevel(str:rating) {
+                if (rating == "AAA") {
+                    return "低风险";
+                } else if (rating == "AA") {
+                    return "较低风险";
+                } else if (rating == "A") {
+                    return "可控风险";
+                } else if (rating == "BBB") {
+                    return "一般风险";
+                } else if (rating == "BB") {
+                    return "较高风险";
+                } else if (rating == "B") {
+                    return "高风险";
+                } else {
+                    return "极高风险";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="getSuggestion" returnClass="java.lang.String">
+        <![CDATA[
+            str def getSuggestion(str:rating) {
+                if (rating == "AAA") {
+                    return "绿色通道，额度放宽20%";
+                } else if (rating == "AA") {
+                    return "优先审批，标准额度";
+                } else if (rating == "A") {
+                    return "正常审批，常规额度";
+                } else if (rating == "BBB") {
+                    return "标准审批，适当风控";
+                } else if (rating == "BB") {
+                    return "加强审查，缩减额度30%";
+                } else if (rating == "B") {
+                    return "严格审查，要求担保";
+                } else {
+                    return "审慎准入或拒绝";
+                }
+            }
+        ]]>
+    </java>
+
+</javas>
