@@ -338,14 +338,6 @@ JQuick Java 最典型场景：信用评分、风险决策、规则引擎。
 | 经营状况 | 经营年限 | ≥10 年           | 3    |
 | 经营状况 | 经营年限 | 3-5 年           | 1    |
 | 经营状况 | 经营年限 | <3 年            | 0    |
-| 经营状况 | 年营收   | ≥5000 万         | 4    |
-| 经营状况 | 年营收   | 1000-5000 万     | 3    |
-| 经营状况 | 年营收   | 500-1000 万      | 2    |
-| 经营状况 | 年营收   | <500 万          | 1    |
-| 经营状况 | 盈利能力 | 连续 3 年盈利    | 3    |
-| 经营状况 | 盈利能力 | 连续 2 年盈利    | 2    |
-| 经营状况 | 盈利能力 | 当年盈利         | 1    |
-| 经营状况 | 盈利能力 | 亏损             | 0    |
 | 财务状况 | 资产负债率 | ≤50%           | 4    |
 | 财务状况 | 资产负债率 | 50%-70%        | 3    |
 | 财务状况 | 资产负债率 | 70%-85%        | 1    |
@@ -354,24 +346,9 @@ JQuick Java 最典型场景：信用评分、风险决策、规则引擎。
 | 财务状况 | 流动比率 | 1.5-2.0         | 2    |
 | 财务状况 | 流动比率 | 1.0-1.5         | 1    |
 | 财务状况 | 流动比率 | <1.0            | 0    |
-| 财务状况 | 现金流   | 充足稳定         | 3    |
-| 财务状况 | 现金流   | 基本正常         | 2    |
-| 财务状况 | 现金流   | 紧张改善         | 1    |
-| 财务状况 | 现金流   | 持续为负         | 0    |
 | 履约记录 | 银行信贷 | 无逾期           | 4    |
 | 履约记录 | 银行信贷 | 逾期 1-2 次已结清 | 2    |
-| 履约记录 | 银行信贷 | 逾期≥3 次        | 0    |
-| 履约记录 | 商业履约 | 无违约           | 4    |
-| 履约记录 | 商业履约 | 1 次轻微违约     | 2    |
-| 履约记录 | 商业履约 | 重大违约         | 0    |
-| 企业资质 | 行业资质 | 国家级           | 2    |
-| 企业资质 | 行业资质 | 省级             | 1.5  |
-| 企业资质 | 行业资质 | 基础             | 1    |
-| 企业资质 | 行业资质 | 无               | 0    |
-| 企业资质 | 知识产权 | 发明专利>3       | 2    |
-| 企业资质 | 知识产权 | 发明 1-2 项      | 1.5  |
-| 企业资质 | 知识产权 | 软著 / 商标      | 1    |
-| 企业资质 | 知识产权 | 无               | 0    |
+| 履约记录 | 银行信贷 | 逾期≥3 次        | 0    ||
 | 企业资质 | 信用评级 | AAA              | 2    |
 | 企业资质 | 信用评级 | AA               | 1.5  |
 | 企业资质 | 信用评级 | A                | 1    |
@@ -379,9 +356,6 @@ JQuick Java 最典型场景：信用评分、风险决策、规则引擎。
 | 风险管理 | 法律诉讼 | 无诉讼           | 3    |
 | 风险管理 | 法律诉讼 | 已结案胜诉       | 2    |
 | 风险管理 | 法律诉讼 | 未结诉讼         | 0    |
-| 风险管理 | 行政处罚 | 无处罚           | 3    |
-| 风险管理 | 行政处罚 | 轻微已整改       | 1    |
-| 风险管理 | 行政处罚 | 重大处罚         | 0    |
 
 ## 信用分构成
  - 经营状况
@@ -391,105 +365,61 @@ JQuick Java 最典型场景：信用评分、风险决策、规则引擎。
  - 风险管理
 ###  企业信用评分卡
 ```java
- @Test
+    @Test
     public void testCreditScore() throws IOException {
-        JQuickJavaXmlParseFactory handler = new JQuickJavaXmlParseFactory();
-        JQuickFactory factory = new JQuickXmlFactory(handler, "credit-score.xml");
-        CreditScoreMapper mapper = factory.createApi(CreditScoreMapper.class);
-        // 1. 各维度评分测试
-        int scoreOperatingYears = mapper.scoreOperatingYears(12);
-        System.out.println("经营年限得分: " + scoreOperatingYears);
-        int scoreAnnualRevenue = mapper.scoreAnnualRevenue(8000);
-        System.out.println("年营收得分: " + scoreAnnualRevenue);
-        int scoreProfitability = mapper.scoreProfitability("3years");
-        System.out.println("盈利能力得分: " + scoreProfitability);
-        int scoreDebtRatio = mapper.scoreDebtRatio(45);
-        System.out.println("资产负债率得分: " + scoreDebtRatio);
-        int scoreCurrentRatio = mapper.scoreCurrentRatio(2.5);
-        System.out.println("流动比率得分: " + scoreCurrentRatio);
-        int scoreCashFlow = mapper.scoreCashFlow("excellent");
-        System.out.println("现金流得分: " + scoreCashFlow);
-        int scoreBankCredit = mapper.scoreBankCredit(0);
-        System.out.println("银行信贷得分: " + scoreBankCredit);
-        int scoreCommercialCompliance = mapper.scoreCommercialCompliance("none");
-        System.out.println("商业履约得分: " + scoreCommercialCompliance);
-        int scoreIndustryCertification = mapper.scoreIndustryCertification("national");
-        System.out.println("行业资质得分: " + scoreIndustryCertification);
-        int scoreIntellectualProperty = mapper.scoreIntellectualProperty(5, "invention");
-        System.out.println("知识产权得分: " + scoreIntellectualProperty);
-        int scoreCreditRating = mapper.scoreCreditRating("AAA");
-        System.out.println("信用评级得分: " + scoreCreditRating);
-        int scoreLegalLitigation = mapper.scoreLegalLitigation(0, "none");
-        System.out.println("法律诉讼得分: " + scoreLegalLitigation);
-        int scorePenalty = mapper.scorePenalty("none");
-        System.out.println("行政处罚得分: " + scorePenalty);
-        // 2. 计算各维度小分
-        int businessScore = scoreOperatingYears + scoreAnnualRevenue + scoreProfitability;
-        int financialScore = scoreDebtRatio + scoreCurrentRatio + scoreCashFlow;
-        int complianceScore = scoreBankCredit + scoreCommercialCompliance;
-        int qualificationScore = scoreIndustryCertification + scoreIntellectualProperty + scoreCreditRating;
-        int riskScore = scoreLegalLitigation + scorePenalty;
-        System.out.println("\n========== 各维度小计 ==========");
-        System.out.println("经营状况小计: " + businessScore + "/10");
-        System.out.println("财务状况小计: " + financialScore + "/10");
-        System.out.println("履约记录小计: " + complianceScore + "/8");
-        System.out.println("企业资质小计: " + qualificationScore + "/6");
-        System.out.println("风险管理小计: " + riskScore + "/6");
-        int baseScore = 60;
-        int totalScore = mapper.calculateTotalScore(baseScore, businessScore, financialScore, complianceScore, qualificationScore, riskScore);
-        System.out.println("\n========== 最终结果 ==========");
-        System.out.println("基础分: " + baseScore);
-        System.out.println("动态调整分: " + (totalScore - baseScore) + "/40");
-        System.out.println("总分: " + totalScore + "/100");
-        // 4. 获取信用等级
-        String rating = mapper.getCreditRating(totalScore);
-        String riskLevel = mapper.getRiskLevel(rating);
-        String suggestion = mapper.getSuggestion(rating);
-        System.out.println("\n信用等级: " + rating);
-        System.out.println("风险程度: " + riskLevel);
-        System.out.println("建议措施: " + suggestion);
+          JQuickJavaXmlParseFactory handler = new JQuickJavaXmlParseFactory();
+          JQuickFactory factory = new JQuickXmlFactory(handler, "credit-score.xml");
+          CreditScoreMapper mapper = factory.createApi(CreditScoreMapper.class);
+          // 1. 各维度评分测试
+          int scoreOperatingYears = mapper.scoreOperatingYears(12);
+          System.out.println("经营年限得分: " + scoreOperatingYears);
+          int scoreAnnualRevenue = mapper.scoreAnnualRevenue(8000);
+          System.out.println("年营收得分: " + scoreAnnualRevenue);
+          //...其他各维度小分以此类推
+          int businessScore = scoreOperatingYears + scoreAnnualRevenue + scoreProfitability;
+          int financialScore = scoreDebtRatio + scoreCurrentRatio + scoreCashFlow;
+          int complianceScore = scoreBankCredit + scoreCommercialCompliance;
+          int qualificationScore = scoreIndustryCertification + scoreIntellectualProperty + scoreCreditRating;
+          int riskScore = scoreLegalLitigation + scorePenalty;
+          System.out.println("\n========== 各维度小计 ==========");
+          System.out.println("经营状况小计: " + businessScore + "/10");
+          System.out.println("财务状况小计: " + financialScore + "/10");
+          System.out.println("履约记录小计: " + complianceScore + "/8");
+          System.out.println("企业资质小计: " + qualificationScore + "/6");
+          System.out.println("风险管理小计: " + riskScore + "/6");
+          int baseScore = 60;
+          int totalScore = mapper.calculateTotalScore(
+                  baseScore,
+                  businessScore,
+                  financialScore,
+                  complianceScore,
+                  qualificationScore,
+                  riskScore
+          );
+          System.out.println("\n========== 最终结果 ==========");
+          System.out.println("基础分: " + baseScore);
+          System.out.println("动态调整分: " + (totalScore - baseScore) + "/40");
+          System.out.println("总分: " + totalScore + "/100");
     }
 ```
 
 ```java
-package com.github.paohaijiao.xml;
-import com.github.paohaijiao.xml.param.Param;
-import java.util.HashMap;
 public interface CreditScoreMapper {
-    // 各维度独立评分接口
-    public int scoreOperatingYears(@Param("years") int years);
 
-    public int scoreAnnualRevenue(@Param("revenue") double revenue);
+  // 各维度独立评分接口
+  public int scoreOperatingYears(@Param("years") int years);
 
-    public int scoreProfitability(@Param("profitStatus") String profitStatus);
+  public int scoreAnnualRevenue(@Param("revenue") double revenue);
 
-    public int scoreDebtRatio(@Param("ratio") double ratio);
-
-    public int scoreCurrentRatio(@Param("ratio") double ratio);
-
-    public int scoreCashFlow(@Param("cashFlowStatus") String cashFlowStatus);
-
-    public int scoreBankCredit(@Param("overdueCount") int overdueCount);
-
-    public int scoreCommercialCompliance(@Param("breachType") String breachType);
-
-    public int scoreIndustryCertification(@Param("certLevel") String certLevel);
-
-    public int scoreIntellectualProperty(@Param("patentCount") int patentCount, @Param("ipType") String ipType);
-
-    public int scoreCreditRating(@Param("rating") String rating);
-
-    public int scoreLegalLitigation(@Param("pendingCount") int pendingCount, @Param("litigationStatus") String litigationStatus);
-
-    public int scorePenalty(@Param("penaltyType") String penaltyType);
-    // 总分计算接口
-    public int calculateTotalScore(@Param("businessScore") int businessScore, @Param("financialScore") int financialScore, @Param("currentRatio") int currentRatio, @Param("complianceScore") int complianceScore, @Param("qualificationScore") int qualificationScore, @Param("riskScore") int riskScore);
-    // 信用等级接口
-    public String getCreditRating(@Param("score") int score);
-
-    public String getRiskLevel(@Param("rating") String rating);
-
-    public String getSuggestion(@Param("rating") String rating);
+  //其他子计算省略...
+  // 总分计算公式
+  public int calculateTotalScore(@Param("businessScore") int businessScore,
+                                 @Param("financialScore") int financialScore,
+                                 @Param("currentRatio") int currentRatio,
+                                 @Param("complianceScore") int complianceScore,
+                                 @Param("qualificationScore") int qualificationScore,
+                                 @Param("riskScore") int riskScore
+  );
 }
 
 ```
@@ -499,14 +429,9 @@ public interface CreditScoreMapper {
 <!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
         "classpath:paohaijiao/dtd/Jquick-java.dtd">
 <javas namespace="com.github.paohaijiao.xml.CreditScoreMapper">
-
-    <!-- ============================================================ -->
-    <!-- 评分维度函数（各维度独立评分） -->
-    <!-- ============================================================ -->
-
-    <!-- 1. 经营状况评分（满分10分） -->
-    <java name="scoreOperatingYears" returnClass="int">
-        <![CDATA[
+  <!-- 1. 经营状况评分（满分10分） -->
+  <java name="scoreOperatingYears" returnClass="int">
+    <![CDATA[
             int def scoreOperatingYears(int:years) {
                 if (years >= 10) {
                     return 3;
@@ -519,10 +444,9 @@ public interface CreditScoreMapper {
                 }
             }
         ]]>
-    </java>
-
-    <java name="scoreAnnualRevenue" returnClass="int">
-        <![CDATA[
+  </java>
+  <java name="scoreAnnualRevenue" returnClass="int">
+    <![CDATA[
             int def scoreAnnualRevenue(double:revenue) {
                 if (revenue >= 5000) {
                     return 4;
@@ -535,10 +459,9 @@ public interface CreditScoreMapper {
                 }
             }
         ]]>
-    </java>
-
-    <java name="scoreProfitability" returnClass="int">
-        <![CDATA[
+  </java>
+  <java name="scoreProfitability" returnClass="int">
+    <![CDATA[
             int def scoreProfitability(str:profitStatus) {
                 if (profitStatus == "3years") {
                     return 3;
@@ -551,169 +474,9 @@ public interface CreditScoreMapper {
                 }
             }
         ]]>
-    </java>
-
-    <!-- 2. 财务状况评分（满分10分） -->
-    <java name="scoreDebtRatio" returnClass="int">
-        <![CDATA[
-            int def scoreDebtRatio(double:ratio) {
-                if (ratio <= 50) {
-                    return 4;
-                } else if (ratio <= 70) {
-                    return 3;
-                } else if (ratio <= 85) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        ]]>
-    </java>
-
-    <java name="scoreCurrentRatio" returnClass="int">
-        <![CDATA[
-            int def scoreCurrentRatio(double:ratio) {
-                if (ratio >= 2.0) {
-                    return 3;
-                } else if (ratio >= 1.5) {
-                    return 2;
-                } else if (ratio >= 1.0) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        ]]>
-    </java>
-
-    <java name="scoreCashFlow" returnClass="int">
-        <![CDATA[
-            int def scoreCashFlow(str:cashFlowStatus) {
-                if (cashFlowStatus == "excellent") {
-                    return 3;
-                } else if (cashFlowStatus == "normal") {
-                    return 2;
-                } else if (cashFlowStatus == "tight") {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        ]]>
-    </java>
-
-    <!-- 3. 履约记录评分（满分8分） -->
-    <java name="scoreBankCredit" returnClass="int">
-        <![CDATA[
-            int def scoreBankCredit(int:overdueCount) {
-                if (overdueCount == 0) {
-                    return 4;
-                } else if (overdueCount <= 2) {
-                    return 2;
-                } else {
-                    return 0;
-                }
-            }
-        ]]>
-    </java>
-
-    <java name="scoreCommercialCompliance" returnClass="int">
-        <![CDATA[
-            int def scoreCommercialCompliance(str:breachType) {
-                if (breachType == "none") {
-                    return 4;
-                } else if (breachType == "minor") {
-                    return 2;
-                } else {
-                    return 0;
-                }
-            }
-        ]]>
-    </java>
-
-    <!-- 4. 企业资质评分（满分6分） -->
-    <java name="scoreIndustryCertification" returnClass="int">
-        <![CDATA[
-            int def scoreIndustryCertification(str:certLevel) {
-                if (certLevel == "national") {
-                    return 2;
-                } else if (certLevel == "provincial") {
-                    return 1;
-                } else if (certLevel == "basic") {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        ]]>
-    </java>
-
-    <java name="scoreIntellectualProperty" returnClass="int">
-        <![CDATA[
-            int def scoreIntellectualProperty(int:patentCount, str:ipType) {
-                if (patentCount >= 3) {
-                    return 2;
-                } else if (patentCount >= 1) {
-                    return 1;
-                } else if (ipType == "soft") {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        ]]>
-    </java>
-
-    <java name="scoreCreditRating" returnClass="int">
-        <![CDATA[
-            int def scoreCreditRating(str:rating) {
-                if (rating == "AAA") {
-                    return 2;
-                } else if (rating == "AA") {
-                    return 1;
-                } else if (rating == "A") {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        ]]>
-    </java>
-
-    <!-- 5. 风险管理评分（满分6分） -->
-    <java name="scoreLegalLitigation" returnClass="int">
-        <![CDATA[
-            int def scoreLegalLitigation(int:pendingCount, str:litigationStatus) {
-                if (pendingCount == 0) {
-                    return 3;
-                } else if (litigationStatus == "resolved") {
-                    return 2;
-                } else {
-                    return 0;
-                }
-            }
-        ]]>
-    </java>
-
-    <java name="scorePenalty" returnClass="int">
-        <![CDATA[
-            int def scorePenalty(str:penaltyType) {
-                if (penaltyType == "none") {
-                    return 3;
-                } else if (penaltyType == "minor") {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        ]]>
-    </java>
-
-    <!-- ============================================================ -->
-    <!-- 总分计算函数 -->
-    <!-- ============================================================ -->
-    <java name="calculateTotalScore" returnClass="int">
-        <![CDATA[
+  </java>
+  <java name="calculateTotalScore" returnClass="int">
+    <![CDATA[
         int def calculateTotalScore(
             int:businessScore,
             int:financialScore,
@@ -724,106 +487,28 @@ public interface CreditScoreMapper {
             // 权重配置（百分比）
             // 经营状况: 25%, 财务状况: 25%, 履约记录: 20%, 企业资质: 15%, 风险管理: 15%
             // 各维度满分: 经营状况10分, 财务状况10分, 履约记录8分, 企业资质6分, 风险管理6分
-
             int baseScore = 60;
-
             // 应用权重计算各维度实际得分
             // 经营状况权重 25% → 满分10分 × 25% = 2.5分，实际得分按比例计算
             int weightedBusinessScore = (businessScore * 25) / 10;
-
             // 财务状况权重 25% → 满分10分 × 25% = 2.5分
             int weightedFinancialScore = (financialScore * 25) / 10;
-
             // 履约记录权重 20% → 满分8分 × 20% = 1.6分
             int weightedComplianceScore = (complianceScore * 20) / 8;
-
             // 企业资质权重 15% → 满分6分 × 15% = 0.9分
             int weightedQualificationScore = (qualificationScore * 15) / 6;
-
             // 风险管理权重 15% → 满分6分 × 15% = 0.9分
             int weightedRiskScore = (riskScore * 15) / 6;
-
             int totalScore = baseScore
                 + weightedBusinessScore
                 + weightedFinancialScore
                 + weightedComplianceScore
                 + weightedQualificationScore
                 + weightedRiskScore;
-
             return totalScore;
         }
     ]]>
-    </java>
-
-    <!-- ============================================================ -->
-    <!-- 信用等级评定函数 -->
-    <!-- ============================================================ -->
-    <java name="getCreditRating" returnClass="java.lang.String">
-        <![CDATA[
-            str def getCreditRating(int:score) {
-                if (score >= 90) {
-                    return "AAA";
-                } else if (score >= 80) {
-                    return "AA";
-                } else if (score >= 70) {
-                    return "A";
-                } else if (score >= 60) {
-                    return "BBB";
-                } else if (score >= 50) {
-                    return "BB";
-                } else if (score >= 40) {
-                    return "B";
-                } else {
-                    return "C";
-                }
-            }
-        ]]>
-    </java>
-
-    <java name="getRiskLevel" returnClass="java.lang.String">
-        <![CDATA[
-            str def getRiskLevel(str:rating) {
-                if (rating == "AAA") {
-                    return "低风险";
-                } else if (rating == "AA") {
-                    return "较低风险";
-                } else if (rating == "A") {
-                    return "可控风险";
-                } else if (rating == "BBB") {
-                    return "一般风险";
-                } else if (rating == "BB") {
-                    return "较高风险";
-                } else if (rating == "B") {
-                    return "高风险";
-                } else {
-                    return "极高风险";
-                }
-            }
-        ]]>
-    </java>
-
-    <java name="getSuggestion" returnClass="java.lang.String">
-        <![CDATA[
-            str def getSuggestion(str:rating) {
-                if (rating == "AAA") {
-                    return "绿色通道，额度放宽20%";
-                } else if (rating == "AA") {
-                    return "优先审批，标准额度";
-                } else if (rating == "A") {
-                    return "正常审批，常规额度";
-                } else if (rating == "BBB") {
-                    return "标准审批，适当风控";
-                } else if (rating == "BB") {
-                    return "加强审查，缩减额度30%";
-                } else if (rating == "B") {
-                    return "严格审查，要求担保";
-                } else {
-                    return "审慎准入或拒绝";
-                }
-            }
-        ]]>
-    </java>
-
+  </java>
 </javas>
 ```
 
