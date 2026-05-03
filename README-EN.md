@@ -166,13 +166,13 @@ StringList list=["A","B","C"];
 ```
 #### method definition
 ```jquick
-int function funtionName(int:a, int:b) {
+int def funtionName(int:a, int:b) {
     return a + b;
 }
 ```
 ```jquick
 import List<java.lang.String> as StringList ;
-StringList function funtionName(StringList:a, int:b) {
+StringList def funtionName(StringList:a, int:b) {
     return a;
 }
 ```
@@ -291,7 +291,7 @@ console.log("Result: " + result);
 ```
 ### code sample 
 ```jquick
-java.lang.String function a(int:a,float:b) {
+java.lang.String def a(int:a,float:b) {
     java.lang.String p=java.lang.String::format(java.lang.String:"Number: %d, String: %s",int: 42, java.lang.String:"test"); 
     return p;    
 }
@@ -300,7 +300,7 @@ java.lang.String function a(int:a,float:b) {
     this.a(int:c,float:d);
 ```
 ```jquick
-java.util.HashMap<java.lang.String,java.lang.String> function a(int:a,float:b) {
+java.util.HashMap<java.lang.String,java.lang.String> def a(int:a,float:b) {
     java.lang.String str1 = new java.lang.String(java.lang.String:"Hello");
     console.log(str1); 
     java.lang.String upperStr = str1.toUpperCase(); 
@@ -355,7 +355,7 @@ null
 ### complete example
 1. sample 1
 ```jquick
-int function getSquare(int:a,int:b){
+int def getSquare(int:a,int:b){
     return a*b;
 }
 int a=1;
@@ -364,7 +364,7 @@ int c=this.getSquare(int:a,int:b);
 ```
 2. sample 2
 ```jquick
-java.util.HashMap<java.lang.String,java.lang.String>   function a(int:a,float:b) {
+java.util.HashMap<java.lang.String,java.lang.String>   def a(int:a,float:b) {
     java.lang.String str1 = new java.lang.String(java.lang.String:"Hello");
     console.log(str1);
     java.lang.String upperStr = str1.toUpperCase();
@@ -381,7 +381,7 @@ this.a(int:c,float:d);
 ```
 3. sample 3
 ```jquick
-java.lang.String function a(int:a,float:b) {
+java.lang.String def a(int:a,float:b) {
         java.lang.String p=java.lang.String::format(java.lang.String:"Number: %d, String: %s",int: 42, java.lang.String:"test"); 
         return p;   
 }
@@ -392,7 +392,7 @@ java.lang.String function a(int:a,float:b) {
 4. sample 4
 ```jquick
 import java.lang.String as type1; 
-type1 function a(int:a,float:b) {
+type1 def a(int:a,float:b) {
    type1 p=type1::format(type1:"Number: %d, String: %s",int: 42, type1:"test");
     return p;    
 }
