@@ -1,5 +1,7 @@
 # JQuick Java 语法参考手册
 简体中文 | [ENGLISH](./README-EN.md)
+[![Awesome Java](https://img.shields.io/badge/Awesome-Java-ff69b4.svg)](https://github.com/akullpp/awesome-java)
+> 已被收录至 [Awesome Java](https://github.com/akullpp/awesome-java) 的 **Miscellaneous** 精选章节
 ## 项目进度
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.4.0-brightgreen.svg)](CHANGELOG.md)
