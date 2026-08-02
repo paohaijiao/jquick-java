@@ -39,11 +39,9 @@ public class JQuickJavaExecutor extends JAbstractAntlrExecutor<String, Object> {
 
     private JQuickJavaExecutor() {
         this.threadLocalContext = ThreadLocal.withInitial(JContext::new);
-        loadBannerOnce();
     }
     private JQuickJavaExecutor(JContext context) {
         this.threadLocalContext = ThreadLocal.withInitial(() -> context);
-        loadBannerOnce();
     }
     private JQuickJavaLexer lexer;
 
@@ -53,13 +51,6 @@ public class JQuickJavaExecutor extends JAbstractAntlrExecutor<String, Object> {
 
     private JContext context;
 
-    private void loadBannerOnce() {
-        if (bannerLoaded.compareAndSet(false, true)) {
-            JQuickBannerConfig config=new JQuickBannerConfig();
-            JQuickBanner banner=new JQuickBannerImpl(config);
-            banner.printBanner();
-        }
-    }
     /**
      * 获取单例实例（使用默认的 JContext）
      */
@@ -84,7 +75,6 @@ public class JQuickJavaExecutor extends JAbstractAntlrExecutor<String, Object> {
                 }
             }
         } else {
-            // 如果实例已存在，更新 ThreadLocal 的初始值
             instance.setDefaultContext(context);
         }
         return instance;
@@ -133,6 +123,9 @@ public class JQuickJavaExecutor extends JAbstractAntlrExecutor<String, Object> {
 
     @Override
     protected Object parse(Parser parser) throws JAntlrExecutionException {
+        JQuickBanner banner=JQuickBannerImpl.getInstance();
+        banner.printBanner();
+
         JQuickJavaParser calcParser = (JQuickJavaParser) parser;
         calcParser.enterScope();
         JQuickJavaParser.ProgramContext tree = calcParser.program();

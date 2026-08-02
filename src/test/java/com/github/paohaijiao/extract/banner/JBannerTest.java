@@ -11,7 +11,7 @@ public class JBannerTest {
     @Test
     public void banner() throws IOException {
         JQuickBannerConfig config=new JQuickBannerConfig();
-        JQuickBanner banner=new JQuickBannerImpl(config);
+        JQuickBanner banner=JQuickBannerImpl.getInstance();
         banner.printBanner();
         System.out.println("banner");
     }
