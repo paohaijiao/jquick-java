@@ -8,4 +8,6 @@ public interface UserMapper {
     public HashMap<String,String> all() ;
 
     public int sum(@Param("a") int a, @Param("b") int b) ;
+
+    public int mul(@Param("a") int a, @Param("b") int b) ;
 }

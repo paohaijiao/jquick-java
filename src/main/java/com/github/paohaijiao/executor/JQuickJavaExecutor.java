@@ -125,7 +125,6 @@ public class JQuickJavaExecutor extends JAbstractAntlrExecutor<String, Object> {
     protected Object parse(Parser parser) throws JAntlrExecutionException {
         JQuickBanner banner=JQuickBannerImpl.getInstance();
         banner.printBanner();
-
         JQuickJavaParser calcParser = (JQuickJavaParser) parser;
         calcParser.enterScope();
         JQuickJavaParser.ProgramContext tree = calcParser.program();
