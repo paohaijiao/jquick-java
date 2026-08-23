@@ -54,6 +54,7 @@ Typical scenarios:
   - [Comments](#comments)
   - [Reserved Keywords](#reserved-keywords)
   - [Identifier Rules](#identifier-rules)
+- [JQuickJava Unified Entry Class](#jquickjava-unified-entry-class)
 - [Core Visitor Notes](#core-visitor-notes)
 - [Complete Examples](#complete-examples)
 - [XML Configuration Scenario](#xml-configuration-scenario)
@@ -347,61 +348,124 @@ Builtin::uuid();
 
 ---
 
+## JQuickJava Unified Entry Class
+
+`JQuickJava` is an all-in-one entry class built on top of `JQuickJavaXmlParseFactory`. It provides a fluent API for **package declarations, variable initialization, direct script execution, and XML / inline rule proxies**, making it easy to integrate rule engines, scorecards, and process orchestration.
+
+### Fluent API Overview
+
+| API | Description |
+|-----|-------------|
+| `JQuickJava.create()` | Create a default entry instance |
+| `importPackage(qualifiedName, alias)` | Declare a package import, generating `import Type as Alias;` |
+| `importPackage(qualifiedName)` | Declare a package import, deriving the alias from the last segment automatically |
+| `importPackages(...)` | Batch package imports (auto-generated aliases) |
+| `constant(name, value)` | Initialize a context constant |
+| `variable(name, value)` / `variables(map)` | Initialize context variables |
+| `env(name, value)` / `envs(map)` | Initialize runtime environment variables |
+| `init(statement...)` | Append script-level initialization statements (prepended to the script) |
+| `rule(methodName, functionDefinition)` | Register an inline rule script (equivalent to the CDATA of an XML `<java>` element) |
+| `execute(scriptBody)` | Execute a JQuick script directly (program path) |
+| `createApi(apiInterface)` | Create a pure inline-rule proxy |
+| `createApi(apiInterface, xmlPath)` | Create a proxy that merges XML rules and inline rules |
+
+### Direct Script Execution
+
+`execute(...)` runs a script through the program path, supporting package declarations, function definitions, and invocations. Context variables can be referenced directly inside the script:
+
+```java
+Object result = JQuickJava.create()
+        .importPackage("java.lang.String", "type1")   // import java.lang.String as type1;
+        .variable("base", 60)                          // context variable, directly usable in script
+        .execute(
+                "type1 def a(int:a,int:b) {\n" +
+                "   int t = a+b;\n" +
+                "   type1 p = java.lang.String::valueOf(int:t);\n" +
+                "   return p;\n" +
+                "}\n" +
+                "int c=1;\n" +
+                "int d=2;\n" +
+                "this.a(int:c,int:d);"                 // invoke custom function -> "3"
+        );
+```
+
+### Pure Inline-Rule Proxy
+
+`rule(...)` registers an inline rule script (equivalent to the CDATA of an XML `<java>` element). `createApi(Class)` generates an interface proxy without any XML file, with parameter binding, return-type conversion, and context injection identical to the XML proxy:
+
+```java
+public interface UserMapper {
+    public int sum(@Param("a") int a, @Param("b") int b);
+    public int mul(@Param("a") int a, @Param("b") int b);
+}
+```
+
+```java
+UserMapper userApi = JQuickJava.create()
+        .importPackage("java.lang.String", "type1")
+        .constant("base", 60)
+        .rule("sum", "int def sum(int:a,int:b){ return a+b; }")
+        .rule("mul", "type1 def mul(int:a,int:b){ int t=a*b; type1 p = java.lang.String::valueOf(int:t); return p; }")
+        .createApi(UserMapper.class);
+
+int sum = userApi.sum(1, 2);    // 3
+int mul = userApi.mul(3, 4);    // 12
+```
+
+### Combining with XML Mode
+
+`createApi(Class, xmlPath)` loads both the XML rule file and inline rules: methods already defined in XML still use the XML definitions, methods missing from XML are filled by inline rules, and for same-name methods **inline rules take precedence**. This is ideal for incrementally adding rules without changing existing XML configurations:
+
+```xml
+<!-- jquick-java.xml -->
+<javas namespace="com.github.paohaijiao.xml.UserMapper">
+    <java name="sum" returnClass="java.util.List">
+        <![CDATA[
+           int def sum(int:a,int:b) {
+              return a+b;
+            }
+        ]]>
+    </java>
+</javas>
+```
+
+```java
+UserMapper userApi = JQuickJava.create()
+        .rule("mul", "int def mul(int:a,int:b){ return a*b; }")   // inline rule fills the method missing from XML
+        .createApi(UserMapper.class, "jquick-java.xml");          // XML rules + inline rules merged
+
+int sum = userApi.sum(1, 2);    // from XML rule -> 3
+int mul = userApi.mul(3, 4);    // from inline rule -> 12
+```
+
+> Tip: Inline rules and XML rules share the same execution chain (parameter binding → function-definition parsing → function-body execution → return-type conversion), so an inline rule is an equivalent way of writing the CDATA of an XML `<java>` element.
+
+---
+
 ## Core Visitor Notes
 
 ### JQuickMethodInvocationCallVisitor
 
-`JQuickMethodInvocationCallVisitor` is the core visitor in the JQuick method invocation dispatch chain. It identifies different invocation forms during parse tree traversal and routes them to the corresponding executor or manager.
-
-It mainly handles:
-
-- Static method calls
-- Constructor calls
-- Instance method calls
-- `this`-context method calls
-- Built-in method calls
-- Method calls on accessed static variables
+`JQuickMethodInvocationCallVisitor` is the core visitor in the JQuick method invocation dispatch chain. It identifies different invocation forms during parse tree traversal (static method calls, constructor calls, instance method calls, `this`-context method calls, built-in method calls, and method calls on accessed static variables) and routes them to the corresponding executor or manager.
 
 ### visitBuiltinMethodCall
 
-#### API Purpose
+#### API Purpose & Trigger Timing
 
-`visitBuiltinMethodCall(JQuickJavaParser.BuiltinMethodCallContext ctx)` is used to **intercept built-in method invocation scenarios specifically in JQuick**.
-
-When the script contains a syntax node in the form `Builtin::methodName(...)`, this visitor method is triggered and dispatches the method name and arguments to `JQuickMethodInvocationManager`.
-
-In other words, this API does not use the normal Java reflection invocation path. It uses the **JQuick built-in capability registration and dispatch pipeline** instead.
-
-#### Trigger Timing
-
-It is triggered when the parser recognizes syntax like this:
+`visitBuiltinMethodCall(BuiltinMethodCallContext ctx)` specifically intercepts **JQuick built-in method invocation**. It is triggered when the script contains `Builtin::methodName(...)`: it extracts the built-in method name, parses the argument list, and dispatches to `JQuickMethodInvocationManager.invoke(methodName, args)`. This API does not go through the Java reflection chain; it uses the **JQuick built-in capability registration and dispatch pipeline** instead.
 
 ```java
-Builtin::methodName(argType1:arg1, argType2:arg2...)
+Builtin::today();
+Builtin::formatDate(java.lang.String:"yyyy-MM-dd");
+Builtin::uuid();
 ```
-
-The visitor flow is:
-
-1. Extract the built-in method name
-2. Parse the argument list
-3. Convert arguments into runtime objects
-4. Call `JQuickMethodInvocationManager.invoke(methodName, args)`
 
 #### Typical Use Cases
 
-This API is suitable for:
-
-- Providing platform-level built-in functions for JQuick
+- Providing platform-level built-in functions (date utilities, string utilities, etc.)
 - Exposing a unified script utility entry
 - Encapsulating common capabilities as built-in SPI methods
 - Decoupling script calls from concrete business objects
-
-Typical examples include:
-
-- Date utilities
-- String utilities
-- Runtime context helper functions
-- Shared script-level capabilities
 
 #### Difference from Regular Method Calls
 
@@ -411,316 +475,18 @@ Typical examples include:
 | Invocation target | JQuick built-in method manager | Java classes, object instances, or script functions |
 | Dispatch mechanism | `JQuickMethodInvocationManager` | Reflection factories or function registry |
 | Design purpose | Unified built-in SPI capability entry | Invoke external Java methods or user-defined script functions |
-| Coupling model | Decoupled from business objects | Bound to concrete classes, instances, or script functions |
 
-In short:
+#### Built-in Function Source (SPI)
 
-- Regular method calls focus on who is being called
-- Built-in method calls focus on predefined platform capabilities in JQuick
-
-#### Simple Code Example
-
-```java
-Builtin::today();
-Builtin::formatDate(java.lang.String:"yyyy-MM-dd");
-Builtin::uuid();
-```
-
-#### Actual SPI Source
-
-`visitBuiltinMethodCall` eventually delegates to `JQuickMethodInvocationManager.invoke(methodName, args)`, and the built-in methods themselves are provided by the SPI extension mechanism in the `jquick-transform-function` project.
-
-The core SPI interface is:
-
-- `com.github.paohaijiao.function.core.JQuickMethodFunctionProvider`
-
-The SPI registration file is:
-
-- `META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider`
-
-That means a script call like:
-
-```java
-Builtin::formatDate(java.lang.String:"yyyy-MM-dd")
-```
-
-is ultimately routed to the `invoke(List<Object> args)` method of a `JQuickMethodFunctionProvider` implementation.
-
-#### Extension Model
-
-A built-in function provider usually needs to do 3 things:
-
-1. Declare the method name, which matches `Builtin::methodName(...)` in scripts
-2. Implement `invoke(List<Object> args)` for the actual logic
-3. Register the implementation through `META-INF/services` so it can be discovered at runtime
-
-`jquick-transform-function` already provides a reusable abstract base class:
-
-- `JQuickBaseFunctionFunctionProvider`
-
-This base class already encapsulates:
-
-- `methodName`
-- `description`
-- `validateArgCount(...)`
-- `validateArgCountRange(...)`
-- `asString(...)`
-- `asInt(...)`
-- `asLong(...)`
-- `asDouble(...)`
-- `asBoolean(...)`
-
-So in practice, new built-in functions are usually implemented by extending this base class.
-
-#### How To Extend a New Built-in SPI Function
-
-The following example adds a new function named `maskName`.
-
-##### 1. Define the Provider Class
-
-```java
-package com.github.paohaijiao.function.custom;
-
-import com.github.paohaijiao.function.domain.JQuickBaseFunctionFunctionProvider;
-import java.util.List;
-
-public class JQuickMaskNameFunctionProvider extends JQuickBaseFunctionFunctionProvider {
-
-    public JQuickMaskNameFunctionProvider() {
-        super("maskName", "Name masking - usage: maskName(name)");
-    }
-
-    @Override
-    public Object invoke(List<Object> args) {
-        validateArgCount(args, 1);
-        String name = asString(args.get(0));
-        if (name == null || name.isEmpty()) {
-            return name;
-        }
-        if (name.length() == 1) {
-            return "*";
-        }
-        return name.charAt(0) + "*";
-    }
-}
-```
-
-##### 2. Register It in the SPI File
-
-Append the fully qualified class name to:
-
-`META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider`
-
-```java
-com.github.paohaijiao.function.custom.JQuickMaskNameFunctionProvider
-```
-
-If you have multiple providers, list one implementation class per line.
-
-##### 3. Add the Extension Jar to Your Application
-
-As long as the runtime ClassPath of the `jquick-java` application contains:
-
-- `jquick-java`
-- `jquick-transform-function`
-- your custom SPI extension jar
-
-then the built-in function can be discovered and used at runtime.
-
-#### Complete SPI Extension Example
-
-Below is a minimal practical example for adding a new built-in function named `maskName`.
-
-##### Project Structure
-
-```java
-custom-function-extension/
-├─ pom.xml
-├─ src/main/java/com/github/paohaijiao/function/custom/JQuickMaskNameFunctionProvider.java
-└─ src/main/resources/META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider
-```
-
-##### pom.xml
-
-```xml
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <groupId>com.github.paohaijiao</groupId>
-    <artifactId>custom-function-extension</artifactId>
-    <version>1.0.0</version>
-
-    <dependencies>
-        <dependency>
-            <groupId>io.github.paohaijiao</groupId>
-            <artifactId>jquick-java</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.paohaijiao</groupId>
-            <artifactId>jquick-transform-function</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-    </dependencies>
-</project>
-```
-
-##### Provider Implementation
-
-```java
-package com.github.paohaijiao.function.custom;
-
-import com.github.paohaijiao.function.domain.JQuickBaseFunctionFunctionProvider;
-import java.util.List;
-
-public class JQuickMaskNameFunctionProvider extends JQuickBaseFunctionFunctionProvider {
-
-    public JQuickMaskNameFunctionProvider() {
-        super("maskName", "Name masking - usage: maskName(name)");
-    }
-
-    @Override
-    public Object invoke(List<Object> args) {
-        validateArgCount(args, 1);
-        String name = asString(args.get(0));
-        if (name == null || name.isEmpty()) {
-            return name;
-        }
-        if (name.length() == 1) {
-            return "*";
-        }
-        if (name.length() == 2) {
-            return name.charAt(0) + "*";
-        }
-        return name.charAt(0) + "**" + name.charAt(name.length() - 1);
-    }
-}
-```
-
-##### SPI Registration File
-
-File path:
-
-`src/main/resources/META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider`
-
-File content:
-
-```java
-com.github.paohaijiao.function.custom.JQuickMaskNameFunctionProvider
-```
-
-##### Add the Extension Jar to the Business Application
-
-When your business application wants to use this extension, just include the extension jar together with the JQuick dependencies:
-
-```xml
-<dependencies>
-    <dependency>
-        <groupId>io.github.paohaijiao</groupId>
-        <artifactId>jquick-java</artifactId>
-        <version>1.4.0</version>
-    </dependency>
-    <dependency>
-        <groupId>io.github.paohaijiao</groupId>
-        <artifactId>jquick-transform-function</artifactId>
-        <version>1.4.0</version>
-    </dependency>
-    <dependency>
-        <groupId>com.github.paohaijiao</groupId>
-        <artifactId>custom-function-extension</artifactId>
-        <version>1.0.0</version>
-    </dependency>
-</dependencies>
-```
-
-##### JQuick Script Usage Example
-
-```java
-Builtin::maskName(java.lang.String:"Zhang San");
-Builtin::maskName(java.lang.String:"Ouyang Xiu");
-```
-
-##### Compose It Inside a Rule Script
-
-```java
-java.lang.String def buildDisplayName(java.lang.String:name, java.lang.String:phone) {
-    java.lang.String safeName = Builtin::maskName(java.lang.String:name);
-    java.lang.String safePhone = Builtin::phoneMask(java.lang.String:phone);
-    return java.lang.String::format(java.lang.String:"%s-%s", java.lang.String:safeName, java.lang.String:safePhone);
-}
-
-java.lang.String result = this.buildDisplayName(java.lang.String:"Zhang San", java.lang.String:"13800138000");
-console.log(result);
-```
-
-##### How To Verify the Extension Is Active
-
-If the following script runs correctly, it means your SPI has been picked up and routed correctly by `visitBuiltinMethodCall`:
-
-```java
-java.lang.String masked = Builtin::maskName(java.lang.String:"Zhang Sanfeng");
-console.log(masked);
-```
-
-#### How To Use the Extended Function in JQuick
-
-After the provider is registered successfully, you can call it directly in scripts:
-
-```java
-Builtin::maskName(java.lang.String:"Zhang San");
-```
-
-It can also be composed inside rule scripts:
-
-```java
-java.lang.String def formatUser(java.lang.String:name, java.lang.String:phone) {
-    java.lang.String safeName = Builtin::maskName(java.lang.String:name);
-    java.lang.String safePhone = Builtin::phoneMask(java.lang.String:phone);
-    return java.lang.String::format(java.lang.String:"%s-%s", java.lang.String:safeName, java.lang.String:safePhone);
-}
-```
-
-#### Where Existing Built-in Functions Come From
-
-`jquick-transform-function` already ships with many built-in SPI methods, for example:
-
-- Collection functions: `isArray`, `isEmpty`, `join`, `size`
-- Condition functions: `if`, `ifElse`, `switch`, `caseWhen`, `coalesce`
-- Date functions: `toDate`, `toDateTime`, `addDays`, `year`, `month`
-- Business functions: `phoneMask`, `phoneValidate`, `bankCardMask`, `idCardInfo`
-- Math functions: `abs`, `avg`, `factorial`, `gcd`
-
-All of them are accessed in the same way:
-
-```java
-Builtin::functionName(...)
-```
-
-#### Extension Recommendations
-
-If you want to add new script capabilities for a business system, the recommended boundary is:
-
-- Put generic utility functions into SPI providers in the style of `jquick-transform-function`
-- For methods tightly coupled to business objects, do not force them into `Builtin::`; prefer regular instance methods or `this` custom functions
-- Keep provider naming aligned with method naming for easier maintenance
-- Perform argument validation inside the provider so errors fail closer to the call site
-
-#### Troubleshooting
-
-When `Builtin::xxx(...)` fails, check these items first:
-
-1. Whether the method name matches the provider `getMethodName()` or constructor name exactly
-2. Whether the implementation class is registered in the SPI file
-3. Whether the extension jar is present on the runtime ClassPath
-4. Whether the argument count and argument types match the provider implementation
+The implementations behind `Builtin::methodName(...)` are provided by the standalone project **jquick-transform-function** through the Java SPI mechanism (`io.github.paohaijiao:jquick-transform-function`): core interface `JQuickMethodFunctionProvider`, registration file `META-INF/services/...`, and convenient base class `JQuickBaseFunctionFunctionProvider` (encapsulates argument validation and type conversion). To extend, implement and register it in a standalone SPI extension project. See [jquick-transform-function](https://github.com/paohaijiao/jquick-transform-function) for details.
 
 ---
 
 ## Complete Examples
 
-### Sample 1
+The following examples are layered by syntax capability, progressively combining the various JQuick invocation forms from basic to advanced.
+
+### Basic: Function Definition & `this` Invocation
 
 ```java
 int def getSquare(int:a,int:b){
@@ -731,15 +497,17 @@ int b=2;
 int c=this.getSquare(int:a,int:b);
 ```
 
-### Sample 2
+> Demonstrates custom function definition (`int def getSquare(...)`) and invocation via `this.functionName(...)`.
+
+### Advanced: Constructor & Instance Method Invocation
 
 ```java
 java.util.HashMap<java.lang.String,java.lang.String> def a(int:a,float:b) {
-    java.lang.String str1 = new java.lang.String(java.lang.String:"Hello");
+    java.lang.String str1 = new java.lang.String(java.lang.String:"Hello");   // constructor call
     console.log(str1);
-    java.lang.String upperStr = str1.toUpperCase();
+    java.lang.String upperStr = str1.toUpperCase();                           // instance method call
     console.log(upperStr);
-    java.lang.String subStr = str1.substring(int:1, int:3);
+    java.lang.String subStr = str1.substring(int:1, int:3);                   // instance method call
     console.log(subStr);
     java.util.HashMap<java.lang.String,java.lang.String> result = new java.util.HashMap();
     result.put(java.lang.String:"constructed1", java.lang.String:str1);
@@ -753,7 +521,9 @@ float d=8.1;
 this.a(int:c,float:d);
 ```
 
-### Sample 3
+> Demonstrates constructor calls (`new java.lang.String(...)`), instance method calls (`toUpperCase()`, `substring(...)`, `put(...)`), and `console.log(...)` output.
+
+### Advanced: Java Static Method Invocation
 
 ```java
 java.lang.String def a(int:a,float:b) {
@@ -765,7 +535,9 @@ float d=8.1;
 this.a(int:c,float:d);
 ```
 
-### Sample 4
+> Demonstrates Java static method invocation (`java.lang.String::format(...)`) with arguments passed in the `type:value` form.
+
+### Advanced: Package Import & Type Alias
 
 ```java
 import java.lang.String as type1;
@@ -777,6 +549,8 @@ int c=1;
 float d=8.1;
 this.a(int:c,float:d);
 ```
+
+> Demonstrates package imports (`import Type as Alias;`) and type aliases, which can be used directly for type declarations and static calls.
 
 ---
 

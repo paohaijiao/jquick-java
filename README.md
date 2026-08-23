@@ -54,6 +54,7 @@
   - [注释](#注释)
   - [保留关键字](#保留关键字)
   - [标识符规则](#标识符规则)
+- [JQuickJava 统一入口类](#jquickjava-统一入口类)
 - [核心访问器说明](#核心访问器说明)
 - [完整示例](#完整示例)
 - [XML 配置场景](#xml-配置场景)
@@ -347,61 +348,124 @@ Builtin::uuid();
 
 ---
 
+## JQuickJava 统一入口类
+
+`JQuickJava` 是基于 `JQuickJavaXmlParseFactory` 封装的一站式入口类，采用链式 API 提供**包声明、变量初始化、脚本直接执行、XML / 内联规则代理**等便捷能力，适合在规则引擎、评分卡、流程编排等场景中快速接入。
+
+### 链式 API 概览
+
+| API | 说明 |
+|-----|------|
+| `JQuickJava.create()` | 创建默认入口实例 |
+| `importPackage(qualifiedName, alias)` | 声明包引入，生成脚本语法 `import 类型 as 别名;` |
+| `importPackage(qualifiedName)` | 声明包引入，自动取最后一段作为别名 |
+| `importPackages(...)` | 批量声明包引入（自动生成别名） |
+| `constant(name, value)` | 初始化上下文常量 |
+| `variable(name, value)` / `variables(map)` | 初始化上下文变量 |
+| `env(name, value)` / `envs(map)` | 初始化运行时环境变量 |
+| `init(statement...)` | 追加脚本级初始化语句（拼接在脚本头部） |
+| `rule(methodName, functionDefinition)` | 注册内联规则脚本（等价于 XML `<java>` 的 CDATA） |
+| `execute(scriptBody)` | 直接执行 JQuick 脚本（program 路径） |
+| `createApi(apiInterface)` | 生成纯内联规则代理 |
+| `createApi(apiInterface, xmlPath)` | 生成 XML + 内联规则合并代理 |
+
+### 直接执行脚本
+
+`execute(...)` 走 program 路径执行脚本，支持包声明、函数定义与调用，上下文变量可直接在脚本内引用：
+
+```java
+Object result = JQuickJava.create()
+        .importPackage("java.lang.String", "type1")   // import java.lang.String as type1;
+        .variable("base", 60)                          // 上下文变量，脚本内可直接引用
+        .execute(
+                "type1 def a(int:a,int:b) {\n" +
+                "   int t = a+b;\n" +
+                "   type1 p = java.lang.String::valueOf(int:t);\n" +
+                "   return p;\n" +
+                "}\n" +
+                "int c=1;\n" +
+                "int d=2;\n" +
+                "this.a(int:c,int:d);"                 // 调用自定义函数 -> "3"
+        );
+```
+
+### 纯内联规则代理
+
+`rule(...)` 注册内联规则脚本（内容等价于 XML `<java>` 元素的 CDATA），`createApi(Class)` 无需任何 XML 文件即可生成接口代理。参数绑定、返回类型转换、上下文注入与 XML 代理完全一致：
+
+```java
+public interface UserMapper {
+    public int sum(@Param("a") int a, @Param("b") int b);
+    public int mul(@Param("a") int a, @Param("b") int b);
+}
+```
+
+```java
+UserMapper userApi = JQuickJava.create()
+        .importPackage("java.lang.String", "type1")
+        .constant("base", 60)
+        .rule("sum", "int def sum(int:a,int:b){ return a+b; }")
+        .rule("mul", "type1 def mul(int:a,int:b){ int t=a*b; type1 p = java.lang.String::valueOf(int:t); return p; }")
+        .createApi(UserMapper.class);
+
+int sum = userApi.sum(1, 2);    // 3
+int mul = userApi.mul(3, 4);    // 12
+```
+
+### 与 XML 方式结合
+
+`createApi(Class, xmlPath)` 同时加载 XML 规则文件与内联规则：XML 中已有的方法仍走 XML 定义，XML 中不存在的方法由内联规则补齐，同名方法**内联规则优先**。适用于在不改动既有 XML 配置的前提下增量补充规则：
+
+```xml
+<!-- jquick-java.xml -->
+<javas namespace="com.github.paohaijiao.xml.UserMapper">
+    <java name="sum" returnClass="java.util.List">
+        <![CDATA[
+           int def sum(int:a,int:b) {
+              return a+b;
+            }
+        ]]>
+    </java>
+</javas>
+```
+
+```java
+UserMapper userApi = JQuickJava.create()
+        .rule("mul", "int def mul(int:a,int:b){ return a*b; }")   // 内联规则补齐 XML 中没有的方法
+        .createApi(UserMapper.class, "jquick-java.xml");          // XML 规则 + 内联规则合并
+
+int sum = userApi.sum(1, 2);    // 来自 XML 规则 -> 3
+int mul = userApi.mul(3, 4);    // 来自内联规则 -> 12
+```
+
+> 提示：内联规则与 XML 规则共用同一套执行链（参数绑定 → 函数定义解析 → 函数体执行 → 返回类型转换），因此内联规则可视为 XML `<java>` 元素 CDATA 的等价写法。
+
+---
+
 ## 核心访问器说明
 
 ### JQuickMethodInvocationCallVisitor
 
-`JQuickMethodInvocationCallVisitor` 是 JQuick 方法调用分发链中的核心访问器，负责在语法树遍历阶段识别不同调用形式，并将调用路由到对应的执行器或管理器。
-
-它主要处理以下几类调用：
-
-- 静态方法调用
-- 构造方法调用
-- 实例方法调用
-- `this` 上下文方法调用
-- 内置方法调用
-- 访问静态变量后的方法调用
+`JQuickMethodInvocationCallVisitor` 是 JQuick 方法调用分发链中的核心访问器，负责在语法树遍历阶段识别不同调用形式（静态方法、构造方法、实例方法、`this` 上下文方法、内置方法、访问静态变量后的方法），并将调用路由到对应的执行器或管理器。
 
 ### visitBuiltinMethodCall
 
-#### API 作用
+#### API 作用与触发时机
 
-`visitBuiltinMethodCall(JQuickJavaParser.BuiltinMethodCallContext ctx)` 用于**专门拦截 JQuick 内置方法调用场景**。
-
-当脚本中出现 `Builtin::方法名(...)` 形式的语法节点时，该访问器方法会被触发，并将方法名与参数列表统一交给 `JQuickMethodInvocationManager` 分发执行。
-
-换句话说，这个 API 不是走 Java 反射的普通方法调用链，而是走 **JQuick 内置能力注册与调度链路**。
-
-#### 触发时机
-
-当解析器识别到如下语法时触发：
+`visitBuiltinMethodCall(BuiltinMethodCallContext ctx)` 专门拦截 **JQuick 内置方法调用**，当脚本中出现 `Builtin::方法名(...)` 时触发：提取内置方法名 → 解析参数列表 → 交给 `JQuickMethodInvocationManager.invoke(methodName, args)` 分发执行。该 API 不经过 Java 反射链，而是走 **JQuick 内置能力注册与调度链路**。
 
 ```java
-Builtin::方法名(参数类型1:参数1, 参数类型2:参数2...)
+Builtin::today();
+Builtin::formatDate(java.lang.String:"yyyy-MM-dd");
+Builtin::uuid();
 ```
-
-访问器执行流程可以概括为：
-
-1. 提取内置方法名
-2. 解析参数列表
-3. 将参数转换为运行时对象列表
-4. 调用 `JQuickMethodInvocationManager.invoke(methodName, args)`
 
 #### 使用场景
 
-适用于以下场景：
-
-- 为 JQuick 提供平台级内置函数
-- 提供统一的脚本工具方法入口
+- 平台级内置函数（日期处理、字符串工具等）
+- 统一脚本工具方法入口
 - 将常用能力封装为脚本内置 SPI 方法
 - 需要将脚本调用与业务对象实例解耦时
-
-典型例子包括：
-
-- 日期处理
-- 字符串工具
-- 运行时上下文辅助函数
-- 脚本层公共函数能力
 
 #### 与普通方法调用的区别
 
@@ -410,317 +474,19 @@ Builtin::方法名(参数类型1:参数1, 参数类型2:参数2...)
 | 入口语法 | `Builtin::method(...)` | `Class::method(...)` / `obj.method(...)` / `this.method(...)` |
 | 调用目标 | JQuick 内置方法管理器 | Java 类、对象实例或脚本函数 |
 | 分发方式 | `JQuickMethodInvocationManager` | 反射工厂或函数注册表 |
-| 设计目的 | 统一承载内置 SPI 能力 | 调用外部 Java 方法或脚本中自定义函数 |
-| 耦合方式 | 与业务对象解耦 | 与具体类、实例或脚本函数绑定 |
+| 设计目的 | 统一承载内置 SPI 能力 | 调用外部 Java 方法或脚本自定义函数 |
 
-可以把它理解为：
+#### 内置函数来源（SPI）
 
-- 普通方法调用关注“调用谁”
-- 内置方法调用关注“调用 JQuick 平台预定义能力”
-
-#### 简单代码示例
-
-```java
-Builtin::today();
-Builtin::formatDate(java.lang.String:"yyyy-MM-dd");
-Builtin::uuid();
-```
-
-#### 实际 SPI 来源
-
-`visitBuiltinMethodCall` 最终调用的是 `JQuickMethodInvocationManager.invoke(methodName, args)`，而内置方法本身来自 `jquick-transform-function` 项目的 SPI 扩展点。
-
-这个扩展点的核心接口是：
-
-- `com.github.paohaijiao.function.core.JQuickMethodFunctionProvider`
-
-SPI 注册文件是：
-
-- `META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider`
-
-也就是说，脚本里的：
-
-```java
-Builtin::formatDate(java.lang.String:"yyyy-MM-dd")
-```
-
-本质上会被路由到某个 `JQuickMethodFunctionProvider` 实现类的 `invoke(List<Object> args)` 方法。
-
-#### 扩展原理
-
-一个内置方法 Provider 通常需要完成 3 件事：
-
-1. 声明方法名，对应脚本里的 `Builtin::方法名(...)`
-2. 实现 `invoke(List<Object> args)`，处理真正的业务逻辑
-3. 通过 `META-INF/services` 注册到 SPI，让运行时自动发现
-
-`jquick-transform-function` 中已经提供了一个便于复用的抽象基类：
-
-- `JQuickBaseFunctionFunctionProvider`
-
-这个基类已经封装了：
-
-- `methodName`
-- `description`
-- `validateArgCount(...)`
-- `validateArgCountRange(...)`
-- `asString(...)`
-- `asInt(...)`
-- `asLong(...)`
-- `asDouble(...)`
-- `asBoolean(...)`
-
-因此扩展新函数时，通常直接继承这个基类即可。
-
-#### 如何扩展一个新的内置 SPI 方法
-
-下面以新增 `maskName` 为例。
-
-##### 1. 定义 Provider 类
-
-```java
-package com.github.paohaijiao.function.custom;
-
-import com.github.paohaijiao.function.domain.JQuickBaseFunctionFunctionProvider;
-import java.util.List;
-
-public class JQuickMaskNameFunctionProvider extends JQuickBaseFunctionFunctionProvider {
-
-    public JQuickMaskNameFunctionProvider() {
-        super("maskName", "姓名脱敏 - 用法: maskName(name)");
-    }
-
-    @Override
-    public Object invoke(List<Object> args) {
-        validateArgCount(args, 1);
-        String name = asString(args.get(0));
-        if (name == null || name.isEmpty()) {
-            return name;
-        }
-        if (name.length() == 1) {
-            return "*";
-        }
-        return name.charAt(0) + "*";
-    }
-}
-```
-
-##### 2. 注册到 SPI 文件
-
-在资源文件中追加实现类全限定名：
-
-`META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider`
-
-```java
-com.github.paohaijiao.function.custom.JQuickMaskNameFunctionProvider
-```
-
-如果你有多个 Provider，就一行一个实现类。
-
-##### 3. 让业务工程依赖扩展包
-
-只要运行 `jquick-java` 的应用 ClassPath 中包含：
-
-- `jquick-java`
-- `jquick-transform-function`
-- 你自定义的 SPI 扩展 Jar
-
-运行时就可以发现并加载该内置方法。
-
-#### 完整 SPI 扩展示例
-
-下面给出一个可以直接参考的最小可用扩展示例，假设你要新增一个 `maskName` 内置函数。
-
-##### 工程目录结构
-
-```java
-custom-function-extension/
-├─ pom.xml
-├─ src/main/java/com/github/paohaijiao/function/custom/JQuickMaskNameFunctionProvider.java
-└─ src/main/resources/META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider
-```
-
-##### pom.xml
-
-```xml
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <groupId>com.github.paohaijiao</groupId>
-    <artifactId>custom-function-extension</artifactId>
-    <version>1.0.0</version>
-
-    <dependencies>
-        <dependency>
-            <groupId>io.github.paohaijiao</groupId>
-            <artifactId>jquick-java</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.paohaijiao</groupId>
-            <artifactId>jquick-transform-function</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-    </dependencies>
-</project>
-```
-
-##### Provider 实现类
-
-```java
-package com.github.paohaijiao.function.custom;
-
-import com.github.paohaijiao.function.domain.JQuickBaseFunctionFunctionProvider;
-import java.util.List;
-
-public class JQuickMaskNameFunctionProvider extends JQuickBaseFunctionFunctionProvider {
-
-    public JQuickMaskNameFunctionProvider() {
-        super("maskName", "姓名脱敏 - 用法: maskName(name)");
-    }
-
-    @Override
-    public Object invoke(List<Object> args) {
-        validateArgCount(args, 1);
-        String name = asString(args.get(0));
-        if (name == null || name.isEmpty()) {
-            return name;
-        }
-        if (name.length() == 1) {
-            return "*";
-        }
-        if (name.length() == 2) {
-            return name.charAt(0) + "*";
-        }
-        return name.charAt(0) + "**" + name.charAt(name.length() - 1);
-    }
-}
-```
-
-##### SPI 注册文件内容
-
-文件路径：
-
-`src/main/resources/META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider`
-
-文件内容：
-
-```java
-com.github.paohaijiao.function.custom.JQuickMaskNameFunctionProvider
-```
-
-##### 业务工程依赖扩展包
-
-当你的业务工程需要使用这个扩展时，只需要把扩展 Jar 和 JQuick 相关依赖一起放进工程中：
-
-```xml
-<dependencies>
-    <dependency>
-        <groupId>io.github.paohaijiao</groupId>
-        <artifactId>jquick-java</artifactId>
-        <version>1.4.0</version>
-    </dependency>
-    <dependency>
-        <groupId>io.github.paohaijiao</groupId>
-        <artifactId>jquick-transform-function</artifactId>
-        <version>1.4.0</version>
-    </dependency>
-    <dependency>
-        <groupId>com.github.paohaijiao</groupId>
-        <artifactId>custom-function-extension</artifactId>
-        <version>1.0.0</version>
-    </dependency>
-</dependencies>
-```
-
-##### JQuick 脚本调用示例
-
-```java
-Builtin::maskName(java.lang.String:"张三");
-Builtin::maskName(java.lang.String:"欧阳修");
-```
-
-##### 与规则脚本组合使用
-
-```java
-java.lang.String def buildDisplayName(java.lang.String:name, java.lang.String:phone) {
-    java.lang.String safeName = Builtin::maskName(java.lang.String:name);
-    java.lang.String safePhone = Builtin::phoneMask(java.lang.String:phone);
-    return java.lang.String::format(java.lang.String:"%s-%s", java.lang.String:safeName, java.lang.String:safePhone);
-}
-
-java.lang.String result = this.buildDisplayName(java.lang.String:"张三", java.lang.String:"13800138000");
-console.log(result);
-```
-
-##### 扩展生效判断
-
-如果下面脚本可以正常执行，说明你的 SPI 已经被 `visitBuiltinMethodCall` 正确接管并路由：
-
-```java
-java.lang.String masked = Builtin::maskName(java.lang.String:"张三丰");
-console.log(masked);
-```
-
-#### 如何在 JQuick 中使用扩展函数
-
-Provider 注册成功后，就可以直接在脚本里调用：
-
-```java
-Builtin::maskName(java.lang.String:"张三");
-```
-
-也可以在规则脚本中组合使用：
-
-```java
-java.lang.String def formatUser(java.lang.String:name, java.lang.String:phone) {
-    java.lang.String safeName = Builtin::maskName(java.lang.String:name);
-    java.lang.String safePhone = Builtin::phoneMask(java.lang.String:phone);
-    return java.lang.String::format(java.lang.String:"%s-%s", java.lang.String:safeName, java.lang.String:safePhone);
-}
-```
-
-#### 已有内置函数的来源说明
-
-`jquick-transform-function` 已经内置了大量可直接使用的 SPI 方法，例如：
-
-- 集合类：`isArray`、`isEmpty`、`join`、`size`
-- 条件类：`if`、`ifElse`、`switch`、`caseWhen`、`coalesce`
-- 日期类：`toDate`、`toDateTime`、`addDays`、`year`、`month`
-- 业务类：`phoneMask`、`phoneValidate`、`bankCardMask`、`idCardInfo`
-- 数学类：`abs`、`avg`、`factorial`、`gcd`
-
-这些函数都可以通过同一种调用方式访问：
-
-```java
-Builtin::函数名(...)
-```
-
-#### 扩展建议
-
-如果你要为业务系统增加新的脚本能力，建议遵循下面的边界：
-
-- 通用工具函数放在 `jquick-transform-function` 风格的 SPI Provider 中
-- 与具体业务对象强绑定的方法，不要做成 `Builtin::`，优先走普通实例方法或 `this` 自定义函数
-- Provider 命名尽量与方法名一一对应，便于排查和维护
-- 参数校验尽量在 Provider 内完成，避免把运行时错误暴露到更深层
-
-#### 排查思路
-
-当 `Builtin::xxx(...)` 调用失败时，优先检查：
-
-1. 方法名是否与 Provider 中的 `getMethodName()` / 构造器传入名称一致
-2. SPI 文件中是否注册了实现类全限定名
-3. 扩展 Jar 是否已经进入运行时 ClassPath
-4. 参数个数与参数类型是否符合 Provider 的实现要求
+`Builtin::方法名(...)` 的实现由独立项目 **jquick-transform-function** 通过 Java SPI 机制提供（`io.github.paohaijiao:jquick-transform-function`）：核心接口 `JQuickMethodFunctionProvider`、注册文件 `META-INF/services/...`、便捷基类 `JQuickBaseFunctionFunctionProvider`（封装参数校验与类型转换）。在独立的 SPI 扩展工程中实现并注册即可扩展，详见 [jquick-transform-function](https://github.com/paohaijiao/jquick-transform-function)。
 
 ---
 
 ## 完整示例
 
-### 示例 1
+以下示例按语法能力分层展示，从基础到进阶逐步组合 JQuick 的各类调用形式。
+
+### 基础：函数定义与 `this` 调用
 
 ```java
 int def getSquare(int:a,int:b){
@@ -731,15 +497,17 @@ int b=2;
 int c=this.getSquare(int:a,int:b);
 ```
 
-### 示例 2
+> 展示自定义函数定义（`int def getSquare(...)`）与 `this.函数名(...)` 调用方式。
+
+### 进阶：构造方法与实例方法调用
 
 ```java
 java.util.HashMap<java.lang.String,java.lang.String> def a(int:a,float:b) {
-    java.lang.String str1 = new java.lang.String(java.lang.String:"Hello");
+    java.lang.String str1 = new java.lang.String(java.lang.String:"Hello");   // new 构造调用
     console.log(str1);
-    java.lang.String upperStr = str1.toUpperCase();
+    java.lang.String upperStr = str1.toUpperCase();                           // 实例方法调用
     console.log(upperStr);
-    java.lang.String subStr = str1.substring(int:1, int:3);
+    java.lang.String subStr = str1.substring(int:1, int:3);                   // 实例方法调用
     console.log(subStr);
     java.util.HashMap<java.lang.String,java.lang.String> result = new java.util.HashMap();
     result.put(java.lang.String:"constructed1", java.lang.String:str1);
@@ -753,7 +521,9 @@ float d=8.1;
 this.a(int:c,float:d);
 ```
 
-### 示例 3
+> 展示构造函数调用（`new java.lang.String(...)`）、实例方法调用（`toUpperCase()`、`substring(...)`、`put(...)`）与 `console.log(...)` 输出。
+
+### 进阶：Java 静态方法调用
 
 ```java
 java.lang.String def a(int:a,float:b) {
@@ -765,7 +535,9 @@ float d=8.1;
 this.a(int:c,float:d);
 ```
 
-### 示例 4
+> 展示 Java 静态方法调用（`java.lang.String::format(...)`），参数以 `类型:值` 形式传入。
+
+### 进阶：包引入与类型别名
 
 ```java
 import java.lang.String as type1;
@@ -777,6 +549,8 @@ int c=1;
 float d=8.1;
 this.a(int:c,float:d);
 ```
+
+> 展示包引入（`import 类型 as 别名;`）与类型别名的使用，别名可直接用于类型声明与静态调用。
 
 ---
 
