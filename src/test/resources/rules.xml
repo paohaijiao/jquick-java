@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.xml.RulesMapper">
+
+    <!-- 1. 报送时限计分规则 -->
+    <java name="scoreReportTime" returnClass="int">
+        <![CDATA[
+            int def scoreReportTime(str:eventType, int:reportMinutes) {
+                int score = 0;
+                int maxScore = 40;
+                int bonusScore = 10;
+                int minScore = 0;
+                if (eventType == "A") {
+                    if (reportMinutes <= 60) {
+                        // T≤60: 40 + (60-T)*10/60
+                        score = maxScore + (60 - reportMinutes) * bonusScore / 60;
+                    } else if (reportMinutes <= 120) {
+                        // 60<T≤120: 40 - (T-60)*40/60
+                        score = maxScore - (reportMinutes - 60) * 40 / 60;
+                    } else {
+                        score = minScore;
+                    }
+                } else if (eventType == "B") {
+                    if (reportMinutes <= 120) {
+                        score = maxScore + (120 - reportMinutes) * bonusScore / 120;
+                    } else if (reportMinutes <= 240) {
+                        score = maxScore - (reportMinutes - 120) * 40 / 120;
+                    } else {
+                        score = minScore;
+                    }
+                } else if (eventType == "C") {
+                    if (reportMinutes <= 180) {
+                        score = maxScore + (180 - reportMinutes) * bonusScore / 180;
+                    } else if (reportMinutes <= 360) {
+                        score = maxScore - (reportMinutes - 180) * 40 / 180;
+                    } else {
+                        score = minScore;
+                    }
+                } else if (eventType == "D") {
+                    if (reportMinutes <= 300) {
+                        score = maxScore + (300 - reportMinutes) * bonusScore / 300;
+                    } else if (reportMinutes <= 600) {
+                        score = maxScore - (reportMinutes - 300) * 40 / 300;
+                    } else {
+                        score = minScore;
+                    }
+                }
+                // 确保得分在0~50之间（40+10）
+                if (score > 50) { score = 50; }
+                if (score < 0) { score = 0; }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 2. 协同回复计分规则 -->
+    <java name="scoreCoordination" returnClass="double">
+        <![CDATA[
+            double def scoreCoordination(str:eventType, int:replyMinutes) {
+                double score = 0.0;
+                double maxScore = 10.0;
+                if (eventType == "A") {
+                    if (replyMinutes <= 5) {
+                        score = maxScore;
+                    } else if (replyMinutes <= 10) {
+                        score = maxScore - (replyMinutes - 5) * maxScore / 5;
+                    } else {
+                        score = 0.0;
+                    }
+                } else if (eventType == "B") {
+                    if (replyMinutes <= 10) {
+                        score = maxScore;
+                    } else if (replyMinutes <= 20) {
+                        // 线性递减: 10 - (T-10)
+                        score = maxScore - (replyMinutes - 10);
+                    } else {
+                        score = 0.0;
+                    }
+                } else if (eventType == "C") {
+                    if (replyMinutes <= 15) {
+                        score = maxScore;
+                    } else if (replyMinutes <= 60) {
+                        score = maxScore - (replyMinutes - 15) * maxScore / 45;
+                    } else {
+                        score = 0.0;
+                    }
+                } else if (eventType == "D") {
+                    if (replyMinutes <= 30) {
+                        score = maxScore;
+                    } else if (replyMinutes <= 120) {
+                        score = maxScore - (replyMinutes - 30) * maxScore / 90;
+                    } else {
+                        score = 0.0;
+                    }
+                }
+                if (score < 0) { score = 0.0; }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 3. 办结时限计分规则 (四类事件统一) -->
+    <java name="scoreClosure" returnClass="int">
+        <![CDATA[
+            int def scoreClosure(int:closureDays) {
+                int score = 0;
+                int maxScore = 20;
+                if (closureDays <= 3) {
+                    score = maxScore;
+                } else if (closureDays <= 7) {
+                    // 20 - 5*(N-3)
+                    score = maxScore - 5 * (closureDays - 3);
+                } else {
+                    score = 0;
+                }
+                if (score < 0) { score = 0; }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 4. 单事件总分计算 -->
+    <java name="calculateSingleEventScore" returnClass="double">
+        <![CDATA[
+            double def calculateSingleEventScore(str:eventType,   int:reportMinutes,int:replyMinutes, int:closureDays, int:dispatchScore,  int:qualityScore) {
+                int reportScore = this.scoreReportTime(eventType, reportMinutes);
+                double coordinationScore = this.scoreCoordination(eventType, replyMinutes);
+                int closureScore = this.scoreClosure(closureDays);
+                double totalScore = reportScore + coordinationScore + closureScore + dispatchScore + qualityScore;
+                if (totalScore > 100) {
+                    totalScore = 100;
+                }
+                return totalScore;
+            }
+        ]]>
+    </java>
+
+</javas>

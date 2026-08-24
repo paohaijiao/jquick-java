@@ -37,7 +37,7 @@ public class JQuickJavaAssignVisitor extends JQuickJavaLiteralVisitor {
             return value;
         }else{//update
             Object value = ctx.expression() != null ? visitExpression(ctx.expression()) : null;
-            this.parser.declareVar(varName,value);
+            this.parser.assignVar(varName,value);
             return value;
         }
     }

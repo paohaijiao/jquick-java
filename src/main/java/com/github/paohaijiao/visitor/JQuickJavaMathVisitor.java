@@ -30,20 +30,37 @@ public class JQuickJavaMathVisitor extends JQuickMethodInvocationCallVisitor {
 
     @Override
     public Object visitArithmetic(JQuickJavaParser.ArithmeticContext ctx) {
-        String t=ctx.getText();
-        Object result = visitPrimary(ctx.primary(0));
+        Object result = extract(visitPrimary(ctx.primary(0)));
+        java.util.List<Object> values = new java.util.ArrayList<>();
+        java.util.List<String> operators = new java.util.ArrayList<>();
+        values.add(result);
         for (int i = 1; i < ctx.primary().size(); i++) {
             String operator = ctx.getChild(2 * i - 1).getText();
             JQuickJavaMathOp op = JQuickJavaMathOp.codeOf(operator);
             JAssert.notNull(op, "Unsupported operator: " + operator);
-            Object right = extract(visitPrimary(ctx.primary(i)));
+            operators.add(operator);
+            values.add(extract(visitPrimary(ctx.primary(i))));
+        }
+
+        for (int i = 0; i < operators.size();) {
+            String operator = operators.get(i);
+            if ("*".equals(operator) || "/".equals(operator)) {
+                Object left = values.get(i);
+                Object right = values.get(i + 1);
+                Object merged = "*".equals(operator) ? multiply(left, right) : divide(left, right);
+                values.set(i, merged);
+                values.remove(i + 1);
+                operators.remove(i);
+            } else {
+                i++;
+            }
+        }
+
+        result = values.get(0);
+        for (int i = 0; i < operators.size(); i++) {
+            String operator = operators.get(i);
+            Object right = values.get(i + 1);
             switch (operator) {
-                case "*":
-                    result = multiply(result, right);
-                    break;
-                case "/":
-                    result = divide(result, right);
-                    break;
                 case "+":
                     result = add(result, right);
                     break;
@@ -71,7 +88,7 @@ public class JQuickJavaMathVisitor extends JQuickMethodInvocationCallVisitor {
         if (left instanceof Number && right instanceof Number) {
             BigDecimal leftBigDecimal  = new BigDecimal(left.toString());
             BigDecimal rightBigDecimal  = new BigDecimal(right.toString());
-            BigDecimal result= leftBigDecimal.divide(rightBigDecimal);
+            BigDecimal result= leftBigDecimal.divide(rightBigDecimal,2,BigDecimal.ROUND_HALF_UP);
             return convertToPrimaryType(result,left.getClass());
         }
         JAssert.throwNewException("division of non-numeric types");

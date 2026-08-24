@@ -52,7 +52,7 @@ public class JConstructorMethodInvocationTest {
 
     @Test
     public void testSimpleConstructorCall() {
-        String rule = "new com.github.paohaijiao.service.JService();";
+        String rule = "new com.github.paohaijiao.extract.service.JService();";
         System.out.println(rule);
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -66,7 +66,7 @@ public class JConstructorMethodInvocationTest {
 
     @Test
     public void testConstructorWithPrimitiveArguments() {
-        String rule = "new com.github.paohaijiao.model.JStudent(int:42, float:3.14, boolean:true);";
+        String rule = "new com.github.paohaijiao.extract.model.JStudent(int:42, float:3.14, boolean:true);";
         System.out.println(rule);
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -80,7 +80,7 @@ public class JConstructorMethodInvocationTest {
 
     @Test
     public void testConstructorWithStringArgument() {
-        String rule = "new com.github.paohaijiao.model.JStudent(java.lang.String:\"teststring\");";
+        String rule = "new com.github.paohaijiao.extract.model.JStudent(java.lang.String:\"teststring\");";
         System.out.println(rule);
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -144,7 +144,7 @@ public class JConstructorMethodInvocationTest {
 
     @Test
     public void testConstructorWithVarArgs() {
-        String rule = "new com.github.paohaijiao.model.JStudent(java.lang.String:\"a\", java.lang.String:\"b\", java.lang.String:\"c\");";
+        String rule = "new com.github.paohaijiao.extract.model.JStudent(java.lang.String:\"a\", java.lang.String:\"b\", java.lang.String:\"c\");";
         System.out.println(rule);
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);

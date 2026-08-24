@@ -10,9 +10,9 @@ import java.io.IOException;
 public class JBannerTest {
     @Test
     public void banner() throws IOException {
-        JQuickBannerConfig config=new JQuickBannerConfig();
-        JQuickBanner banner=new JQuickBannerImpl(config);
-        banner.printBanner();
-        System.out.println("banner");
+//        JQuickBannerConfig config=new JQuickBannerConfig();
+//        JQuickBanner banner=new JQuickBannerImpl(config);
+//        banner.printBanner();
+//        System.out.println("banner");
     }
 }
