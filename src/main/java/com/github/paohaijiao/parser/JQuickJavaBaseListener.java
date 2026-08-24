@@ -1,4 +1,4 @@
-// Generated from D:/idea/jthornruleGrammer/QuickJava/JQuickJava.g4 by ANTLR 4.13.2
+// Generated from D:/my/jthornruleGrammer/QuickJava/JQuickJava.g4 by ANTLR 4.13.2
 
 package com.github.paohaijiao.parser;
 
@@ -498,13 +498,37 @@ public class JQuickJavaBaseListener implements JQuickJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLiteralItem(JQuickJavaParser.LiteralItemContext ctx) { }
+	@Override public void enterPrimaryAtom(JQuickJavaParser.PrimaryAtomContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLiteralItem(JQuickJavaParser.LiteralItemContext ctx) { }
+	@Override public void exitPrimaryAtom(JQuickJavaParser.PrimaryAtomContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArgument(JQuickJavaParser.ArgumentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArgument(JQuickJavaParser.ArgumentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTypedArgument(JQuickJavaParser.TypedArgumentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTypedArgument(JQuickJavaParser.TypedArgumentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

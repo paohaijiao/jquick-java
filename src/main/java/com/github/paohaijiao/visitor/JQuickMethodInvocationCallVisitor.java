@@ -34,8 +34,6 @@ import org.antlr.v4.runtime.misc.Interval;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor {
@@ -111,34 +109,50 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         return model;
     }
     @Override
-    public JQuickJavaTypeReferenceAndValue visitLiteralItem(JQuickJavaParser.LiteralItemContext ctx) {
+    public JQuickJavaTypeReferenceAndValue visitTypedArgument(JQuickJavaParser.TypedArgumentContext ctx) {
         JAssert.notNull(ctx.classsType(), "classsType must not be null");
-        JAssert.notNull(ctx.literal(), "literal require not be null");
-        JQuickJavaTypeReferenceAndValue typeReferenceAndValue=new JQuickJavaTypeReferenceAndValue();
-        JQuickJavaTypeReference<?> classType=visitClasssType(ctx.classsType());
-        Object literal=visitLiteral(ctx.literal());
-        String jsonString=null;
-        if(null!=literal) {
-             jsonString=literal.toString();
-            if(jsonString==null) {
-                jsonString = gson.toJson(literal);
-            }
-        }
+        JAssert.notNull(ctx.expression(), "expression require not be null");
+        JQuickJavaTypeReferenceAndValue typeReferenceAndValue = new JQuickJavaTypeReferenceAndValue();
+        JQuickJavaTypeReference<?> classType = visitClasssType(ctx.classsType());
+        Object value = visitExpression(ctx.expression());
         typeReferenceAndValue.setTypeArguments(classType);
-        Object value=this.mergeDataWithTypeReference(jsonString,classType);
-        typeReferenceAndValue.setData(value);
+        if (value == null) {
+            typeReferenceAndValue.setData(null);
+            return typeReferenceAndValue;
+        }
+        String jsonString = value.toString();
+        if (jsonString == null) {
+            jsonString = gson.toJson(value);
+        }
+        typeReferenceAndValue.setData(this.mergeDataWithTypeReference(jsonString, classType));
         return typeReferenceAndValue;
-
     }
 
+    @Override
+    public JQuickJavaTypeReferenceAndValue visitArgument(JQuickJavaParser.ArgumentContext ctx) {
+        if (ctx.typedArgument() != null) {
+            return visitTypedArgument(ctx.typedArgument());
+        }
+        JAssert.notNull(ctx.expression(), "expression require not be null");
+        Object value = visitExpression(ctx.expression());
+        JQuickJavaTypeReferenceAndValue typeReferenceAndValue = new JQuickJavaTypeReferenceAndValue();
+        if (value == null) {
+            typeReferenceAndValue.setTypeArguments(loadClass("java.lang.Object"));
+            typeReferenceAndValue.setData(null);
+            return typeReferenceAndValue;
+        }
+        typeReferenceAndValue.setTypeArguments(loadClass(value.getClass().getName()));
+        typeReferenceAndValue.setData(value);
+        return typeReferenceAndValue;
+    }
 
     @Override
     public JQuickJavaTypeReferenceAndValueModel visitArgumentList(JQuickJavaParser.ArgumentListContext ctx) {
-        JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
-        if (null != ctx.literalItem() && !ctx.literalItem().isEmpty()) {
+        JQuickJavaTypeReferenceAndValueModel model = new JQuickJavaTypeReferenceAndValueModel();
+        if (ctx.argument() != null && !ctx.argument().isEmpty()) {
             List<JQuickJavaTypeReferenceAndValue> list = new ArrayList<>();
-            for (JQuickJavaParser.LiteralItemContext literalItemContext : ctx.literalItem()) {
-                JQuickJavaTypeReferenceAndValue object = visitLiteralItem(literalItemContext);
+            for (JQuickJavaParser.ArgumentContext argumentContext : ctx.argument()) {
+                JQuickJavaTypeReferenceAndValue object = visitArgument(argumentContext);
                 list.add(object);
             }
             model.setList(list);
@@ -152,8 +166,8 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         String qualifiedName = ctx.classsType() != null ? ctx.classsType().getText() : null;
         String methodName = visitMethodName(ctx.methodName());
         JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
-        if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&& !ctx.argumentList().literalItem().isEmpty()){
-            model=visitArgumentList(ctx.argumentList());
+        if (ctx.argumentList() != null && ctx.argumentList().argument() != null && !ctx.argumentList().argument().isEmpty()) {
+            model = visitArgumentList(ctx.argumentList());
         }
         try {
             JQuickJavaTypeReference<?> typeReference = loadClass(qualifiedName);
@@ -171,8 +185,8 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
     public Object visitConstructorCall(JQuickJavaParser.ConstructorCallContext ctx) {
         JAssert.notNull(ctx.classsType(),"the class name is not support");
         JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
-        if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&&ctx.argumentList().literalItem().size()>0){
-            model=visitArgumentList(ctx.argumentList());
+        if (ctx.argumentList() != null && ctx.argumentList().argument() != null && !ctx.argumentList().argument().isEmpty()) {
+            model = visitArgumentList(ctx.argumentList());
         }
         String qualifiedName = ctx.classsType() != null ? ctx.classsType().getText() : null;
         try {
@@ -188,22 +202,19 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
     }
     @Override
     public Object visitInstanceMethodCall(JQuickJavaParser.InstanceMethodCallContext ctx) {
-        JAssert.notNull(ctx.instanceName(),"the instanceName  is not support"+ctx.instanceName());
+        JAssert.notNull(ctx.primaryAtom(),"the instance target is not support");
         JAssert.notNull(ctx.methodName(),"the method name is not support: "+ctx.methodName().getText());
         String methodName = visitMethodName(ctx.methodName());
-        Object target=null;
-        if (ctx.instanceName() != null) {
-            target = visitInstanceName(ctx.instanceName());
-        }
-        JAssert.notNull(target,"the target object is not support:"+ctx.instanceName().getText());
-        JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
-        if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&&ctx.argumentList().literalItem().size()>0){
-            model=visitArgumentList(ctx.argumentList());
+        Object target = visitPrimaryAtom(ctx.primaryAtom());
+        JAssert.notNull(target,"the target object is not support:"+ctx.primaryAtom().getText());
+        JQuickJavaTypeReferenceAndValueModel model = new JQuickJavaTypeReferenceAndValueModel();
+        if (ctx.argumentList() != null && ctx.argumentList().argument() != null && !ctx.argumentList().argument().isEmpty()) {
+            model = visitArgumentList(ctx.argumentList());
         }
         try {
             JQuickJavaInstanceMethodFactory instance = JQuickJavaReflectionFactory.instanceMethod(target);
-            JQuickJavaTypeReference<?>[] references=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getTypeArguments).toArray(JQuickJavaTypeReference[]::new);
-            Object[] data=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).toArray();
+            JQuickJavaTypeReference<?>[] references = model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getTypeArguments).toArray(JQuickJavaTypeReference[]::new);
+            Object[] data = model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).toArray();
             return instance.invoke(methodName,references,data);
         } catch (Exception e) {
             throw new RuntimeException("please double check constructor method   " , e);
@@ -215,9 +226,9 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         String methodName = visitMethodName(ctx.methodName());
         boolean flag=this.hasFunction(methodName);
         JAssert.isTrue(flag,"the method [ "+methodName+" ] did not define in this context");
-        JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
-        if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&&!ctx.argumentList().literalItem().isEmpty()){
-            model=visitArgumentList(ctx.argumentList());
+        JQuickJavaTypeReferenceAndValueModel model = new JQuickJavaTypeReferenceAndValueModel();
+        if (ctx.argumentList() != null && ctx.argumentList().argument() != null && !ctx.argumentList().argument().isEmpty()) {
+            model = visitArgumentList(ctx.argumentList());
         }
         JQuickJavaTypeReference<?>[] references=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getTypeArguments).toArray(JQuickJavaTypeReference[]::new);
         JQuickJavaFunctionDefinitionModel function = registry.lookupFunction(methodName,references);//find the best match method
@@ -249,8 +260,8 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         try {
             Object target=visitAccessStaticVariable(ctx.accessStaticVariable());
             JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
-            if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&& !ctx.argumentList().literalItem().isEmpty()){
-                model=visitArgumentList(ctx.argumentList());
+            if (ctx.argumentList() != null && ctx.argumentList().argument() != null && !ctx.argumentList().argument().isEmpty()) {
+                model = visitArgumentList(ctx.argumentList());
             }
             List<Object>  args=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).collect(Collectors.toList());
             return  JQuickJavaObjectFactory.createByInstanceMethod(target, methodName, args);
@@ -266,21 +277,14 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         String methodName = visitMethodName(ctx.methodName());
         JAssert.notNull(methodName,"the method name is not support");
         JQuickJavaTypeReferenceAndValueModel model=new JQuickJavaTypeReferenceAndValueModel();
-        if(null!=ctx.argumentList()&&null!=ctx.argumentList().literalItem()&& !ctx.argumentList().literalItem().isEmpty()){
-            model=visitArgumentList(ctx.argumentList());
+        if (ctx.argumentList() != null && ctx.argumentList().argument() != null && !ctx.argumentList().argument().isEmpty()) {
+            model = visitArgumentList(ctx.argumentList());
         }
         List<Object>  args=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).collect(Collectors.toList());
         JQuickJavaRuntimeEnvironment javaRuntimeEnvironment=new JQuickJavaRuntimeEnvironment(this.parser.getJContext(),this.parser.copyCurrentScope());
         return  JQuickJavaBuiltinFunctionManager.invoke(methodName,javaRuntimeEnvironment,args);
     }
 
-    @Override
-    public Object visitInstanceName(JQuickJavaParser.InstanceNameContext ctx) {
-        String instanceName=ctx.getText();
-        Object instance=parser.findVar(instanceName);
-        JAssert.notNull(instance, "the instance not initialize ["+instanceName+"]");
-        return instance;
-    }
     @Override
     public String visitMethodName(JQuickJavaParser.MethodNameContext ctx) {
         JAssert.notNull(ctx.IDENTIFIER(), "the function name  is not null");

@@ -15,6 +15,10 @@
  */
 package com.github.paohaijiao.extract.service;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +29,7 @@ import java.util.List;
  * @version 1.0.0
  * @since 2025/7/25
  */
+@Data
 public class JService {
 
     public String concat(String a, String b) {
@@ -38,6 +43,9 @@ public class JService {
     public boolean isEven(int num) {
         return num % 2 == 0;
     }
+
+
+
 
     public List<Integer> addToList(List<Integer> list, Integer value) {
         Integer i=list.get(0);

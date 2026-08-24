@@ -24,19 +24,27 @@ public class JQuickJavaPrimaryVisitor extends JQuickJavaAssignVisitor {
 
     @Override
     public Object visitPrimary(JQuickJavaParser.PrimaryContext ctx) {
-        if(ctx.literal() != null) {
+        if (ctx.primaryAtom() != null) {
+            return visitPrimaryAtom(ctx.primaryAtom());
+        } else if (ctx.methodInvocation() != null) {
+            return visit(ctx.methodInvocation());
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitPrimaryAtom(JQuickJavaParser.PrimaryAtomContext ctx) {
+        if (ctx.literal() != null) {
             return visitLiteral(ctx.literal());
         } else if (ctx.IDENTIFIER() != null) {
-            String identifier=ctx.IDENTIFIER().getText();
-            Object obj=this.parser.findVar(identifier);
-            JAssert.notNull(obj,"variable "+identifier+" not found");;
+            String identifier = ctx.IDENTIFIER().getText();
+            Object obj = this.parser.findVar(identifier);
+            JAssert.notNull(obj, "variable " + identifier + " not found");
             return obj;
-        }else if (ctx.expression()!=null) {
+        } else if (ctx.expression() != null) {
             return visitExpression(ctx.expression());
-        } else if (ctx.variableDecl()!=null) {
+        } else if (ctx.variableDecl() != null) {
             return visitVariableDecl(ctx.variableDecl());
-        } else if (ctx.methodInvocation()!=null) {
-            return visit(ctx.methodInvocation());
         }
         return null;
     }

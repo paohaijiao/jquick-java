@@ -1,4 +1,4 @@
-// Generated from D:/idea/jthornruleGrammer/QuickJava/JQuickJava.g4 by ANTLR 4.13.2
+// Generated from D:/my/jthornruleGrammer/QuickJava/JQuickJava.g4 by ANTLR 4.13.2
 
 package com.github.paohaijiao.parser;
 
@@ -410,15 +410,35 @@ public interface JQuickJavaListener extends ParseTreeListener {
 	 */
 	void exitPrimary(JQuickJavaParser.PrimaryContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link JQuickJavaParser#literalItem}.
+	 * Enter a parse tree produced by {@link JQuickJavaParser#primaryAtom}.
 	 * @param ctx the parse tree
 	 */
-	void enterLiteralItem(JQuickJavaParser.LiteralItemContext ctx);
+	void enterPrimaryAtom(JQuickJavaParser.PrimaryAtomContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link JQuickJavaParser#literalItem}.
+	 * Exit a parse tree produced by {@link JQuickJavaParser#primaryAtom}.
 	 * @param ctx the parse tree
 	 */
-	void exitLiteralItem(JQuickJavaParser.LiteralItemContext ctx);
+	void exitPrimaryAtom(JQuickJavaParser.PrimaryAtomContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickJavaParser#argument}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgument(JQuickJavaParser.ArgumentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickJavaParser#argument}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgument(JQuickJavaParser.ArgumentContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickJavaParser#typedArgument}.
+	 * @param ctx the parse tree
+	 */
+	void enterTypedArgument(JQuickJavaParser.TypedArgumentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickJavaParser#typedArgument}.
+	 * @param ctx the parse tree
+	 */
+	void exitTypedArgument(JQuickJavaParser.TypedArgumentContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code staticCall}
 	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
