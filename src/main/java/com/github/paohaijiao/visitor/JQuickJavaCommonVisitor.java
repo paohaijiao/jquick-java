@@ -15,6 +15,8 @@
  */
 package com.github.paohaijiao.visitor;
 
+import com.github.paohaijiao.banner.JQuickBanner;
+import com.github.paohaijiao.banner.impl.JQuickBannerImpl;
 import com.github.paohaijiao.model.JQuickJavaReturnValueModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
@@ -29,6 +31,8 @@ public class JQuickJavaCommonVisitor extends JQuickJavaStatementVisitor {
         this.lexer = lexer;
         this.tokenStream = tokenStream;
         this.parser = parser;
+        JQuickBanner banner= JQuickBannerImpl.getInstance();
+        banner.printBanner();
     }
 
     @Override

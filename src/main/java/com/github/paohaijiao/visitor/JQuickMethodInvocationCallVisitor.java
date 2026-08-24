@@ -15,11 +15,10 @@
  */
 package com.github.paohaijiao.visitor;
 
-import com.github.paohaijiao.builtins.JQuickJavaBuiltinFunctionManager;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.executor.JQuickJavaActionExecutor;
+import com.github.paohaijiao.function.manager.JQuickMethodInvocationManager;
 import com.github.paohaijiao.model.*;
-import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.runtime.JQuickJavaRuntimeEnvironment;
 import com.github.paohaijiao.support.JQuickJavaObjectFactory;
@@ -31,7 +30,6 @@ import com.github.paohaijiao.support.impl.JQuickJavaStaticMethodFactory;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStreamRewriter;
 import org.antlr.v4.runtime.misc.Interval;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +38,7 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
 
     private static final Class<?> PKG = JQuickMethodInvocationCallVisitor.class;
 
-
+    private JQuickMethodInvocationManager manager=JQuickMethodInvocationManager.getInstance();
     @Override
     public String visitAccessObjectName(JQuickJavaParser.AccessObjectNameContext ctx) {
         if (ctx.identifier()!=null) {
@@ -281,8 +279,7 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
             model = visitArgumentList(ctx.argumentList());
         }
         List<Object>  args=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getData).collect(Collectors.toList());
-        JQuickJavaRuntimeEnvironment javaRuntimeEnvironment=new JQuickJavaRuntimeEnvironment(this.parser.getJContext(),this.parser.copyCurrentScope());
-        return  JQuickJavaBuiltinFunctionManager.invoke(methodName,javaRuntimeEnvironment,args);
+        return manager.invoke(methodName, args);
     }
 
     @Override

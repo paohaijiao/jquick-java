@@ -224,5 +224,18 @@ public class JStaticMethodInvocationTest {
         Object result = tv.visit(tree);
         System.out.println(result);
     }
+    @Test
+    public void builtin() {
+        String rule = "Builtin::sum(int:1,int:2,int:3,int:4,int:5,int:6);";
+        System.out.println(rule);
+        JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickJavaParser parser = new JQuickJavaParser(tokens);
+        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JContext params = setUp();
+        JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
+        Object result = tv.visit(tree);
+        System.out.println(result);
+    }
 
 }
