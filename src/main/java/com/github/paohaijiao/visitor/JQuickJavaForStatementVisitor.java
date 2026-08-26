@@ -79,7 +79,12 @@ public class JQuickJavaForStatementVisitor extends JQuickJavaWhileStatementVisit
     }
     @Override
     public Object visitStopExpression(JQuickJavaParser.StopExpressionContext ctx) {
-        if(null!=ctx.expression()){
+        // 迭代步长可为赋值语句（如 i = i + 1），走 variableDecl 的 assignVar 更新变量
+        // Stop clause may be an assignment (e.g. i = i + 1); route to variableDecl to update the variable.
+        if (null != ctx.variableDecl()) {
+            return visitVariableDecl(ctx.variableDecl());
+        }
+        if (null != ctx.expression()) {
             return visitExpression( ctx.expression());
         }
         return null;
