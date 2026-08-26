@@ -28,6 +28,7 @@ public class JQuickJavaAssignVisitor extends JQuickJavaLiteralVisitor {
         JAssert.notNull(ctx.IDENTIFIER(),"identifier required not null");
         JAssert.notNull(ctx.expression(),"expression required not null");
         String varName = ctx.IDENTIFIER().getText();
+        String text=ctx.getText();
         if(ctx.classsType() != null){// define
             JQuickJavaTypeReference<?> typeRef=visitClasssType(ctx.classsType());
             Object express=visitExpression(ctx.expression());

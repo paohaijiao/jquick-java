@@ -31,16 +31,16 @@ public class JQuickJavaBoolVisitor extends JQuickJavaMathVisitor {
 
     @Override
     public Object visitComparison(JQuickJavaParser.ComparisonContext ctx) {
-        JAssert.isTrue(!ctx.primary().isEmpty(),"left expression expected");
-        Object left = extract(visit(ctx.primary(0)));
-        if (ctx.primary().size() == 1) {
+        JAssert.isTrue(!ctx.additive().isEmpty(),"left expression expected");
+        Object left = extract(visit(ctx.additive(0)));
+        if (ctx.additive().size() == 1) {
             return left;
         }
-        for (int i = 1; i < ctx.primary().size(); i++) {
+        for (int i = 1; i < ctx.additive().size(); i++) {
             String operator = ctx.getChild(2 * i - 1).getText();
             JQuickJavaMathOp op = JQuickJavaMathOp.codeOf(operator);
             JAssert.notNull(op, "Unsupported operator: " + operator);
-            Object right = extract(visit(ctx.primary(i)));
+            Object right = extract(visit(ctx.additive(i)));
             boolean result;
             switch (operator) {
                 case ">":

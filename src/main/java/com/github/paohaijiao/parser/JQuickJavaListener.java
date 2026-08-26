@@ -340,15 +340,25 @@ public interface JQuickJavaListener extends ParseTreeListener {
 	 */
 	void exitComparison(JQuickJavaParser.ComparisonContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link JQuickJavaParser#arithmetic}.
+	 * Enter a parse tree produced by {@link JQuickJavaParser#additive}.
 	 * @param ctx the parse tree
 	 */
-	void enterArithmetic(JQuickJavaParser.ArithmeticContext ctx);
+	void enterAdditive(JQuickJavaParser.AdditiveContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link JQuickJavaParser#arithmetic}.
+	 * Exit a parse tree produced by {@link JQuickJavaParser#additive}.
 	 * @param ctx the parse tree
 	 */
-	void exitArithmetic(JQuickJavaParser.ArithmeticContext ctx);
+	void exitAdditive(JQuickJavaParser.AdditiveContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickJavaParser#multiplicative}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiplicative(JQuickJavaParser.MultiplicativeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickJavaParser#multiplicative}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiplicative(JQuickJavaParser.MultiplicativeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link JQuickJavaParser#functionDefinition}.
 	 * @param ctx the parse tree

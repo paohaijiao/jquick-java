@@ -64,10 +64,15 @@ public class JQuickJavaCoreVisitor extends JQuickJavaBaseVisitor {
 
 
     protected static boolean toBoolean(Object value) {
+        JAssert.notNull(value, "toBoolean method value is null");
         if (value instanceof Boolean) {
             return (Boolean) value;
         } else if (value instanceof String) {
             return Boolean.parseBoolean((String) value);
+        } else if ("0".equals(value.toString())) {
+            return Boolean.FALSE;
+        }else if ("1".equals(value.toString())) {
+            return Boolean.TRUE;
         }
         thowEx(getMessageKeyPrefix(PKG,"toBoolean.convertError"),value.toString());
         return false;

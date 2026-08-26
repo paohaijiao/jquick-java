@@ -29,43 +29,37 @@ public class JQuickJavaMathVisitor extends JQuickMethodInvocationCallVisitor {
 
 
     @Override
-    public Object visitArithmetic(JQuickJavaParser.ArithmeticContext ctx) {
-        Object result = extract(visitPrimary(ctx.primary(0)));
-        java.util.List<Object> values = new java.util.ArrayList<>();
-        java.util.List<String> operators = new java.util.ArrayList<>();
-        values.add(result);
-        for (int i = 1; i < ctx.primary().size(); i++) {
+    public Object visitAdditive(JQuickJavaParser.AdditiveContext ctx) {
+        Object result = extract(visitMultiplicative(ctx.multiplicative(0)));
+        for (int i = 1; i < ctx.multiplicative().size(); i++) {
             String operator = ctx.getChild(2 * i - 1).getText();
-            JQuickJavaMathOp op = JQuickJavaMathOp.codeOf(operator);
-            JAssert.notNull(op, "Unsupported operator: " + operator);
-            operators.add(operator);
-            values.add(extract(visitPrimary(ctx.primary(i))));
-        }
-
-        for (int i = 0; i < operators.size();) {
-            String operator = operators.get(i);
-            if ("*".equals(operator) || "/".equals(operator)) {
-                Object left = values.get(i);
-                Object right = values.get(i + 1);
-                Object merged = "*".equals(operator) ? multiply(left, right) : divide(left, right);
-                values.set(i, merged);
-                values.remove(i + 1);
-                operators.remove(i);
-            } else {
-                i++;
-            }
-        }
-
-        result = values.get(0);
-        for (int i = 0; i < operators.size(); i++) {
-            String operator = operators.get(i);
-            Object right = values.get(i + 1);
+            Object right = extract(visitMultiplicative(ctx.multiplicative(i)));
             switch (operator) {
                 case "+":
                     result = add(result, right);
                     break;
                 case "-":
                     result = subtract(result, right);
+                    break;
+                default:
+                    throw new RuntimeException("Unknown operator: " + operator);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Object visitMultiplicative(JQuickJavaParser.MultiplicativeContext ctx) {
+        Object result = extract(visitPrimary(ctx.primary(0)));
+        for (int i = 1; i < ctx.primary().size(); i++) {
+            String operator = ctx.getChild(2 * i - 1).getText();
+            Object right = extract(visitPrimary(ctx.primary(i)));
+            switch (operator) {
+                case "*":
+                    result = multiply(result, right);
+                    break;
+                case "/":
+                    result = divide(result, right);
                     break;
                 default:
                     throw new RuntimeException("Unknown operator: " + operator);

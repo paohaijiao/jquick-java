@@ -414,13 +414,25 @@ public class JQuickJavaBaseListener implements JQuickJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArithmetic(JQuickJavaParser.ArithmeticContext ctx) { }
+	@Override public void enterAdditive(JQuickJavaParser.AdditiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArithmetic(JQuickJavaParser.ArithmeticContext ctx) { }
+	@Override public void exitAdditive(JQuickJavaParser.AdditiveContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMultiplicative(JQuickJavaParser.MultiplicativeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMultiplicative(JQuickJavaParser.MultiplicativeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

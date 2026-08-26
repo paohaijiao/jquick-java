@@ -81,6 +81,9 @@ public class JQuickJavaLiteralVisitor extends JQuickJavaImportVisitor {
         if (ctx.STRING() != null) {
             String text = ctx.STRING().getText();
             String str = JStringUtils.trim(text);
+            if ((str.startsWith("\"") && str.endsWith("\"")) || (str.startsWith("'") && str.endsWith("'"))) {
+                return str.substring(1, str.length() - 1);
+            }
             return str;
         }
         I18nUtils.getMessage("");

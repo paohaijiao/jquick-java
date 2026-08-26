@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.service.ScoringMapper">
+
+    <!--事件上报的情报端
+      计算上报时效得分
+      参数：
+      - eventType: 事件类型 (A/B/C/D)
+      - t: 报送时间与事发时间的差值（分钟）
+      返回：得分（double类型，保留一位小数）
+  -->
+    <java name="quickSubmissionReport" returnClass="double">
+        <![CDATA[
+            double def quickSubmissionReport(str:eventType, int:t) {
+                // 1. 根据事件类型确定目标报送时间 T
+                int T = 0;
+                if (eventType == "A") {
+                    console.log("A");
+                    T = 60;
+                } else if (eventType == "B") {
+                    console.log("B");
+                    T = 120;
+                } else if (eventType == "C") {
+                    console.log("C");
+                    T = 240;
+                } else if (eventType == "D") {
+                    console.log("D");
+                    T = 300;
+                } else {
+                    console.log("invalid eventType type: " + eventType);
+                    return 0.0;
+                }
+
+                // 2. 计算得分
+                double score = 0.0;
+                if (t <= T) {
+                     console.log("t <= T ");
+                    // 按时或提前报送: 40 + (T - t) * 10 / T
+                    score = 40.0 + (T - t) * 10.0 / T;
+                    console.log("t <= T " + score);
+                } else if (t > T && t <= 2 * T) {
+                     console.log("t > T && t <= 2 * T ");
+                    // 延迟但未超过2T: 40 - (t - T) * 40 / (2 * T)
+                    score = 40.0 - (t - T) * 40.0 / (2 * T);
+                } else {
+                     console.log("t > 2 * T ");
+                    // 超过2T: 0分
+                    score = 0.0;
+                }
+                console.log("final score " + score);
+                // 3. 保留一位小数
+                int scaledScore = (score * 10);
+                double finalScore = scaledScore / 10.0;
+
+                return finalScore;
+            }
+        ]]>
+    </java>
+    <java name="quickSubmissionTrigger" returnClass="double">
+        <![CDATA[
+            double def quickSubmissionTrigger(str:eventType, int:t) {
+                // 1. 根据事件类型确定目标报送时间 T
+                int T = 0;
+                if (eventType == "A") {
+                    T = 60;
+                } else if (eventType == "B") {
+                    T = 120;
+                } else if (eventType == "C") {
+                    T = 240;
+                } else if (eventType == "D") {
+                    T = 300;
+                } else {
+                    return 0.0;
+                }
+                // 2. 计算得分（与情报端规则完全一致）
+                double score = 0.0;
+                if (t <= T) {
+                    // 按时或提前触发: 40 + (T - t) * 10 / T
+                    score = 40.0 + (T - t) * 10.0 / T;
+                } else if (t > T && t <= 2 * T) {
+                    // 延迟但未超过2T: 40 - (t - T) * 40 / (2 * T)
+                    score = 40.0 - (t - T) * 40.0 / (2 * T);
+                } else {
+                    // 超过2T: 0分
+                    score = 0.0;
+                }
+                // 3. 保留一位小数
+                int scaledScore = (int)(score * 10);
+                double finalScore = scaledScore / 10.0;
+                return finalScore;
+            }
+        ]]>
+    </java>
+    <!--
+       市级事件快速办结 - 考核事件归属区县
+       参数：
+       - hasOfficialFollowUp: 是否有正式续报 (boolean)
+       - lastFollowUpTime: 最后一次正式续报时间 (Date)
+       - settleTime: 办结时间 (Date)
+       - reportTime: 上报事件时间 (Date)
+       返回：得分（double类型，保留一位小数）
+   -->
+    <java name="quickSettleOwnToZone" returnClass="double">
+        <![CDATA[
+            double def quickSettleOwnToZone( boolean:hasOfficialFollowUp,JDate:lastFollowUpTime,JDate:settleTime,   JDate:reportTime  ) {
+                // 1. 计算时间差 t（单位：天，保留一位小数）
+                double t = 0.0;
+                if (hasOfficialFollowUp == true) {
+                    // 有正式续报：t = 办结时间 - 最后一次正式续报的时间
+                    long diffMillis = settleTime.getTime() - lastFollowUpTime.getTime();
+                    t = diffMillis / (1000.0 * 60 * 60 * 24);
+                } else {
+                    // 没有正式续报：t = 办结时间 - 上报事件时间
+                    long diffMillis = settleTime.getTime() - reportTime.getTime();
+                    t = diffMillis / (1000.0 * 60 * 60 * 24);
+                }
+                // 保留一位小数
+                int scaledT = (int)(t * 10);
+                double finalT = scaledT / 10.0;
+                // 2. 根据 t 计算得分
+                double score = 0.0;
+                if (finalT <= 3.0) {
+                    // t <= 3: 得 20 分
+                    score = 20.0;
+                } else if (finalT > 3.0 && finalT <= 7.0) {
+                    // 3 < t <= 7: score = 20 - 5 * (t - 3)
+                    score = 20.0 - 5.0 * (finalT - 3.0);
+                } else {
+                    // t >= 7: 得 0 分
+                    score = 0.0;
+                }
+
+                // 保留一位小数
+                int scaledScore = (int)(score * 10);
+                double finalScore = scaledScore / 10.0;
+
+                return finalScore;
+            }
+        ]]>
+    </java>
+
+    <!--
+   区级事件快速办结 - 考核事件归属街镇
+   参数：
+   - hasOfficialFollowUp: 是否有正式续报 (boolean)
+   - lastFollowUpTime: 最后一次正式续报时间 (Date)
+   - settleTime: 办结时间 (Date)
+   - reportTime: 上报事件时间 (Date)
+   返回：得分（double类型，保留一位小数）
+-->
+    <java name="quickSettleOwnToStreet" returnClass="double">
+        <![CDATA[
+        double def calculateSettleScoreForTown( boolean:hasOfficialFollowUp, JDate:lastFollowUpTime, JDate:settleTime, JDate:reportTime ) {
+            // 1. 计算时间差 t（单位：天，保留一位小数）
+            double t = 0.0;
+            if (hasOfficialFollowUp == true) {
+                // 有正式续报：t = 办结时间 - 最后一次正式续报的时间
+                long diffMillis = settleTime.getTime() - lastFollowUpTime.getTime();
+                t = diffMillis / (1000.0 * 60 * 60 * 24);
+            } else {
+                // 没有正式续报：t = 办结时间 - 上报事件时间
+                long diffMillis = settleTime.getTime() - reportTime.getTime();
+                t = diffMillis / (1000.0 * 60 * 60 * 24);
+            }
+            // 保留一位小数
+            int scaledT = (int)(t * 10);
+            double finalT = scaledT / 10.0;
+
+            // 2. 根据 t 计算得分
+            double score = 0.0;
+            if (finalT <= 3.0) {
+                // t <= 3: 得 20 分
+                score = 20.0;
+            } else if (finalT > 3.0 && finalT <= 7.0) {
+                // 3 < t <= 7: score = 20 - 5 * (t - 3)
+                score = 20.0 - 5.0 * (finalT - 3.0);
+            } else {
+                // t >= 7: 得 0 分
+                score = 0.0;
+            }
+
+            // 保留一位小数
+            int scaledScore = (int)(score * 10);
+            double finalScore = scaledScore / 10.0;
+            return finalScore;
+        }
+    ]]>
+    </java>
+    <!--
+   快速协同回复 - 考核协同目标单位回复时效性
+   参数：
+   - eventType: 事件类型 (A/B/C/D)
+   - t: 第一次协同回复时间 - 协同发起时间（单位：分钟，保留一位小数）
+   返回：得分（double类型，保留一位小数）
+-->
+    <java name="quickReplyTargetUnit" returnClass="double">
+        <![CDATA[
+        double def quickReplyTargetUnit(str:eventType, double:t) {
+            // 1. 根据事件类型确定目标回复时间 T
+            int T = 0;
+            if (eventType == "A") {
+                T = 5;
+            } else if (eventType == "B") {
+                T = 10;
+            } else if (eventType == "C") {
+                T = 15;
+            } else if (eventType == "D") {
+                T = 30;
+            } else {
+                return 0.0; // 未知事件类型，返回0分
+            }
+
+            double score = 0.0;
+
+            // 2. 根据规则计算得分
+            if (eventType == "A" || eventType == "B") {
+                // A及B类事件规则
+                if (t <= T) {
+                    score = 10.0;
+                } else if (t > T && t <= 2 * T) {
+                    score = 10.0 - (t - T) / T * 10.0;
+                } else {
+                    score = 0.0;
+                }
+            } else if (eventType == "C" || eventType == "D") {
+                // C及D类事件规则
+                if (t <= T) {
+                    score = 10.0;
+                } else if (t > T && t <= 4 * T) {
+                    score = 10.0 - (t - T) / (3 * T) * 10.0;
+                } else {
+                    score = 0.0;
+                }
+            }
+
+            // 3. 保留一位小数
+            int scaledScore = (int)(score * 10);
+            double finalScore = scaledScore / 10.0;
+
+            return finalScore;
+        }
+    ]]>
+    </java>
+    <!--
+   快速协同回复 - 考核批示下达交办目标单位回复时效性
+   参数：
+   - eventType: 事件类型 (A/B/C/D)
+   - t: 第一次下达回复时间 - 批示下达时间（单位：分钟，保留一位小数）
+   返回：得分（double类型，保留一位小数）
+-->
+    <java name="quickReplyTargetTimeUnit" returnClass="double">
+        <![CDATA[
+        double def calculateInstructionReplyScore(str:eventType, double:t) {
+            // 1. 根据事件类型确定目标回复时间 T
+            int T = 0;
+            if (eventType == "A") {
+                T = 5;
+            } else if (eventType == "B") {
+                T = 10;
+            } else if (eventType == "C") {
+                T = 15;
+            } else if (eventType == "D") {
+                T = 30;
+            } else {
+                return 0.0; // 未知事件类型，返回0分
+            }
+
+            double score = 0.0;
+
+            // 2. 根据规则计算得分（与协同回复规则完全一致）
+            if (eventType == "A" || eventType == "B") {
+                // A及B类事件规则
+                if (t <= T) {
+                    score = 10.0;
+                } else if (t > T && t <= 2 * T) {
+                    score = 10.0 - (t - T) / T * 10.0;
+                } else {
+                    score = 0.0;
+                }
+            } else if (eventType == "C" || eventType == "D") {
+                // C及D类事件规则
+                if (t <= T) {
+                    score = 10.0;
+                } else if (t > T && t <= 4 * T) {
+                    score = 10.0 - (t - T) / (3 * T) * 10.0;
+                } else {
+                    score = 0.0;
+                }
+            }
+
+            // 3. 保留一位小数
+            int scaledScore = (int)(score * 10);
+            double finalScore = scaledScore / 10.0;
+
+            return finalScore;
+        }
+    ]]>
+    </java>
+
+</javas>
