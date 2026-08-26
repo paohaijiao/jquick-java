@@ -86,7 +86,7 @@
                     score = 0.0;
                 }
                 // 3. 保留一位小数
-                int scaledScore = (int)(score * 10);
+                int scaledScore = (score * 10);
                 double finalScore = scaledScore / 10.0;
                 return finalScore;
             }
