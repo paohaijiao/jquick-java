@@ -72,6 +72,10 @@ public class JQuickJavaBoolVisitor extends JQuickJavaMathVisitor {
     @Override
     public Object visitLogical(JQuickJavaParser.LogicalContext ctx) {
         JAssert.isTrue(!ctx.comparison().isEmpty(),"left expression expected");
+        // 无 && / || 运算符时（如纯算术或单个比较），直接透传，保留原始值（数字/字符串等）
+        if (ctx.comparison().size() == 1) {
+            return visit(ctx.comparison(0));
+        }
         boolean result = toBoolean(visit(ctx.comparison(0)));
         for (int i = 1; i < ctx.comparison().size(); i++) {
             Token operatorToken = ((org.antlr.v4.runtime.tree.TerminalNode) ctx.getChild(2 * i - 1)).getSymbol();

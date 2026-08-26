@@ -60,8 +60,9 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         TokenStreamRewriter rewriter = new TokenStreamRewriter(tokenStream);
         if (ctx.action() != null) {
             ctx.action().statement().forEach(stmt -> {
-                if (stmt.expression() != null && stmt.expression().methodInvocation() != null && stmt.expression().methodInvocation() instanceof JQuickJavaParser.ConstructorCallContext) {
-                    JQuickJavaParser.ConstructorCallContext constructorCtx = (JQuickJavaParser.ConstructorCallContext) stmt.expression().methodInvocation();
+                JQuickJavaParser.MethodInvocationContext invocation = findMethodInvocation(stmt.expression());
+                if (invocation instanceof JQuickJavaParser.ConstructorCallContext) {
+                    JQuickJavaParser.ConstructorCallContext constructorCtx = (JQuickJavaParser.ConstructorCallContext) invocation;
                     Token newToken = constructorCtx.NEW().getSymbol();
                     Token nextToken = tokenStream.get(newToken.getTokenIndex() + 1);
                     String whitespace = tokenStream.getText(Interval.of(newToken.getTokenIndex(), nextToken.getTokenIndex() - 1));
@@ -298,6 +299,28 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
     @Override
     public String visitFunctionVar(JQuickJavaParser.FunctionVarContext ctx) {
         return ctx.IDENTIFIER().getText();
+    }
+
+    /**
+     * expression -> logical -> comparison -> additive -> multiplicative -> primary -> methodInvocation
+     * 查找表达式树中是否包含方法调用（如 new Xxx() 构造调用）
+     */
+    private JQuickJavaParser.MethodInvocationContext findMethodInvocation(JQuickJavaParser.ExpressionContext expr) {
+        if (expr == null || expr.logical() == null) {
+            return null;
+        }
+        for (JQuickJavaParser.ComparisonContext comparison : expr.logical().comparison()) {
+            for (JQuickJavaParser.AdditiveContext additive : comparison.additive()) {
+                for (JQuickJavaParser.MultiplicativeContext multiplicative : additive.multiplicative()) {
+                    for (JQuickJavaParser.PrimaryContext primary : multiplicative.primary()) {
+                        if (primary.methodInvocation() != null) {
+                            return primary.methodInvocation();
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 

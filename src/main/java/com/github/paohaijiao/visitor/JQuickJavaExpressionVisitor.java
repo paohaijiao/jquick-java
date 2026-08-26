@@ -32,20 +32,8 @@ public class JQuickJavaExpressionVisitor extends JQuickJavaBoolVisitor {
     }
     @Override
     public Object visitExpression(JQuickJavaParser.ExpressionContext ctx) {
-        if(ctx.methodInvocation()!=null) {
-            Object value = visit(ctx.methodInvocation());
-            return value;
-        }
-        if(ctx.additive()!=null) {
-            Object value = visitAdditive(ctx.additive());
-            return value;
-        }
         if(ctx.logical()!=null) {
             Object value =visitLogical(ctx.logical());
-            return value;
-        }
-        if(ctx.primary()!=null) {
-            Object value = visitPrimary(ctx.primary());
             return value;
         }
         throw new RuntimeException("unexpected expression");
