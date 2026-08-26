@@ -13,6 +13,7 @@ import org.antlr.v4.runtime.atn.ParserATNSimulator;
 import org.antlr.v4.runtime.atn.PredictionContextCache;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
+import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.HashMap;
@@ -277,6 +278,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitProgram(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitProgram(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ProgramContext program() throws RecognitionException {
@@ -354,6 +360,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitImportDeclaration(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitImportDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ImportDeclarationContext importDeclaration() throws RecognitionException {
@@ -416,6 +427,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitParamType(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitParamType(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -501,6 +517,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitGenericType(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitGenericType(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final GenericTypeContext genericType() throws RecognitionException {
@@ -556,6 +577,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitSimpleType(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitSimpleType(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final SimpleTypeContext simpleType() throws RecognitionException {
@@ -609,6 +635,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitTypeArguments(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitTypeArguments(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -673,6 +704,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitArrayType(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitArrayType(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -755,6 +791,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitListType(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitListType(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ListTypeContext listType() throws RecognitionException {
@@ -811,6 +852,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitSetType(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitSetType(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -871,6 +917,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitMapType(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitMapType(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -935,6 +986,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitQualifiedName(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitQualifiedName(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1005,6 +1061,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitStatement(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1103,6 +1164,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitMethod(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitMethod(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final MethodContext method() throws RecognitionException {
@@ -1147,6 +1213,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitAction(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitAction(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1224,6 +1295,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitControlStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitControlStatement(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1367,6 +1443,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitIfStatement(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitIfStatement(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final IfStatementContext ifStatement() throws RecognitionException {
@@ -1456,6 +1537,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitElseIfConExpression(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitElseIfConExpression(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ElseIfConExpressionContext elseIfConExpression() throws RecognitionException {
@@ -1496,6 +1582,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitElseIfAction(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitElseIfAction(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ElseIfActionContext elseIfAction() throws RecognitionException {
@@ -1535,6 +1626,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitElseAction(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitElseAction(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1594,6 +1690,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitForStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitForStatement(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1684,6 +1785,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitInitExpression(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitInitExpression(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final InitExpressionContext initExpression() throws RecognitionException {
@@ -1724,6 +1830,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitConExpression(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitConExpression(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ConExpressionContext conExpression() throws RecognitionException {
@@ -1763,6 +1874,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitStopExpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitStopExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1809,6 +1925,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitWhileStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitWhileStatement(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1862,6 +1983,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitReturnStatement(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitReturnStatement(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ReturnStatementContext returnStatement() throws RecognitionException {
@@ -1914,6 +2040,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitBreakStatement(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitBreakStatement(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final BreakStatementContext breakStatement() throws RecognitionException {
@@ -1954,6 +2085,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitContinueStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitContinueStatement(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1997,6 +2133,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitExpressionStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitExpressionStatement(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2049,6 +2190,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitVariableDecl(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitVariableDecl(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2106,6 +2252,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitExpression(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitExpression(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExpressionContext expression() throws RecognitionException {
@@ -2148,6 +2299,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitSout(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitSout(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2207,6 +2363,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitLogical(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitLogical(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2303,6 +2464,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitComparison(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitComparison(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ComparisonContext comparison() throws RecognitionException {
@@ -2381,6 +2547,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitAdditive(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitAdditive(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final AdditiveContext additive() throws RecognitionException {
@@ -2396,7 +2567,7 @@ public class JQuickJavaParser extends Parser {
 			setState(368);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,25,_ctx);
-			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
+			while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
@@ -2460,6 +2631,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitMultiplicative(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitMultiplicative(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2528,6 +2704,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitUnary(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitUnary(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2598,6 +2779,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitFunctionDefinition(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitFunctionDefinition(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final FunctionDefinitionContext functionDefinition() throws RecognitionException {
@@ -2664,6 +2850,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitParameterList(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitParameterList(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ParameterListContext parameterList() throws RecognitionException {
@@ -2725,6 +2916,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitParam(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitParam(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ParamContext param() throws RecognitionException {
@@ -2766,6 +2962,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitFunctionVar(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitFunctionVar(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2809,6 +3010,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitClasssType(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitClasssType(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2870,6 +3076,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitPrimary(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitPrimary(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2953,6 +3164,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitPrimaryAtom(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitPrimaryAtom(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3111,6 +3327,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitPostfix(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitPostfix(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PostfixContext postfix() throws RecognitionException {
@@ -3186,6 +3407,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitArgument(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitArgument(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ArgumentContext argument() throws RecognitionException {
@@ -3243,6 +3469,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitTypedArgument(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitTypedArgument(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final TypedArgumentContext typedArgument() throws RecognitionException {
@@ -3285,6 +3516,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitThis(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitThis(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ThisContext this_() throws RecognitionException {
@@ -3322,6 +3558,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitMethodName(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitMethodName(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3365,6 +3606,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitArgumentList(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitArgumentList(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3426,6 +3672,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitAccessStaticVariable(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitAccessStaticVariable(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final AccessStaticVariableContext accessStaticVariable() throws RecognitionException {
@@ -3469,6 +3720,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitAccessObjectName(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitAccessObjectName(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3537,6 +3793,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitLiteral(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitLiteral(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3653,6 +3914,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitListLiteral(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitListLiteral(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ListLiteralContext listLiteral() throws RecognitionException {
@@ -3727,6 +3993,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitMapLiteral(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitMapLiteral(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3803,6 +4074,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitMapEntry(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitMapEntry(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final MapEntryContext mapEntry() throws RecognitionException {
@@ -3845,6 +4121,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitImportVar(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitImportVar(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ImportVarContext importVar() throws RecognitionException {
@@ -3882,6 +4163,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitIdentifier(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitIdentifier(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3921,6 +4207,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitBool(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitBool(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3969,6 +4260,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitString(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitString(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final StringContext string() throws RecognitionException {
@@ -4007,6 +4303,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitDate(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitDate(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -4058,6 +4359,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitVariables(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitVariables(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final VariablesContext variables() throws RecognitionException {
@@ -4102,6 +4408,11 @@ public class JQuickJavaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitNumber(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitNumber(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final NumberContext number() throws RecognitionException {
@@ -4139,6 +4450,11 @@ public class JQuickJavaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof JQuickJavaListener ) ((JQuickJavaListener)listener).exitNull(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JQuickJavaVisitor ) return ((JQuickJavaVisitor<? extends T>)visitor).visitNull(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 

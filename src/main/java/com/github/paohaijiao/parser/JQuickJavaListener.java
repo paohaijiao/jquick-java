@@ -1,11 +1,6 @@
 // Generated from D:/idea/jthornruleGrammer/QuickJava/JQuickJava.g4 by ANTLR 4.13.2
 
 package com.github.paohaijiao.parser;
-import java.util.*;
-import com.github.paohaijiao.console.JConsole;
-import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.factory.JQuickJavaFunctionRegistry;
-import com.github.paohaijiao.model.JQuickJavaFunctionDefinitionModel;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
