@@ -365,6 +365,16 @@ public interface JQuickJavaListener extends ParseTreeListener {
 	 */
 	void exitMultiplicative(JQuickJavaParser.MultiplicativeContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link JQuickJavaParser#unary}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnary(JQuickJavaParser.UnaryContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickJavaParser#unary}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnary(JQuickJavaParser.UnaryContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link JQuickJavaParser#functionDefinition}.
 	 * @param ctx the parse tree
 	 */
@@ -435,6 +445,16 @@ public interface JQuickJavaListener extends ParseTreeListener {
 	 */
 	void exitPrimaryAtom(JQuickJavaParser.PrimaryAtomContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link JQuickJavaParser#postfix}.
+	 * @param ctx the parse tree
+	 */
+	void enterPostfix(JQuickJavaParser.PostfixContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickJavaParser#postfix}.
+	 * @param ctx the parse tree
+	 */
+	void exitPostfix(JQuickJavaParser.PostfixContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link JQuickJavaParser#argument}.
 	 * @param ctx the parse tree
 	 */
@@ -455,78 +475,6 @@ public interface JQuickJavaListener extends ParseTreeListener {
 	 */
 	void exitTypedArgument(JQuickJavaParser.TypedArgumentContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code staticCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 */
-	void enterStaticCall(JQuickJavaParser.StaticCallContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code staticCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 */
-	void exitStaticCall(JQuickJavaParser.StaticCallContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code constructorCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 */
-	void enterConstructorCall(JQuickJavaParser.ConstructorCallContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code constructorCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 */
-	void exitConstructorCall(JQuickJavaParser.ConstructorCallContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code instanceMethodCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 */
-	void enterInstanceMethodCall(JQuickJavaParser.InstanceMethodCallContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code instanceMethodCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 */
-	void exitInstanceMethodCall(JQuickJavaParser.InstanceMethodCallContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code thisMethodCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 */
-	void enterThisMethodCall(JQuickJavaParser.ThisMethodCallContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code thisMethodCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 */
-	void exitThisMethodCall(JQuickJavaParser.ThisMethodCallContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code builtinMethodCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 */
-	void enterBuiltinMethodCall(JQuickJavaParser.BuiltinMethodCallContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code builtinMethodCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 */
-	void exitBuiltinMethodCall(JQuickJavaParser.BuiltinMethodCallContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code accessStaticMethodCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 */
-	void enterAccessStaticMethodCall(JQuickJavaParser.AccessStaticMethodCallContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code accessStaticMethodCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 */
-	void exitAccessStaticMethodCall(JQuickJavaParser.AccessStaticMethodCallContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link JQuickJavaParser#this}.
 	 * @param ctx the parse tree
 	 */
@@ -536,16 +484,6 @@ public interface JQuickJavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitThis(JQuickJavaParser.ThisContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link JQuickJavaParser#instanceName}.
-	 * @param ctx the parse tree
-	 */
-	void enterInstanceName(JQuickJavaParser.InstanceNameContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link JQuickJavaParser#instanceName}.
-	 * @param ctx the parse tree
-	 */
-	void exitInstanceName(JQuickJavaParser.InstanceNameContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link JQuickJavaParser#methodName}.
 	 * @param ctx the parse tree

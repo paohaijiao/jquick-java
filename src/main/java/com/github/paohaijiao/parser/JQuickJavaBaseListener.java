@@ -444,6 +444,18 @@ public class JQuickJavaBaseListener implements JQuickJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterUnary(JQuickJavaParser.UnaryContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnary(JQuickJavaParser.UnaryContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFunctionDefinition(JQuickJavaParser.FunctionDefinitionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -528,6 +540,18 @@ public class JQuickJavaBaseListener implements JQuickJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPostfix(JQuickJavaParser.PostfixContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPostfix(JQuickJavaParser.PostfixContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterArgument(JQuickJavaParser.ArgumentContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -552,78 +576,6 @@ public class JQuickJavaBaseListener implements JQuickJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStaticCall(JQuickJavaParser.StaticCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitStaticCall(JQuickJavaParser.StaticCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterConstructorCall(JQuickJavaParser.ConstructorCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitConstructorCall(JQuickJavaParser.ConstructorCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterInstanceMethodCall(JQuickJavaParser.InstanceMethodCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitInstanceMethodCall(JQuickJavaParser.InstanceMethodCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterThisMethodCall(JQuickJavaParser.ThisMethodCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitThisMethodCall(JQuickJavaParser.ThisMethodCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBuiltinMethodCall(JQuickJavaParser.BuiltinMethodCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBuiltinMethodCall(JQuickJavaParser.BuiltinMethodCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAccessStaticMethodCall(JQuickJavaParser.AccessStaticMethodCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAccessStaticMethodCall(JQuickJavaParser.AccessStaticMethodCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterThis(JQuickJavaParser.ThisContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -631,18 +583,6 @@ public class JQuickJavaBaseListener implements JQuickJavaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitThis(JQuickJavaParser.ThisContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterInstanceName(JQuickJavaParser.InstanceNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitInstanceName(JQuickJavaParser.InstanceNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

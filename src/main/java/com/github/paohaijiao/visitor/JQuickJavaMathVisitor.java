@@ -50,10 +50,11 @@ public class JQuickJavaMathVisitor extends JQuickMethodInvocationCallVisitor {
 
     @Override
     public Object visitMultiplicative(JQuickJavaParser.MultiplicativeContext ctx) {
-        Object result = extract(visitPrimary(ctx.primary(0)));
-        for (int i = 1; i < ctx.primary().size(); i++) {
+        // PERFORMANCE FIX: 语法新增 unary 层，multiplicative 由 primary 改为 unary
+        Object result = extract(visitUnary(ctx.unary(0)));
+        for (int i = 1; i < ctx.unary().size(); i++) {
             String operator = ctx.getChild(2 * i - 1).getText();
-            Object right = extract(visitPrimary(ctx.primary(i)));
+            Object right = extract(visitUnary(ctx.unary(i)));
             switch (operator) {
                 case "*":
                     result = multiply(result, right);
@@ -66,6 +67,17 @@ public class JQuickJavaMathVisitor extends JQuickMethodInvocationCallVisitor {
             }
         }
         return result;
+    }
+
+    @Override
+    public Object visitUnary(JQuickJavaParser.UnaryContext ctx) {
+        // PERFORMANCE FIX: unary 层（一元正负号）语义
+        Object value = visitPrimary(ctx.primary());
+        if (ctx.MINUS() != null && value instanceof Number) {
+            BigDecimal negated = new BigDecimal(value.toString()).negate();
+            return convertToPrimaryType(negated, value.getClass());
+        }
+        return value;
     }
 
     private Object multiply(Object left, Object right) {

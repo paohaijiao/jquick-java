@@ -24,27 +24,36 @@ public class JQuickJavaPrimaryVisitor extends JQuickJavaAssignVisitor {
 
     @Override
     public Object visitPrimary(JQuickJavaParser.PrimaryContext ctx) {
-        if (ctx.primaryAtom() != null) {
-            return visitPrimaryAtom(ctx.primaryAtom());
-        } else if (ctx.methodInvocation() != null) {
-            return visit(ctx.methodInvocation());
+        Object value = visitPrimaryAtom(ctx.primaryAtom());
+        // PERFORMANCE FIX: postfix 链式调用，逐个应用后缀（.method(args) / .field）
+        for (int i = 0; i < ctx.postfix().size(); i++) {
+            value = applyPostfix(ctx.primaryAtom(), ctx.postfix(i), value);
         }
-        return null;
+        return value;
     }
 
     @Override
     public Object visitPrimaryAtom(JQuickJavaParser.PrimaryAtomContext ctx) {
         if (ctx.literal() != null) {
             return visitLiteral(ctx.literal());
-        } else if (ctx.IDENTIFIER() != null) {
-            String identifier = ctx.IDENTIFIER().getText();
-            Object obj = this.parser.findVar(identifier);
-            JAssert.notNull(obj, "variable " + identifier + " not found");
-            return obj;
         } else if (ctx.expression() != null) {
+            // ( expression )
             return visitExpression(ctx.expression());
+        } else if (ctx.this_() != null) {
+            // this 引用（后续由 postfix 解析为 DSL 函数调用）
+            return ctx.this_().THIS().getText();
+        } else if (ctx.accessStaticVariable() != null) {
+            return visitAccessStaticVariable(ctx.accessStaticVariable());
         }
-        return null;
+        // NEW / classsType :: method / Builtin :: method 由子类 JQuickMethodInvocationCallVisitor 提供反射实现
+        return super.visitPrimaryAtom(ctx);
+    }
+
+    /**
+     * postfix 钩子：.method(args) / .field。默认不支持，由子类（JQuickMethodInvocationCallVisitor）提供反射实现。
+     */
+    protected Object applyPostfix(JQuickJavaParser.PrimaryAtomContext atom, JQuickJavaParser.PostfixContext postfix, Object receiver) {
+        throw new RuntimeException("postfix is not supported in this visitor: " + postfix.getText());
     }
 
 

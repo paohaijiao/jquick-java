@@ -58,7 +58,7 @@ public class JConstructorMethodInvocationTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = setUp();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -72,7 +72,7 @@ public class JConstructorMethodInvocationTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = setUp();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -86,7 +86,7 @@ public class JConstructorMethodInvocationTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = new JContext();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -100,7 +100,7 @@ public class JConstructorMethodInvocationTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = setUp();
         List<Integer> listVar = new ArrayList<Integer>() {
         };
@@ -123,7 +123,7 @@ public class JConstructorMethodInvocationTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = setUp();
         JQuickJavaExecutor executor=JQuickJavaExecutor.getInstance();
         executor.setCurrentContext(params);
@@ -139,7 +139,7 @@ public class JConstructorMethodInvocationTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = setUp();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -154,7 +154,7 @@ public class JConstructorMethodInvocationTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = setUp();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);

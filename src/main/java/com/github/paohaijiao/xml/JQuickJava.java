@@ -15,6 +15,7 @@
  */
 package com.github.paohaijiao.xml;
 
+import com.github.paohaijiao.console.JConsole;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.executor.JQuickJavaActionExecutor;
 import com.github.paohaijiao.executor.JQuickJavaExecutor;
@@ -65,6 +66,8 @@ import java.util.regex.Pattern;
  */
 
 public class JQuickJava {
+
+    private JConsole console=new JConsole();
 
     /** Context: holds constants and runtime variables */
     private final JContext context;
@@ -508,7 +511,10 @@ public class JQuickJava {
                 JQuickJavaFunctionDefinitionModel define = functionDefinition(lexerStr);
                 JQuickJavaRuntimeEnvironment runtimeEnvironment = new JQuickJavaRuntimeEnvironment(runtimeContext, effectiveEnv);
                 JQuickJavaActionExecutor executor = new JQuickJavaActionExecutor(runtimeEnvironment);
+                Long start=System.currentTimeMillis();
                 Object object = executor.execute(define.getAction());
+                double end=(System.currentTimeMillis()-start)/1000.0;
+                console.info("execute time:"+end+"s");
                 if (object == null) {
                     return null;
                 }

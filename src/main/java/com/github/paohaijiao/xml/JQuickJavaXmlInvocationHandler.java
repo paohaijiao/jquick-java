@@ -71,7 +71,10 @@ public class JQuickJavaXmlInvocationHandler extends JQuickXmlInvocationHandler {
         JQuickJavaFunctionDefinitionModel define=functionDefinition(lexerStr);
         JQuickJavaRuntimeEnvironment runtimeEnvironment=new JQuickJavaRuntimeEnvironment(context,environment);
         JQuickJavaActionExecutor executor=new JQuickJavaActionExecutor(runtimeEnvironment);
+        Long start=System.currentTimeMillis();
         Object object=executor.execute(define.getAction());
+        double end=(System.currentTimeMillis()-start)/1000.0;
+        console.info("execute time:"+end+"s");
         if(null==object){
             return null;
         }else{

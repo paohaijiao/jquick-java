@@ -62,7 +62,7 @@ public class JInstanceMethodInvocationTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params =setUp();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -75,7 +75,7 @@ public class JInstanceMethodInvocationTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         List<Integer> listVar = new ArrayList<Integer>() {
         };
         listVar.addAll(Arrays.asList(1, 2, 3));
@@ -91,7 +91,7 @@ public class JInstanceMethodInvocationTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         parser.declareVar("testObj", new JService());
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -104,7 +104,7 @@ public class JInstanceMethodInvocationTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         parser.declareVar("testObj", new JService());
         parser.declareVar("listVar", listVar());
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
@@ -117,7 +117,7 @@ public class JInstanceMethodInvocationTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(code));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         parser.declareVar("testObj", new JService());
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -130,7 +130,7 @@ public class JInstanceMethodInvocationTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(code));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         parser.declareVar("testObj", new JService());
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         Object object = tv.visit(tree);
@@ -172,7 +172,7 @@ public class JInstanceMethodInvocationTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString("listVar"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.InstanceNameContext tree = parser.instanceName();
+        JQuickJavaParser.IdentifierContext tree = parser.identifier();
         JContext params = new JContext();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor( lexer,tokens,parser);
         Object object = tv.visit(tree);

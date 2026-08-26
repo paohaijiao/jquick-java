@@ -228,6 +228,12 @@ public interface JQuickJavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMultiplicative(JQuickJavaParser.MultiplicativeContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link JQuickJavaParser#unary}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnary(JQuickJavaParser.UnaryContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link JQuickJavaParser#functionDefinition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -270,6 +276,12 @@ public interface JQuickJavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrimaryAtom(JQuickJavaParser.PrimaryAtomContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link JQuickJavaParser#postfix}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPostfix(JQuickJavaParser.PostfixContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link JQuickJavaParser#argument}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -282,59 +294,11 @@ public interface JQuickJavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTypedArgument(JQuickJavaParser.TypedArgumentContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code staticCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitStaticCall(JQuickJavaParser.StaticCallContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code constructorCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitConstructorCall(JQuickJavaParser.ConstructorCallContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code instanceMethodCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitInstanceMethodCall(JQuickJavaParser.InstanceMethodCallContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code thisMethodCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitThisMethodCall(JQuickJavaParser.ThisMethodCallContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code builtinMethodCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBuiltinMethodCall(JQuickJavaParser.BuiltinMethodCallContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code accessStaticMethodCall}
-	 * labeled alternative in {@link JQuickJavaParser#methodInvocation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAccessStaticMethodCall(JQuickJavaParser.AccessStaticMethodCallContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link JQuickJavaParser#this}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitThis(JQuickJavaParser.ThisContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link JQuickJavaParser#instanceName}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitInstanceName(JQuickJavaParser.InstanceNameContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JQuickJavaParser#methodName}.
 	 * @param ctx the parse tree

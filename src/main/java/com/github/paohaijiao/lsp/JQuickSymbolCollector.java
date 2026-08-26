@@ -184,19 +184,13 @@ public class JQuickSymbolCollector {
 
         /**
          * 新语法下，表达式中的标识符（变量引用、实例名等）均通过
-         * primaryAtom 的 IDENTIFIER 分支进入语法树，例如：
+         * primaryAtom -> literal -> identifier 进入语法树，
+         * 由 enterIdentifier 统一收集（见下），primaryAtom 不再有直接 IDENTIFIER 分支。
          * <pre>
-         * int x = a + b;      // a、b 走 primaryAtom
-         * str1.toUpperCase(); // 实例名 str1 走 primaryAtom
+         * int x = a + b;      // a、b 走 primaryAtom -> literal -> identifier
+         * str1.toUpperCase(); // 实例名 str1 同样走 identifier
          * </pre>
          */
-        @Override
-        public void enterPrimaryAtom(JQuickJavaParser.PrimaryAtomContext ctx) {
-            if (ctx.IDENTIFIER() != null) {
-                table.references.add(new Symbol("reference", ctx.IDENTIFIER().getText(), null,
-                        positionOf(ctx.IDENTIFIER().getSymbol()), ctx.IDENTIFIER().getText()));
-            }
-        }
 
         @Override
         public void enterIdentifier(JQuickJavaParser.IdentifierContext ctx) {

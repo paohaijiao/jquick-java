@@ -43,7 +43,7 @@ public class JAccessStaticMethodCallTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.MethodInvocationContext tree = parser.methodInvocation();
+        JQuickJavaParser.PrimaryContext tree = parser.primary();
         JContext params = new JContext();
         parser.enterScope();
         parser.declareVar("a", "hello world");

@@ -73,7 +73,7 @@ public class JOtherTest {
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);
-        JQuickJavaParser.InstanceNameContext tree = parser.instanceName();
+        JQuickJavaParser.IdentifierContext tree = parser.identifier();
         JContext context=new JContext();
         JQuickJavaCommonVisitor tv = new JQuickJavaCommonVisitor(lexer,tokens,parser);
         parser.enterScope();
