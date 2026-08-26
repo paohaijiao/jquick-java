@@ -36,6 +36,11 @@
             <version>1.8.8</version>
         </dependency>
         <dependency>
+            <groupId>io.github.paohaijiao</groupId>
+            <artifactId>jquick-asm</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
         </dependency>

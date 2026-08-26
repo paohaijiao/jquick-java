@@ -16,11 +16,13 @@
 package com.github.paohaijiao.support;
 import com.github.paohaijiao.support.impl.JQuickJavaConstructorFactory;
 import com.github.paohaijiao.support.impl.JQuickJavaInstanceMethodFactory;
+import com.github.paohaijiao.support.impl.JQuickJavaInvocationGuard;
 import com.github.paohaijiao.support.impl.JQuickJavaStaticMethodFactory;
 
 
 public class JQuickJavaReflectionFactory {
 
+    private static volatile JQuickJavaInvocationGuard invocationGuard = JQuickJavaInvocationGuard.DEFAULT;
 
     private JQuickJavaReflectionFactory() {
 
@@ -30,24 +32,19 @@ public class JQuickJavaReflectionFactory {
         return new JQuickJavaStaticMethodFactory(clazz);
     }
 
-
-
     public static JQuickJavaInstanceMethodFactory instanceMethod(Object target) {
         return new JQuickJavaInstanceMethodFactory(target);
     }
-
-
 
     public static <T> JQuickJavaConstructorFactory<T> constructor(Class<T> clazz) {
         return new JQuickJavaConstructorFactory<>(clazz);
     }
 
+    public static JQuickJavaInvocationGuard getInvocationGuard() {
+        return invocationGuard;
+    }
 
-
-
-
-
-
-
-
+    public static void setInvocationGuard(JQuickJavaInvocationGuard guard) {
+        invocationGuard = guard == null ? JQuickJavaInvocationGuard.DEFAULT : guard;
+    }
 }

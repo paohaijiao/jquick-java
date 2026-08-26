@@ -15,6 +15,7 @@
  */
 package com.github.paohaijiao.support.impl;
 
+import com.github.paohaijiao.support.JQuickJavaReflectionFactory;
 import com.github.paohaijiao.support.JQuickJavaTypeReference;
 
 import java.lang.reflect.Array;
@@ -35,15 +36,16 @@ public class JQuickJavaMethodInvoker {
         try {
             Class<?>[] parameterTypes = convertToClassArray(argTypes);
             Method method = findMethod(clazz, methodName, parameterTypes);
+            JQuickJavaReflectionFactory.getInvocationGuard().check(method);
             method.setAccessible(true);
             if (method.isVarArgs()) {
                 args = handleVarArgs(method, args);
             }
-            return (R) method.invoke(target, args);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Access denied when invoking method: " + methodName, e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException("Method invocation failed: " + methodName, e.getTargetException());
+            return (R) JQuickJavaAsmInvokerFactory.getMethodInvoker(method).invoke(target, args);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Method invocation failed: " + methodName, unwrapInvocationException(e));
         }
     }
     private static Method findMethod(Class<?> clazz, String methodName, Class<?>[] parameterTypes) {
@@ -140,4 +142,11 @@ public class JQuickJavaMethodInvoker {
         return primitiveType;
     }
 
+    private static Throwable unwrapInvocationException(Exception e) {
+        if (e instanceof InvocationTargetException) {
+            Throwable targetException = ((InvocationTargetException) e).getTargetException();
+            return targetException == null ? e : targetException;
+        }
+        return e;
+    }
 }

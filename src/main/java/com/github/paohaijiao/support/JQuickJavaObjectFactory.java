@@ -15,6 +15,9 @@
  */
 package com.github.paohaijiao.support;
 import com.github.paohaijiao.console.JConsole;
+import com.github.paohaijiao.support.impl.JQuickJavaConstructorFactory;
+import com.github.paohaijiao.support.impl.JQuickJavaInstanceMethodFactory;
+import com.github.paohaijiao.support.impl.JQuickJavaStaticMethodFactory;
 import org.apache.commons.lang3.reflect.MethodUtils;
 
 import java.lang.reflect.*;
@@ -28,7 +31,7 @@ public class JQuickJavaObjectFactory {
         Class<?>[] parameterTypes = getParameterTypes(args);
         Constructor<?> constructor = clazz.getConstructor(parameterTypes);
         Object[] methodArgs = prepareConstructorArguments(constructor, args);
-        return constructor.newInstance(methodArgs);
+        return new JQuickJavaConstructorFactory(clazz).newInstance(buildTypeReferences(parameterTypes), methodArgs);
     }
     private static Object[] prepareConstructorArguments(Constructor<?> constructor, List<Object> args) {
         Type[] genericParameterTypes = constructor.getGenericParameterTypes();
@@ -116,7 +119,7 @@ public class JQuickJavaObjectFactory {
             }
         }
         Object[] methodArgs = prepareMethodArguments(method, args);
-        return MethodUtils.invokeStaticMethod(clazz, methodName, methodArgs);
+        return new JQuickJavaStaticMethodFactory(clazz).invoke(methodName, buildTypeReferences(paramTypes), methodArgs);
     }
     private static Method  findMethod(Class<?> clazz, String methodName, Class<?>[] paramTypes){
         Method method = MethodUtils.getMatchingMethod(
@@ -138,7 +141,7 @@ public class JQuickJavaObjectFactory {
                     String.format("Method %s(%s) not found in %s", methodName, Arrays.toString(paramTypes), clazz.getName()));
         }
         Object[] methodArgs = prepareMethodArguments(method, args);
-        return MethodUtils.invokeMethod(target, methodName, methodArgs);
+        return new JQuickJavaInstanceMethodFactory(target).invoke(methodName, buildTypeReferences(paramTypes), methodArgs);
     }
     private static Object[] prepareMethodArguments(Method method, List<Object> args) {
         Type[] genericParameterTypes = method.getGenericParameterTypes();
@@ -359,5 +362,13 @@ public class JQuickJavaObjectFactory {
         } else {
             throw new IllegalArgumentException("Invalid combination of parameters for object creation");
         }
+    }
+
+    private static JQuickJavaTypeReference<?>[] buildTypeReferences(Class<?>[] paramTypes) {
+        JQuickJavaTypeReference<?>[] references = new JQuickJavaTypeReference<?>[paramTypes.length];
+        for (int i = 0; i < paramTypes.length; i++) {
+            references[i] = JQuickJavaTypeReference.of(paramTypes[i]);
+        }
+        return references;
     }
 }

@@ -15,27 +15,24 @@
  */
 package com.github.paohaijiao.support.impl;
 
+import com.github.paohaijiao.support.JQuickJavaReflectionFactory;
 import com.github.paohaijiao.support.JQuickJavaTypeReference;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 import static com.github.paohaijiao.support.impl.JQuickJavaMethodInvoker.*;
 
 public class JQuickJavaConstructorInvoker {
     public static <T> T invoke(Class<T> clazz, JQuickJavaTypeReference<?>[] argTypes, Object... args) {
-        try {
-            Class<?>[] parameterTypes = convertToClassArray(argTypes);
-            Constructor<T> constructor = findConstructor(clazz, parameterTypes);
-            constructor.setAccessible(true);
-            if (constructor.isVarArgs()) {
-                args = handleVarArgs(constructor, args);
-            }
-            return constructor.newInstance(args);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException("Failed to invoke constructor for class: " + clazz.getName(), e);
+        Class<?>[] parameterTypes = convertToClassArray(argTypes);
+        Constructor<T> constructor = findConstructor(clazz, parameterTypes);
+        JQuickJavaReflectionFactory.getInvocationGuard().check(constructor);
+        constructor.setAccessible(true);
+        if (constructor.isVarArgs()) {
+            args = handleVarArgs(constructor, args);
         }
+        return clazz.cast(JQuickJavaAsmInvokerFactory.getConstructorInvoker(constructor).newInstance(args));
     }
     @SuppressWarnings("unchecked")
     private static <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>[] parameterTypes) {

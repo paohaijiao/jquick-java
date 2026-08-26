@@ -17,6 +17,7 @@ package com.github.paohaijiao.visitor;
 
 import com.github.paohaijiao.banner.JQuickBanner;
 import com.github.paohaijiao.banner.impl.JQuickBannerImpl;
+import com.github.paohaijiao.executor.JQuickJavaExecutor;
 import com.github.paohaijiao.model.JQuickJavaReturnValueModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
@@ -33,6 +34,9 @@ public class JQuickJavaCommonVisitor extends JQuickJavaStatementVisitor {
         this.parser = parser;
         JQuickBanner banner= JQuickBannerImpl.getInstance();
         banner.printBanner();
+        JQuickJavaExecutor executor=JQuickJavaExecutor.getInstance();
+        JContext currentContext = executor.getCurrentContext();
+        this.parser.init(currentContext);
     }
 
     @Override

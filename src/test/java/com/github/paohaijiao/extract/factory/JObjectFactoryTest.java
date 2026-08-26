@@ -25,6 +25,8 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 import static com.github.paohaijiao.support.JQuickJavaObjectFactory.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class JObjectFactoryTest {
     @Test
@@ -52,6 +54,16 @@ public class JObjectFactoryTest {
         Object result = JQuickJavaObjectFactory.createByStaticMethod("com.github.paohaijiao.extract.model.JStudent", "create", args);
         JStudent testObj = (JStudent) result;
         System.out.println(testObj);
+    }
+
+    @Test
+    public void testCreateByStaticMethodShouldBlockSystemExit() throws Exception {
+        try {
+            JQuickJavaObjectFactory.createByStaticMethod("java.lang.System", "exit", Collections.<Object>singletonList(0));
+            fail("System.exit should be blocked");
+        } catch (SecurityException e) {
+            assertEquals("Method is in blacklist: java.lang.System#exit", e.getMessage());
+        }
     }
 
     @Test

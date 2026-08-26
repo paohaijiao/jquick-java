@@ -189,6 +189,7 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         String qualifiedName = ctx.classsType() != null ? ctx.classsType().getText() : null;
         try {
             JQuickJavaTypeReference<?> typeReference = loadClass(qualifiedName);
+            JAssert.notNull(typeReference.getRawType(),"the class load "+qualifiedName+" failed");
             Class<?> clazz=typeReference.getRawType();
             JQuickJavaConstructorFactory<?> instance = JQuickJavaReflectionFactory.constructor(clazz);
             JQuickJavaTypeReference<?>[] references=model.getList().stream().map(JQuickJavaTypeReferenceAndValue::getTypeArguments).toArray(JQuickJavaTypeReference[]::new);

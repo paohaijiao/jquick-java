@@ -1,7 +1,7 @@
 package com.github.paohaijiao.extract.factory;
 
-import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import com.github.paohaijiao.support.JQuickJavaReflectionFactory;
+import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class ReflectionFactoryTest {
     public static class TestClass {
@@ -93,6 +94,17 @@ public class ReflectionFactoryTest {
         String result3 = JQuickJavaReflectionFactory.staticMethod(TestClass.class)
                 .invoke("staticConcat",references, "A", "B");
         assertEquals("AB", result3);
+    }
+
+    @Test
+    public void testSystemExitShouldBeBlocked() {
+        try {
+            JQuickJavaReflectionFactory.staticMethod(System.class)
+                    .invoke("exit", new JQuickJavaTypeReference<?>[]{JQuickJavaTypeReference.of(int.class)}, 0);
+            fail("System.exit should be blocked");
+        } catch (SecurityException e) {
+            assertEquals("Method is in blacklist: java.lang.System#exit", e.getMessage());
+        }
     }
 
     @Test
