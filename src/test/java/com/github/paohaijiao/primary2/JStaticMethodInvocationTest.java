@@ -14,6 +14,7 @@ package com.github.paohaijiao.primary2;/*
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
 
+import com.github.paohaijiao.executor.JQuickJavaExecutor;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
@@ -109,6 +110,9 @@ public class JStaticMethodInvocationTest {
         listVar.add(5);
         listVar.add(2);
         listVar.add(3);
+        parser.declareVar("listVar", listVar);
+        JQuickJavaExecutor executor=JQuickJavaExecutor.getInstance();
+        executor.setCurrentContext(params);
         Object result = tv.visit(tree);
         System.out.println(result);
     }
@@ -187,7 +191,7 @@ public class JStaticMethodInvocationTest {
 
     @Test
     public void testStaticMethodFromCustomClass() {
-        String rule = "com.github.paohaijiao.service.JService::sum(int:1,int:2);";
+        String rule = "com.github.paohaijiao.service.exract.JService::sum(int:1,int:2);";
         System.out.println(rule);
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
