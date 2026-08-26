@@ -52,6 +52,9 @@ public class JQuickJavaStatementVisitor extends JQuickJavaIfStatementVisitor {
     @Override
     public Object visitStatement(JQuickJavaParser.StatementContext ctx) {
         String str=ctx.getText();
+        if(ctx.variableDecl() != null) {
+            return visitVariableDecl(ctx.variableDecl());
+        }
         if(ctx.expression() != null) {
             return visit(ctx.expression());
         } else if (null!=ctx.method()) {
@@ -85,8 +88,6 @@ public class JQuickJavaStatementVisitor extends JQuickJavaIfStatementVisitor {
     public Object visitMethod(JQuickJavaParser.MethodContext ctx) {
         if (ctx.functionDefinition() != null) {
             return visit(ctx.functionDefinition());
-        } else if (ctx.methodInvocation() != null) {
-            return visit(ctx.methodInvocation());
         }
         throw new RuntimeException("Unknown rule type");
     }

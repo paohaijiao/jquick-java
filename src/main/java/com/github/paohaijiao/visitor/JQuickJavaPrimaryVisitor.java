@@ -43,8 +43,6 @@ public class JQuickJavaPrimaryVisitor extends JQuickJavaAssignVisitor {
             return obj;
         } else if (ctx.expression() != null) {
             return visitExpression(ctx.expression());
-        } else if (ctx.variableDecl() != null) {
-            return visitVariableDecl(ctx.variableDecl());
         }
         return null;
     }

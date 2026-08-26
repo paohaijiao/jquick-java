@@ -1,4 +1,4 @@
-// Generated from src/main/resources/JQuickJava.g4 by ANTLR 4.13.2
+// Generated from D:/idea/jthornruleGrammer/QuickJava/JQuickJava.g4 by ANTLR 4.13.2
 
 package com.github.paohaijiao.parser;
 import java.util.*;

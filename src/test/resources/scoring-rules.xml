@@ -116,7 +116,7 @@
                     t = diffMillis / (1000.0 * 60 * 60 * 24);
                 }
                 // 保留一位小数
-                int scaledT = (int)(t * 10);
+                int scaledT = (t * 10);
                 double finalT = scaledT / 10.0;
                 // 2. 根据 t 计算得分
                 double score = 0.0;
@@ -132,7 +132,7 @@
                 }
 
                 // 保留一位小数
-                int scaledScore = (int)(score * 10);
+                int scaledScore = (score * 10);
                 double finalScore = scaledScore / 10.0;
 
                 return finalScore;
@@ -164,7 +164,7 @@
                 t = diffMillis / (1000.0 * 60 * 60 * 24);
             }
             // 保留一位小数
-            int scaledT = (int)(t * 10);
+            int scaledT = (t * 10);
             double finalT = scaledT / 10.0;
 
             // 2. 根据 t 计算得分
@@ -181,7 +181,7 @@
             }
 
             // 保留一位小数
-            int scaledScore = (int)(score * 10);
+            int scaledScore = (score * 10);
             double finalScore = scaledScore / 10.0;
             return finalScore;
         }
