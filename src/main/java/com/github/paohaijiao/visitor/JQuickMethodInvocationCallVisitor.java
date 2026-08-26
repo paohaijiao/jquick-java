@@ -158,54 +158,37 @@ public class JQuickMethodInvocationCallVisitor extends JQuickJavaPrimaryVisitor 
         }
         return model;
     }
-    // =====================================================================
-    // PERFORMANCE FIX: postfix 树形下的方法调用实现。
-    // 旧 grammar 的 methodInvocation 6 分支（staticCall/constructorCall/instanceMethodCall/
-    // thisMethodCall/accessStaticMethodCall/builtinMethodCall）被扁平化为：
-    //   primaryAtom（new / Class::method / Builtin::method） + postfix（.method() / .field）
-    // 原 visitXxxMethodCall 的语义被迁移到 visitPrimaryAtom + applyPostfix 两个方法中，
-    // 保持既有 Java runtime 反射执行逻辑完全不变。
-    // =====================================================================
 
     @Override
     public Object visitPrimaryAtom(JQuickJavaParser.PrimaryAtomContext ctx) {
         if (ctx.NEW() != null) {
-            // PERFORMANCE FIX: 构造调用（原 visitConstructorCall 语义）
             return invokeConstructor(ctx);
         }
         if (ctx.COLON() != null && ctx.classsType() != null) {
-            // PERFORMANCE FIX: 静态调用 ClassType::method(args)（原 visitStaticCall 语义）
             return invokeStaticCall(ctx);
         }
         if (ctx.BUILTIN() != null) {
-            // PERFORMANCE FIX: Builtin::method(args)（原 visitBuiltinMethodCall 语义）
             return invokeBuiltinCall(ctx);
         }
-        // literal / (expression) / this / accessStaticVariable 由父类处理
         return super.visitPrimaryAtom(ctx);
     }
 
     @Override
     protected Object applyPostfix(JQuickJavaParser.PrimaryAtomContext atom, JQuickJavaParser.PostfixContext postfix, Object receiver) {
         if (postfix.methodName() != null) {
-            // .method(args) —— 按接收者来源分派，保持旧 methodInvocation 6 分支的语义
             String methodName = visitMethodName(postfix.methodName());
             JQuickJavaTypeReferenceAndValueModel model = new JQuickJavaTypeReferenceAndValueModel();
             if (postfix.argumentList() != null && postfix.argumentList().argument() != null && !postfix.argumentList().argument().isEmpty()) {
                 model = visitArgumentList(postfix.argumentList());
             }
             if (atom.this_() != null && THIS_PLACEHOLDER.equals(receiver)) {
-                // PERFORMANCE FIX: this.method() —— DSL 函数执行（原 visitThisMethodCall 语义）
                 return invokeThisFunction(methodName, model);
             }
             if (atom.accessStaticVariable() != null) {
-                // PERFORMANCE FIX: A@b.method() —— 静态字段实例方法（原 visitAccessStaticMethodCall 语义）
                 return invokeAccessStaticMethod(atom, methodName, model);
             }
-            // PERFORMANCE FIX: primaryAtom.method() —— 反射实例方法（原 visitInstanceMethodCall 语义）
             return invokeInstanceMethod(receiver, methodName, model);
         }
-        // PERFORMANCE FIX: .field 字段访问（DOT IDENTIFIER），反射读取字段值
         JAssert.notNull(receiver, "the field access target is not support: " + postfix.getText());
         String fieldName = postfix.IDENTIFIER().getText();
         try {
