@@ -15,6 +15,7 @@
  */
 package com.github.paohaijiao.expression3;
 
+import com.github.paohaijiao.config.JQuickJavaConfig;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickJavaLexer;
 import com.github.paohaijiao.parser.JQuickJavaParser;
@@ -83,7 +84,9 @@ public class JArithmeticTest {
     }
     @Test
     public void  DIV() throws IOException {
-        String rule = "6/2";
+        String rule = "10.0/3";
+        JQuickJavaConfig config = JQuickJavaConfig.getInstance();
+        config.setScale(5);
         JQuickJavaLexer lexer = new JQuickJavaLexer(CharStreams.fromString(rule));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickJavaParser parser = new JQuickJavaParser(tokens);

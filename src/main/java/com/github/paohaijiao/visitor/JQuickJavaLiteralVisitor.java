@@ -24,6 +24,8 @@ import com.github.paohaijiao.parser.JQuickJavaParser;
 import com.github.paohaijiao.support.JQuickJavaTypeReference;
 import com.github.paohaijiao.util.JStringUtils;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.*;
@@ -124,8 +126,10 @@ public class JQuickJavaLiteralVisitor extends JQuickJavaImportVisitor {
            return  visitVariables(ctx.variables());
          }else  if(null!=ctx.number()){
             try {
+                DecimalFormatSymbols symbols = ((DecimalFormat) NumberFormat.getInstance()).getDecimalFormatSymbols();
+                char decimalSeparator = symbols.getDecimalSeparator();
                 Number number = NumberFormat.getInstance().parse(ctx.number().getText());
-                return number;
+                return ctx.number().getText().contains(String.valueOf(decimalSeparator)) ? number.doubleValue() : number;
             } catch (ParseException e) {
                 e.printStackTrace();
             }

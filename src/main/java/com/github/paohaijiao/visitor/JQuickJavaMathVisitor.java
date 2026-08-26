@@ -16,6 +16,7 @@
 package com.github.paohaijiao.visitor;
 
 
+import com.github.paohaijiao.config.JQuickJavaConfig;
 import com.github.paohaijiao.enums.JQuickJavaMathOp;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.parser.JQuickJavaParser;
@@ -50,7 +51,6 @@ public class JQuickJavaMathVisitor extends JQuickMethodInvocationCallVisitor {
 
     @Override
     public Object visitMultiplicative(JQuickJavaParser.MultiplicativeContext ctx) {
-        // PERFORMANCE FIX: 语法新增 unary 层，multiplicative 由 primary 改为 unary
         Object result = extract(visitUnary(ctx.unary(0)));
         for (int i = 1; i < ctx.unary().size(); i++) {
             String operator = ctx.getChild(2 * i - 1).getText();
@@ -71,7 +71,6 @@ public class JQuickJavaMathVisitor extends JQuickMethodInvocationCallVisitor {
 
     @Override
     public Object visitUnary(JQuickJavaParser.UnaryContext ctx) {
-        // PERFORMANCE FIX: unary 层（一元正负号）语义
         Object value = visitPrimary(ctx.primary());
         if (ctx.MINUS() != null && value instanceof Number) {
             BigDecimal negated = new BigDecimal(value.toString()).negate();
@@ -92,9 +91,10 @@ public class JQuickJavaMathVisitor extends JQuickMethodInvocationCallVisitor {
     }
     private Object divide(Object left, Object right) {
         if (left instanceof Number && right instanceof Number) {
+            JQuickJavaConfig config = JQuickJavaConfig.getInstance();
             BigDecimal leftBigDecimal  = new BigDecimal(left.toString());
             BigDecimal rightBigDecimal  = new BigDecimal(right.toString());
-            BigDecimal result= leftBigDecimal.divide(rightBigDecimal,2,BigDecimal.ROUND_HALF_UP);
+            BigDecimal result= leftBigDecimal.divide(rightBigDecimal,config.getScale(),config.getRoundType());
             return convertToPrimaryType(result,left.getClass());
         }
         JAssert.throwNewException("division of non-numeric types");

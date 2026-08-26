@@ -25,7 +25,6 @@ public class JQuickJavaPrimaryVisitor extends JQuickJavaAssignVisitor {
     @Override
     public Object visitPrimary(JQuickJavaParser.PrimaryContext ctx) {
         Object value = visitPrimaryAtom(ctx.primaryAtom());
-        // PERFORMANCE FIX: postfix 链式调用，逐个应用后缀（.method(args) / .field）
         for (int i = 0; i < ctx.postfix().size(); i++) {
             value = applyPostfix(ctx.primaryAtom(), ctx.postfix(i), value);
         }
@@ -37,15 +36,12 @@ public class JQuickJavaPrimaryVisitor extends JQuickJavaAssignVisitor {
         if (ctx.literal() != null) {
             return visitLiteral(ctx.literal());
         } else if (ctx.expression() != null) {
-            // ( expression )
             return visitExpression(ctx.expression());
         } else if (ctx.this_() != null) {
-            // this 引用（后续由 postfix 解析为 DSL 函数调用）
             return ctx.this_().THIS().getText();
         } else if (ctx.accessStaticVariable() != null) {
             return visitAccessStaticVariable(ctx.accessStaticVariable());
         }
-        // NEW / classsType :: method / Builtin :: method 由子类 JQuickMethodInvocationCallVisitor 提供反射实现
         return super.visitPrimaryAtom(ctx);
     }
 
