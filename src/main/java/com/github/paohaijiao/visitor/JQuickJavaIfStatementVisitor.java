@@ -23,12 +23,14 @@ public class JQuickJavaIfStatementVisitor extends JQuickJavaForStatementVisitor 
 
     @Override
     public Object visitIfStatement(JQuickJavaParser.IfStatementContext ctx) {
-        if (toBoolean(visitConExpression(ctx.conExpression()))) {
+        Object conditionValue = visitConExpression(ctx.conExpression());
+        if (toBoolean(conditionValue)) {
             Object result= visitAction(ctx.action());
             return result;
         }
         for (int i = 0; i < ctx.elseIfConExpression().size(); i++) {
-            if (toBoolean(visitElseIfConExpression(ctx.elseIfConExpression(i)))) {
+            Object elseIfValue = visitElseIfConExpression(ctx.elseIfConExpression(i));
+            if (toBoolean(elseIfValue)) {
                 Object result =  visitElseIfAction(ctx.elseIfAction(i));
                 return result;
             }

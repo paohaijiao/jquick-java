@@ -211,11 +211,17 @@ public interface JQuickJavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitComparison(JQuickJavaParser.ComparisonContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link JQuickJavaParser#arithmetic}.
+	 * Visit a parse tree produced by {@link JQuickJavaParser#additive}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitArithmetic(JQuickJavaParser.ArithmeticContext ctx);
+	T visitAdditive(JQuickJavaParser.AdditiveContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickJavaParser#multiplicative}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultiplicative(JQuickJavaParser.MultiplicativeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JQuickJavaParser#functionDefinition}.
 	 * @param ctx the parse tree

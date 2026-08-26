@@ -93,20 +93,27 @@ public class JQuickJavaStatementVisitor extends JQuickJavaIfStatementVisitor {
     @Override
     public Object visitAction(JQuickJavaParser.ActionContext ctx) {
         Object result = null;
-        if(ctx.variableDecl()!=null&&!ctx.variableDecl().isEmpty()){
-            for (JQuickJavaParser.VariableDeclContext stmt : ctx.variableDecl()) {
-                result = visit(stmt);
+        int variableIndex = 0;
+        int statementIndex = 0;
+        int controlIndex = 0;
+        for (int i = 1; i < ctx.getChildCount() - 1; i++) {
+            Object child = ctx.getChild(i);
+            if (child instanceof JQuickJavaParser.VariableDeclContext) {
+                result = visit(ctx.variableDecl(variableIndex++));
+                continue;
             }
-        }
-        List<JQuickJavaParser.StatementContext> statements = ctx.statement();
-        List<JQuickJavaParser.ControlStatementContext> controlStatements = ctx.controlStatement();
-        for (JQuickJavaParser.StatementContext stmt : statements) {
-            result = visit(stmt);
-        }
-        for (JQuickJavaParser.ControlStatementContext ctrlStmt : controlStatements) {
-            result = visit(ctrlStmt);
-            if (result instanceof JQuickJavaReturnValueModel) {
-                return result;
+            if (child instanceof JQuickJavaParser.StatementContext) {
+                result = visit(ctx.statement(statementIndex++));
+                if (result instanceof JQuickJavaReturnValueModel) {
+                    return result;
+                }
+                continue;
+            }
+            if (child instanceof JQuickJavaParser.ControlStatementContext) {
+                result = visit(ctx.controlStatement(controlIndex++));
+                if (result instanceof JQuickJavaReturnValueModel) {
+                    return result;
+                }
             }
         }
         return result;
