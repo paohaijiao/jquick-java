@@ -1,4 +1,4 @@
-# JQuick Java 语法参考手册
+# JQuick Java
 
 简体中文 | [ENGLISH](./README-EN.md)
 
@@ -14,52 +14,32 @@
 
 ## 项目简介
 
-**JQuick Java 是一种轻量级类 Java 脚本语言，天生为规则引擎而生。**
+**JQuick Java 是面向规则引擎的轻量级类 Java 脚本语言，以声明式配置驱动开发。**
 
-它融合了 Java 的强类型安全与 JavaScript 的动态灵活性，支持在**运行时动态加载、解析和执行业务规则**。无论是复杂逻辑判断、数据校验还是流程编排，JQuick Java 都可以让你像配置参数一样调整业务规则，无需重启应用、无需重新部署，真正实现**规则与代码分离**。
+它融合 Java 的强类型安全与 JavaScript 的动态灵活性，支持在**运行时动态加载、解析和执行业务规则**。业务规则以 XML / 内联脚本形式声明，与业务代码彻底分离——调整指标、权重、阈值就像修改配置一样简单，无需重启、无需重新部署，真正实现**低代码规则引擎**。
 
-适用场景：
+JQuick Java 面向企业级老旧环境设计：兼容 **Java 8+**，适配 **国产数据库生态**，可平稳嵌入存量系统。
 
-- 复杂逻辑判断
-- 数据校验
-- 流程编排
-- 评分卡 / 决策引擎
+典型场景：
+
+- 企业信用评级 / 风险决策
+- 复杂业务规则与数据校验
+- 流程编排、评分计算
+- 声明式低代码平台
 
 ---
 
 ## 核心特性
 
-- 轻量级类 Java 脚本语法
-- 运行时动态加载规则
-- 支持 XML 配置化定义业务逻辑
-- 无缝 Java 互通，可直接调用 Java 方法
-- 支持静态方法、构造方法、实例方法、自定义函数、内置 SPI 方法
-- 支持泛型、集合、多维数组
-
----
-
-## 目录
-
-- [项目简介](#项目简介)
-- [核心特性](#核心特性)
-- [快速开始](#快速开始)
-- [语法说明](#语法说明)
-  - [数据类型](#数据类型)
-  - [包引入](#包引入)
-  - [变量声明](#变量声明)
-  - [表达式与运算符](#表达式与运算符)
-  - [控制结构](#控制结构)
-  - [方法定义](#方法定义)
-  - [Java 方法调用与内置调用](#java-方法调用与内置调用)
-  - [注释](#注释)
-  - [保留关键字](#保留关键字)
-  - [标识符规则](#标识符规则)
-- [JQuickJava 统一入口类](#jquickjava-统一入口类)
-- [核心访问器说明](#核心访问器说明)
-- [完整示例](#完整示例)
-- [XML 配置场景](#xml-配置场景)
-- [开源信息](#开源信息)
-- [Star / Fork 支持](#star--fork-支持)
+- **类 Java 脚本引擎**：运行时解析执行，强类型 + 动态灵活性
+- **XML 规则代理**：接口 + XML 声明业务规则，自动生成动态代理
+- **内联规则**：Java 代码内直接注册规则，与 XML 完全等价
+- **无缝 Java 互通**：静态方法、构造方法、实例方法、`this` 自定义函数、内置 SPI（`Builtin::`）
+- **ASM 高性能调用链**：反射与 ASM 双实现，按需选择
+- **声明式配置驱动**：指标、权重、阈值由 Excel / XML 配置维护，无需改代码
+- **轻量兼容**：Java 8+，兼容老旧 Java 环境与国产数据库生态
+- **安全沙箱（黑白名单）**：内置调用防护 `JQuickJavaInvocationGuard`，类/方法级黑白名单，默认拦截危险系统调用
+- **语言服务（LSP）**：内置 `JQuickLanguageServer`，提供 IDE 符号提示与补全支持
 
 ---
 
@@ -71,678 +51,451 @@
 <dependency>
     <groupId>io.github.paohaijiao</groupId>
     <artifactId>jquick-java</artifactId>
-    <version>1.4.0</version>
+    <version>2.5.0</version>
 </dependency>
 ```
 
-### 第一个 JQuick 示例
+### 第一个 JQuick 脚本
 
 ```java
 import List<java.lang.String> as StringList ;
 StringList list=["A","B","C"];
 ```
 
----
+### 运行单元测试
 
-## 语法说明
-
-### 数据类型
-
-#### 基本类型（原生类型）
-
-| Type Keyword | Data Type | Example |
-|--------------|-----------|---------|
-| short | Short integer | `short s = 100;` |
-| int | Integer | `int x = 42;` |
-| float | Floating point | `float pi = 3.14;` |
-| double | Double | `double d = 9.99;` |
-| long | Long integer | `long big = 100;` |
-| boolean | Boolean | `boolean flag = true;` |
-| byte | Byte | `byte b = 0x1F;` |
-| Null | null | `null` |
-| Date | Date | `2025-06-07` |
-| Date | Date | `2025-06-07 12:00:01` |
-
-#### 复合类型
-
-| Type Format | Example |
-|-------------|---------|
-| Generic (Type<T>) | `List<String> names;` |
-| Generic Multi (Type<K,V>) | `Map<String, Integer> scores;` |
-| List | `List<Double> prices;` |
-| Set | `Set<Employee> staff;` |
-| Array | `int[] numbers = {1,2,3};` |
-| Custom Class | `MyClass obj = new MyClass();` |
-| Import Alias | `import java.util.Date as JDate;` |
-
-```java
-// 基本类型
-int counter = 0;
-boolean enabled = true;
-
-// 泛型集合
-List<String> names = ["Alice", "Bob"];
-Map<String, Integer> scores = {"数学":90, "英语":85};
-```
-
-### 包引入
-
-```java
-import com.example.pkg as pkgAlias;
-import java.lang.String as type1;
-import java.util.Date as JDate;
-import List<java.lang.String> as StringList ;
-```
-
-#### 导入声明
-
-| 组件 | 说明 | 示例 |
-|------|------|------|
-| qualified.name | 点分路径 | `java.lang.String` |
-| as | 别名 | `import java.util.Date as JDate;` |
-
-### 变量声明
-
-| 类型 | 示例 | 说明 |
-|------|------|------|
-| 基本类型 | `int x = 10;` | 支持类型推导 |
-| 引用类型 | `String s = "hi";` | 可显式声明 |
-
-```java
-int x = 10;
-boolean flag = true;
-java.lang.String name = "JQuick";
-```
-
-### 表达式与运算符
-
-| Operator Group | Operators | Example | Desc |
-|----------------|-----------|---------|------|
-| Mul | `*` | 1*1 | number * number |
-| Div | `/` | 1/1 | number / number |
-| Add | `+` | 1+1 | number + number string+string |
-| Sub | `-` | 1-1 | number - number |
-| GT | `>` | 1>1 | number > number |
-| GE | `>=` | 1>=1 | number >= number |
-| LT | `<` | 1<1 | number < number |
-| LE | `<=` | 1<=1 | number <= number |
-| NE | `!=` | 1 !=1 | number != number |
-| EQ | `==` | 1==1 | number == number |
-| AND | `&&` | true&&true | boolean && boolean |
-| OR | `||` | true \|\| false | boolean \|\| boolean |
-| PAREN | (expression) | (a + b) * 2 > 10 && x != y | (expression) |
-
-#### 复杂表达式
-
-```java
-(a + b) * 2 > 10 && x != y
-```
-
-### 控制结构
-
-#### if 语句
-
-```java
-if(false){
-    console.log(1);
-}else if(true){
-    console.log(2);
-}else if(false){
-    console.log(3);
-}else{
-    console.log(4);
-}
-```
-
-#### for 循环语句
-
-```java
-for (int i = 0; i < 10; i = i + 1) {
-    for (int j = 0; j < 10; j = j + 1){
-        if(j==2){
-            continue;
-        }else{
-            console.log(i+","+j);
-        }
-    }
-};
-```
-
-#### while 循环语句
-
-```java
-while(true){
-    for (int a = 0; a<10; a=a+1){
-        if(a==2){
-            continue;
-        }else{
-            console.log("当前的变量a:"+a);
-        }
-    }
-    break;
-}
-```
-
-### 方法定义
-
-```java
-返回类型 def 函数名(参数类型:参数名, ...) {
-    return 返回值;
-}
-
-int def funtionName(int:a, int:b) {
-    return a + b;
-}
-```
-
-```java
-import List<java.lang.String> as StringList ;
-StringList def funtionName(StringList:a, int:b) {
-    return a;
-}
-```
-
-### Java 方法调用与内置调用
-
-| Type              | Example |
-|-------------------|---------|
-| 静态函数调用            | `ClassName::methodName(argType1:arg1, argType2:arg2...)` |
-| 构造函数调用            | `new ConstructorName(argType1:arg1, argType2:arg2...)`                                  |
-| 实例方法调用            | `objectName.methodName(argType1:arg1, argType2:arg2...)` |
-| 调用 jquick 自定义函数   | `this.methodName(argType1:arg1, argType2:arg2...)`       |
-| 调用 jquick 内置SPI函数 | `Builtin::methodName(argType1:arg1, argType2:arg2...)`   |
-
-#### 静态方法
-
-使用方法：
-
-`类名::方法名(参数类型1:参数1，参数类型2:参数2...)`
-
-```java
-java.lang.Math::max(int:5, int:10); // 10
-java.lang.String::format(java.lang.String:"Hello %s", java.lang.String:"JQuick");
-java.lang.String::valueOf(int:123);
-java.lang.System::currentTimeMillis();
-```
-
-#### 构造方法
-
-使用方法：
-
-`new 构造类(参数类型1:参数1，参数类型2:参数2...)`
-
-```java
-new java.util.ArrayList();
-new com.github.paohaijiao.model.JStudent(int:42);
-new com.github.paohaijiao.model.JStudent(java.lang.String:"test string");
-```
-
-#### 实例方法
-
-使用方法：
-
-`对象名.方法名(参数类型1:参数1，参数类型2:参数2...)`
-
-```java
-testObj.isEven(int:4); // true
-str1.toUpperCase();
-testObj.methodWithMixedArgs(java.lang.String:"Test", int:42, boolean:true);
-```
-
-#### 调用 jquick 自定义函数
-
-使用方法：
-
-`this.函数名(参数类型1:参数1，参数类型2:参数2...)`
-
-```java
-int def getSquare(int:a,int:b){
-    return a*b;
-}
-int a=1;
-int b=2;
-int c=this.getSquare(int:a,int:b);
-```
-
-#### 调用 jquick 内置函数（SPI）
-
-使用方法：
-
-`Builtin::方法名(参数类型1:参数1，参数类型2:参数2...)`
-
-```java
-Builtin::today();
-Builtin::formatDate(java.lang.String:"yyyy-MM-dd");
-Builtin::uuid();
-```
-
-### 注释
-
-```java
-// single-line
-```
-
-```java
-/*
-  multi-line
-*/
-```
-
-### 保留关键字
-
-| 类别 | 关键字 |
-|------|--------|
-| 基本类型 | `short`, `int`, `float`, `double`, `long`, `boolean`, `byte` |
-| 控制流 | `if`, `else`, `for`, `while`, `return`, `break`, `continue` |
-| 声明 | `def`, `import`, `as`, `new`, `var` |
-| 字面量 | `true`, `false`, `null`, `this` |
-| 内置 | `console`, `Builtin` |
-
-### 标识符规则
-
-```java
-1.以英文字符开始
-2.可以包含英文数字
-3.大小写敏感
+```bash
+mvn test -Dtest=TEmEventScoringServiceTest
 ```
 
 ---
 
-## JQuickJava 统一入口类
+## 核心概念
 
-`JQuickJava` 是基于 `JQuickJavaXmlParseFactory` 封装的一站式入口类，采用链式 API 提供**包声明、变量初始化、脚本直接执行、XML / 内联规则代理**等便捷能力，适合在规则引擎、评分卡、流程编排等场景中快速接入。
+### 规则与代码分离
 
-### 链式 API 概览
+规则脚本（函数定义）以 XML `<java>` 元素或内联字符串形式声明，通过接口动态代理暴露给业务代码。业务方只依赖接口，规则内容可随时调整。
 
-| API | 说明 |
-|-----|------|
-| `JQuickJava.create()` | 创建默认入口实例 |
-| `importPackage(qualifiedName, alias)` | 声明包引入，生成脚本语法 `import 类型 as 别名;` |
-| `importPackage(qualifiedName)` | 声明包引入，自动取最后一段作为别名 |
-| `importPackages(...)` | 批量声明包引入（自动生成别名） |
-| `constant(name, value)` | 初始化上下文常量 |
-| `variable(name, value)` / `variables(map)` | 初始化上下文变量 |
-| `env(name, value)` / `envs(map)` | 初始化运行时环境变量 |
-| `init(statement...)` | 追加脚本级初始化语句（拼接在脚本头部） |
-| `rule(methodName, functionDefinition)` | 注册内联规则脚本（等价于 XML `<java>` 的 CDATA） |
-| `execute(scriptBody)` | 直接执行 JQuick 脚本（program 路径） |
-| `createApi(apiInterface)` | 生成纯内联规则代理 |
-| `createApi(apiInterface, xmlPath)` | 生成 XML + 内联规则合并代理 |
+### 脚本引擎
 
-### 直接执行脚本
+Visitor 执行链分层处理：字面量、表达式、控制结构、方法调用、作用域与函数注册。
 
-`execute(...)` 走 program 路径执行脚本，支持包声明、函数定义与调用，上下文变量可直接在脚本内引用：
+### XML 规则代理
 
-```java
-Object result = JQuickJava.create()
-        .importPackage("java.lang.String", "type1")   // import java.lang.String as type1;
-        .variable("base", 60)                          // 上下文变量，脚本内可直接引用
-        .execute(
-                "type1 def a(int:a,int:b) {\n" +
-                "   int t = a+b;\n" +
-                "   type1 p = java.lang.String::valueOf(int:t);\n" +
-                "   return p;\n" +
-                "}\n" +
-                "int c=1;\n" +
-                "int d=2;\n" +
-                "this.a(int:c,int:d);"                 // 调用自定义函数 -> "3"
-        );
-```
-
-### 纯内联规则代理
-
-`rule(...)` 注册内联规则脚本（内容等价于 XML `<java>` 元素的 CDATA），`createApi(Class)` 无需任何 XML 文件即可生成接口代理。参数绑定、返回类型转换、上下文注入与 XML 代理完全一致：
-
-```java
-public interface UserMapper {
-    public int sum(@Param("a") int a, @Param("b") int b);
-    public int mul(@Param("a") int a, @Param("b") int b);
-}
-```
-
-```java
-UserMapper userApi = JQuickJava.create()
-        .importPackage("java.lang.String", "type1")
-        .constant("base", 60)
-        .rule("sum", "int def sum(int:a,int:b){ return a+b; }")
-        .rule("mul", "type1 def mul(int:a,int:b){ int t=a*b; type1 p = java.lang.String::valueOf(int:t); return p; }")
-        .createApi(UserMapper.class);
-
-int sum = userApi.sum(1, 2);    // 3
-int mul = userApi.mul(3, 4);    // 12
-```
-
-### 与 XML 方式结合
-
-`createApi(Class, xmlPath)` 同时加载 XML 规则文件与内联规则：XML 中已有的方法仍走 XML 定义，XML 中不存在的方法由内联规则补齐，同名方法**内联规则优先**。适用于在不改动既有 XML 配置的前提下增量补充规则：
+`src/test/resources/scoring-rules.xml` 即典型形态：
 
 ```xml
-<!-- jquick-java.xml -->
-<javas namespace="com.github.paohaijiao.xml.UserMapper">
-    <java name="sum" returnClass="java.util.List">
+<javas namespace="com.github.paohaijiao.service.ScoringMapper">
+    <java name="scoreCapital" returnClass="int">
         <![CDATA[
-           int def sum(int:a,int:b) {
-              return a+b;
+            int def scoreCapital(double:actualCapital, double:registeredCapital) {
+                ...
             }
         ]]>
     </java>
 </javas>
 ```
 
-```java
-UserMapper userApi = JQuickJava.create()
-        .rule("mul", "int def mul(int:a,int:b){ return a*b; }")   // 内联规则补齐 XML 中没有的方法
-        .createApi(UserMapper.class, "jquick-java.xml");          // XML 规则 + 内联规则合并
+### JQuickJava 统一入口
 
-int sum = userApi.sum(1, 2);    // 来自 XML 规则 -> 3
-int mul = userApi.mul(3, 4);    // 来自内联规则 -> 12
+`JQuickJava` 是开箱即用的一站式入口，链式 API 覆盖：包声明、变量初始化、脚本直接执行、XML / 内联规则代理。
+
+| API | 说明 |
+|-----|------|
+| `JQuickJava.create()` | 创建默认入口实例 |
+| `importPackage(qualifiedName, alias)` | 声明包引入，生成 `import Type as Alias;` |
+| `constant(name, value)` / `variable(name, value)` / `env(name, value)` | 初始化常量、上下文变量、运行时环境变量 |
+| `init(statement...)` | 追加脚本级初始化语句 |
+| `rule(methodName, functionDefinition)` | 注册内联规则脚本（等价于 XML `<java>` 的 CDATA） |
+| `execute(scriptBody)` | 直接执行 JQuick 脚本 |
+| `createApi(apiInterface)` | 生成纯内联规则代理 |
+| `createApi(apiInterface, xmlPath)` | 生成 XML + 内联规则合并代理 |
+
+### 方法调用形式
+
+| 形式 | 语法 | 说明 |
+|------|------|------|
+| 静态方法 | `ClassName::methodName(类型:参数, ...)` | Java 静态方法 |
+| 构造方法 | `new ClassName(类型:参数, ...)` | Java 构造函数 |
+| 实例方法 | `obj.methodName(类型:参数, ...)` | Java 对象方法 |
+| 自定义函数 | `this.methodName(类型:参数, ...)` | JQuick 脚本函数 |
+| 内置 SPI | `Builtin::methodName(类型:参数, ...)` | 平台级内置能力 |
+| 静态变量访问 | `classsType@objectName.methodName(...)` | 静态变量对象方法 |
+
+### 控制结构
+
+JQuick 脚本内置完整的流程控制语法，与 Java 写法一致：
+
+| 结构 | 语法 | 说明 |
+|------|------|------|
+| 条件分支 | `if (expr) { ... } else if (expr) { ... } else { ... }` | 支持任意层 `else if` |
+| 计数循环 | `for (int i = 0; i < 10; i = i + 1) { ... }` | 初始化 / 条件 / 步进三段式 |
+| 条件循环 | `while (expr) { ... }` | 条件成立则循环 |
+| 循环控制 | `break;` / `continue;` | 跳出 / 跳过当前循环 |
+| 函数返回 | `return expr;` | 返回值 |
+| 标准输出 | `console.log(expr);` | 打印输出，支持字符串拼接 |
+
+```jquick
+// for + if + break（来自 JForTest）
+for (int i = 0; i < 10; i = i + 1) {
+    if (i == 2) {
+        break;
+    } else {
+        console.log(i);
+    }
+}
+
+// while + for + continue（来自 JWhileStatementTest）
+while (true) {
+    for (int a = 0; a < 10; a = a + 1) {
+        if (a == 2) {
+            continue;
+        } else {
+            console.log("当前的变量a:" + a);
+        }
+    }
+    break;
+}
+
+// if / else if / else（来自 rules.xml）
+if (eventType == "A") {
+    score = 40 + (60 - reportMinutes) * 10 / 60;
+} else if (eventType == "B") {
+    score = 40;
+} else {
+    score = 0;
+}
 ```
 
-> 提示：内联规则与 XML 规则共用同一套执行链（参数绑定 → 函数定义解析 → 函数体执行 → 返回类型转换），因此内联规则可视为 XML `<java>` 元素 CDATA 的等价写法。
+### 调用方式用例
+
+以下用例取自仓库真实测试（[jquick-java.xml](src/test/resources/jquick-java.xml) / [JStaticMethodInvocationTest.java](src/test/java/com/github/paohaijiao/primary2/JStaticMethodInvocationTest.java)）：
+
+```jquick
+// 构造函数：new 类名(类型:参数, ...)
+java.lang.String str1 = new java.lang.String(java.lang.String:"Hello");
+
+// 实例方法：obj.method(类型:参数, ...)
+java.lang.String upperStr = str1.toUpperCase();
+java.lang.String subStr   = str1.substring(int:1, int:3);
+
+// 静态方法：类名::方法(类型:参数, ...)
+com.github.paohaijiao.service.exract.JService::sum(int:1, int:2);
+java.lang.String::join(java.lang.CharSequence:",",
+                       java.lang.CharSequence:"1", java.lang.CharSequence:"22");
+
+// 静态变量对象方法：类@静态变量.方法(...)
+java.lang.System@out.println(java.lang.String:"hahah");
+
+// 内置 SPI 函数：Builtin::方法(类型:参数, ...)
+Builtin::sum(int:1, int:2, int:3, int:4, int:5, int:6);
+
+// 自定义函数调用：this.方法(类型:参数, ...)
+this.a(int:c, float:d);
+```
+
+### 内置 SPI 函数库（Builtin::）
+
+JQuick Java 的内置 SPI 函数库由独立仓库 **[jquick-transform-function](https://github.com/paohaijiao/jquick-transform-function)** 提供，脚本中以 `Builtin::methodName(args)` 直接调用，无需任何 import。内置函数覆盖：
+
+| 分类 | 函数示例 |
+|------|----------|
+| 类型判断 | `isArray(value)`、`isBoolean(value)` |
+| 位运算 | `bitAnd(a, b)`、`bitOr(a, b)`、`bitXor(a, b)` |
+| 信息脱敏 | `bankCardMask(cardNo, keepStart?, keepEnd?)`、`emailMask(email)` |
+| 身份证识别 | `idCardAge(idCard, referenceDate?)`、`idCardBirthday(idCard, pattern?)`、`idCardGender(idCard, format?)` |
+| 金融校验 | `bankCardValidate(cardNo)`（Luhn 算法） |
+
+> 完整函数清单与用法见 [jquick-transform-function](https://github.com/paohaijiao/jquick-transform-function) 的 README。
 
 ---
 
-## 核心访问器说明
+## 性能与安全
 
-### JQuickMethodInvocationCallVisitor
+### JQuick-ASM 调用链优化
 
-`JQuickMethodInvocationCallVisitor` 是 JQuick 方法调用分发链中的核心访问器，负责在语法树遍历阶段识别不同调用形式（静态方法、构造方法、实例方法、`this` 上下文方法、内置方法、访问静态变量后的方法），并将调用路由到对应的执行器或管理器。
+JQuick Java 的 Java 方法调用采用**反射与 ASM 双实现**：默认调用链在方法解析后，通过 `JQuickJavaAsmInvokerFactory` **在运行时生成字节码调用器**（`JQuickJavaAsmMethodInvoker` / `JQuickJavaAsmConstructorInvoker`），并以 `ConcurrentHashMap` 缓存复用，避免重复生成。
 
-### visitBuiltinMethodCall
+| 设计点 | 实现 |
+|--------|------|
+| 运行时字节码生成 | ASM 动态生成 `invoke(...)` / `newInstance(...)` 调用器类 |
+| 调用器缓存 | `METHOD_CACHE` / `CONSTRUCTOR_CACHE` 并发缓存，一次生成、永久复用 |
+| 基本类型零反射开销 | 生成期内置拆箱/装箱指令（`emitUnboxOrCast` / `emitBoxOrNull`） |
+| 调用指令按需生成 | 静态 `INVOKESTATIC`、接口 `INVOKEINTERFACE`、普通 `INVOKEVIRTUAL`、构造 `INVOKESPECIAL` |
+| 方法匹配优化 | 名称 + 参数类型匹配，支持继承链向上查找与 varargs 自动展开 |
 
-#### API 作用与触发时机
+调用链完整流程（[JQuickJavaMethodInvoker](src/main/java/com/github/paohaijiao/support/impl/JQuickJavaMethodInvoker.java)）：
 
-`visitBuiltinMethodCall(BuiltinMethodCallContext ctx)` 专门拦截 **JQuick 内置方法调用**，当脚本中出现 `Builtin::方法名(...)` 时触发：提取内置方法名 → 解析参数列表 → 交给 `JQuickMethodInvocationManager.invoke(methodName, args)` 分发执行。该 API 不经过 Java 反射链，而是走 **JQuick 内置能力注册与调度链路**。
-
-```java
-Builtin::today();
-Builtin::formatDate(java.lang.String:"yyyy-MM-dd");
-Builtin::uuid();
+```text
+查找方法 → 安全检查（黑白名单） → setAccessible → varargs 展开 → ASM 调用器执行
 ```
 
-#### 使用场景
+### 安全机制：黑白名单（JQuickJavaInvocationGuard）
 
-- 平台级内置函数（日期处理、字符串工具等）
-- 统一脚本工具方法入口
-- 将常用能力封装为脚本内置 SPI 方法
-- 需要将脚本调用与业务对象实例解耦时
+每次 Java 调用前都会经过 `JQuickJavaInvocationGuard` 的**类级 + 方法级黑白名单**检查，命中即抛出 `SecurityException`，从调用链源头拦截危险操作。
 
-#### 与普通方法调用的区别
+**内置默认防护**（`JQuickJavaInvocationGuard.DEFAULT`）：
 
-| 对比项 | `visitBuiltinMethodCall` | 普通方法调用（静态 / 实例 / this） |
-|--------|---------------------------|------------------------------------|
-| 入口语法 | `Builtin::method(...)` | `Class::method(...)` / `obj.method(...)` / `this.method(...)` |
-| 调用目标 | JQuick 内置方法管理器 | Java 类、对象实例或脚本函数 |
-| 分发方式 | `JQuickMethodInvocationManager` | 反射工厂或函数注册表 |
-| 设计目的 | 统一承载内置 SPI 能力 | 调用外部 Java 方法或脚本自定义函数 |
+| 类型 | 默认拦截项 |
+|------|------------|
+| 方法黑名单 | `java.lang.System#exit`、`java.lang.Runtime#exit`、`java.lang.Runtime#halt` |
+| 类黑名单 | `java.lang.ProcessBuilder` |
 
-#### 内置函数来源（SPI）
+**自定义防护规则**（通过 `JQuickJavaReflectionFactory.setInvocationGuard(...)` 全局配置）：
 
-`Builtin::方法名(...)` 的实现由独立项目 **jquick-transform-function** 通过 Java SPI 机制提供（`io.github.paohaijiao:jquick-transform-function`）：核心接口 `JQuickMethodFunctionProvider`、注册文件 `META-INF/services/...`、便捷基类 `JQuickBaseFunctionFunctionProvider`（封装参数校验与类型转换）。在独立的 SPI 扩展工程中实现并注册即可扩展，详见 [jquick-transform-function](https://github.com/paohaijiao/jquick-transform-function)。
+```java
+JQuickJavaReflectionFactory.setInvocationGuard(
+        JQuickJavaInvocationGuard.builder()
+                .blacklistClasses("java.lang.Runtime")
+                .blacklistMethods("java.lang.System#exit")
+                .whitelistMethods("java.lang.String#valueOf")
+                .build());
+```
+
+> 提示：类白名单 / 方法白名单一旦配置，未在白名单内的目标一律拒绝；黑白名单可同时配置，黑名单优先。
+
+### 性能基准
+
+基于 [ReflectionFactoryTest.java](src/test/java/com/github/paohaijiao/extract/factory/ReflectionFactoryTest.java) 同款 API，作者在本机（Oracle JDK 1.8.0_191 / Windows 10）实测 **100 万次静态方法调用**（预热 20 万次后计时）：
+
+| 调用方式 | 100 万次耗时 | 单次平均 |
+|----------|--------------|----------|
+| 直接反射（预缓存 `Method`，最优基线） | ~6.27 ms | ~6 ns |
+| JQuick 动态调用链（反射工厂 + ASM 调用器） | ~222.54 ms | ~223 ns |
+
+解读：
+
+- 差距主要来自**动态派发成本**：JQuick 每次调用都包含方法解析、安全校验（黑白名单）、可变参数规整、类型装箱等完整链路，这部分开销是动态规则引擎的固有成本，与 ASM 调用器本身无关；
+- ASM 调用器已消除反射调用链的 `setAccessible` 校验、`InvocationTargetException` 包装等开销，并通过 `METHOD_CACHE` / `CONSTRUCTOR_CACHE` 并发缓存复用，一次生成、永久复用；
+- 单次调用在**亚微秒量级**，对评分、校验、规则计算等业务场景完全足够；如需进一步压榨，请复用 `createApi(...)` 代理实例并缓存解析结果，最终以目标环境实测为准。
 
 ---
 
-## 完整示例
+## 业务示例：企业信用评级打分
 
-以下示例按语法能力分层展示，从基础到进阶逐步组合 JQuick 的各类调用形式。
+> 完整可运行代码见测试类 [TEmEventScoringServiceTest.java](src/test/java/com/github/paohaijiao/xml/TEmEventScoringServiceTest.java)。
 
-### 基础：函数定义与 `this` 调用
+### 1. 指标体系：企业信用评级体系表_带权重.xlsx
 
-```java
-int def getSquare(int:a,int:b){
-    return a*b;
-}
-int a=1;
-int b=2;
-int c=this.getSquare(int:a,int:b);
-```
+评级体系由 **Excel 配置驱动**：[企业信用评级体系表_带权重.xlsx](src/main/resources/企业信用评级体系表_带权重.xlsx) 定义了全部评级指标、权重与阈值，业务人员可直接在 Excel 中维护，无需改动代码。其指标体系（Markdown 导出）如下：
 
-> 展示自定义函数定义（`int def getSquare(...)`）与 `this.函数名(...)` 调用方式。
+**评级维度与权重**
 
-### 进阶：构造方法与实例方法调用
+| 一级维度 | 满分 | 权重 |
+|----------|------|------|
+| 基本资质 | 20 | 20% |
+| 财务健康 | 30 | 30% |
+| 履约信用 | 25 | 25% |
+| 经营管理 | 15 | 15% |
+| 合规与风控 | 10 | 10% |
+| **合计** | **100** | **100%** |
 
-```java
-java.util.HashMap<java.lang.String,java.lang.String> def a(int:a,float:b) {
-    java.lang.String str1 = new java.lang.String(java.lang.String:"Hello");   // new 构造调用
-    console.log(str1);
-    java.lang.String upperStr = str1.toUpperCase();                           // 实例方法调用
-    console.log(upperStr);
-    java.lang.String subStr = str1.substring(int:1, int:3);                   // 实例方法调用
-    console.log(subStr);
-    java.util.HashMap<java.lang.String,java.lang.String> result = new java.util.HashMap();
-    result.put(java.lang.String:"constructed1", java.lang.String:str1);
-    result.put(java.lang.String:"constructed2", java.lang.String:str1);
-    result.put(java.lang.String:"uppercased", java.lang.String:upperStr);
-    result.put(java.lang.String:"substring", java.lang.String:subStr);
-    return result;
-}
-int c=1;
-float d=8.1;
-this.a(int:c,float:d);
-```
+**二级指标与阈值（部分节选）**
 
-> 展示构造函数调用（`new java.lang.String(...)`）、实例方法调用（`toUpperCase()`、`substring(...)`、`put(...)`）与 `console.log(...)` 输出。
+| 维度 | 二级指标 | 分值 | 阈值规则 |
+|------|----------|------|----------|
+| 基本资质 | 注册资本与实缴资本 | 8 | 实缴/注册 ≥100% → 8；≥50% → 5；≥20% → 3；其他 → 0 |
+| 基本资质 | 企业成立年限 | 6 | ≥10 年 → 6；≥5 年 → 4；≥3 年 → 2；其他 → 0 |
+| 基本资质 | 资质认证 | 6 | 甲级/一级/高新 → 6；乙级/二级 → 3；其他 → 0 |
+| 财务健康 | 资产负债率 | 12 | ≤50% → 12；≤70% → 8；≤90% → 4；其他 → 0 |
+| 财务健康 | 盈利能力 | 10 | 连续盈利高增长 → 10；连续盈利低增长 → 6；一年盈利 → 3；其他 → 0 |
+| 财务健康 | 运营能力（营业周期） | 8 | ≤行业平均 1.0 倍 → 8；≤1.5 倍 → 4；其他 → 0 |
+| 履约信用 | 合同履约率 | 10 | ≥100% → 10；≥95% → 6；≥80% → 3；其他 → 0 |
+| 履约信用 | 金融信用记录 | 10 | 无逾期 → 10；轻微逾期 → 6；多次逾期 → 3；其他 → 0 |
+| 履约信用 | 失信与行政处罚 | 5 | 无 → 5；一般行政处罚 → 2；其他 → 0 |
+| 经营管理 | 营收增长（复合增长率） | 8 | ≥15% → 8；≥5% → 5；≥0% → 2；其他 → 0 |
+| 经营管理 | 团队与管理稳定性 | 7 | 稳定 → 7；略有变动 → 4；其他 → 0 |
+| 合规与风控 | 税务与社保合规 | 5 | 合规 → 5；轻微违章 → 2；其他 → 0 |
+| 合规与风控 | 风险管理制度 | 5 | 完善 → 5；一般 → 3；其他 → 0 |
 
-### 进阶：Java 静态方法调用
+**信用等级映射**
 
-```java
-java.lang.String def a(int:a,float:b) {
-    java.lang.String p=java.lang.String::format(java.lang.String:"Number: %d, String: %s",int: 42, java.lang.String:"test");
-    return p;
-}
-int c=1;
-float d=8.1;
-this.a(int:c,float:d);
-```
+| 加权总分 | 信用等级 | 评级说明 |
+|----------|----------|----------|
+| ≥90 | AAA | 信用优秀，履约能力极强 |
+| ≥80 | AA | 信用良好，履约能力强 |
+| ≥70 | A | 信用较好，履约能力较强 |
+| ≥60 | BBB | 信用一般，履约能力尚可 |
+| ≥50 | BB | 信用较差，履约能力较弱 |
+| <50 | B | 信用极差，履约能力极弱 |
 
-> 展示 Java 静态方法调用（`java.lang.String::format(...)`），参数以 `类型:值` 形式传入。
+### 2. 通过 JQuick 脚本引擎 / XML 规则加载评级体系
 
-### 进阶：包引入与类型别名
+将 Excel 中的指标与阈值落地为 XML 规则 [scoring-rules.xml](src/test/resources/scoring-rules.xml)，由脚本引擎在运行时解析加载。片段示例：
 
-```java
-import java.lang.String as type1;
-type1 def a(int:a,float:b) {
-   type1 p=type1::format(type1:"Number: %d, String: %s",int: 42, type1:"test");
-   return p;
-}
-int c=1;
-float d=8.1;
-this.a(int:c,float:d);
-```
-
-> 展示包引入（`import 类型 as 别名;`）与类型别名的使用，别名可直接用于类型声明与静态调用。
-
----
-
-## XML 配置场景
-
-### 企业信用评分卡
-
-JQuick Java 最典型场景：信用评分、风险决策、规则引擎。
-
-| 一级维度 | 二级维度 | 评分细则 | 得分 |
-|----------|----------|----------|------|
-| 经营状况 | 经营年限 | ≥10 年 | 3 |
-| 经营状况 | 经营年限 | 3-5 年 | 1 |
-| 经营状况 | 经营年限 | <3 年 | 0 |
-| 财务状况 | 资产负债率 | ≤50% | 4 |
-| 财务状况 | 资产负债率 | 50%-70% | 3 |
-| 财务状况 | 资产负债率 | 70%-85% | 1 |
-| 财务状况 | 资产负债率 | >85% | 0 |
-| 财务状况 | 流动比率 | ≥2.0 | 3 |
-| 财务状况 | 流动比率 | 1.5-2.0 | 2 |
-| 财务状况 | 流动比率 | 1.0-1.5 | 1 |
-| 财务状况 | 流动比率 | <1.0 | 0 |
-| 履约记录 | 银行信贷 | 无逾期 | 4 |
-| 履约记录 | 银行信贷 | 逾期 1-2 次已结清 | 2 |
-| 履约记录 | 银行信贷 | 逾期≥3 次 | 0 |
-| 企业资质 | 信用评级 | AAA | 2 |
-| 企业资质 | 信用评级 | AA | 1.5 |
-| 企业资质 | 信用评级 | A | 1 |
-| 企业资质 | 信用评级 | BBB 及以下 | 0 |
-| 风险管理 | 法律诉讼 | 无诉讼 | 3 |
-| 风险管理 | 法律诉讼 | 已结案胜诉 | 2 |
-| 风险管理 | 法律诉讼 | 未结诉讼 | 0 |
-
-### 信用分构成
-
-- 经营状况
-- 财务状况
-- 履约记录
-- 企业资质
-- 风险管理
-
-```java
-@Test
-public void testCreditScore() throws IOException {
-      JQuickJavaXmlParseFactory handler = new JQuickJavaXmlParseFactory();
-      JQuickFactory factory = new JQuickXmlFactory(handler, "credit-score.xml");
-      CreditScoreMapper mapper = factory.createApi(CreditScoreMapper.class);
-      int scoreOperatingYears = mapper.scoreOperatingYears(12);
-      System.out.println("经营年限得分: " + scoreOperatingYears);
-      int scoreAnnualRevenue = mapper.scoreAnnualRevenue(8000);
-      System.out.println("年营收得分: " + scoreAnnualRevenue);
-      int businessScore = scoreOperatingYears + scoreAnnualRevenue + scoreProfitability;
-      int financialScore = scoreDebtRatio + scoreCurrentRatio + scoreCashFlow;
-      int complianceScore = scoreBankCredit + scoreCommercialCompliance;
-      int qualificationScore = scoreIndustryCertification + scoreIntellectualProperty + scoreCreditRating;
-      int riskScore = scoreLegalLitigation + scorePenalty;
-      System.out.println("\n========== 各维度小计 ==========");
-      System.out.println("经营状况小计: " + businessScore + "/10");
-      System.out.println("财务状况小计: " + financialScore + "/10");
-      System.out.println("履约记录小计: " + complianceScore + "/8");
-      System.out.println("企业资质小计: " + qualificationScore + "/6");
-      System.out.println("风险管理小计: " + riskScore + "/6");
-      int baseScore = 60;
-      int totalScore = mapper.calculateTotalScore(
-              baseScore,
-              businessScore,
-              financialScore,
-              complianceScore,
-              qualificationScore,
-              riskScore
-      );
-      System.out.println("\n========== 最终结果 ==========");
-      System.out.println("基础分: " + baseScore);
-      System.out.println("动态调整分: " + (totalScore - baseScore) + "/40");
-      System.out.println("总分: " + totalScore + "/100");
-}
-```
-
-```java
-public interface CreditScoreMapper {
-
-  public int scoreOperatingYears(@Param("years") int years);
-
-  public int scoreAnnualRevenue(@Param("revenue") double revenue);
-
-  public int calculateTotalScore(@Param("businessScore") int businessScore,
-                                 @Param("financialScore") int financialScore,
-                                 @Param("currentRatio") int currentRatio,
-                                 @Param("complianceScore") int complianceScore,
-                                 @Param("qualificationScore") int qualificationScore,
-                                 @Param("riskScore") int riskScore
-  );
-}
-```
-
-```java
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
-        "classpath:paohaijiao/dtd/Jquick-java.dtd">
-<javas namespace="com.github.paohaijiao.xml.CreditScoreMapper">
-  <java name="scoreOperatingYears" returnClass="int">
+```xml
+<!-- 1.1 注册资本与实缴资本 -->
+<java name="scoreCapital" returnClass="int">
     <![CDATA[
-            int def scoreOperatingYears(int:years) {
-                if (years >= 10) {
-                    return 3;
-                } else if (years >= 5) {
-                    return 2;
-                } else if (years >= 3) {
-                    return 1;
-                } else {
-                    return 0;
-                }
+        int def scoreCapital(double:actualCapital, double:registeredCapital) {
+            if (registeredCapital == 0){
+               return 0;
             }
-        ]]>
-  </java>
-  <java name="scoreAnnualRevenue" returnClass="int">
-    <![CDATA[
-            int def scoreAnnualRevenue(double:revenue) {
-                if (revenue >= 5000) {
-                    return 4;
-                } else if (revenue >= 1000) {
-                    return 3;
-                } else if (revenue >= 500) {
-                    return 2;
-                } else {
-                    return 1;
-                }
+            double ratio = actualCapital / registeredCapital;
+            if (ratio >= 1.0) {
+                return 8;
+            } else if (ratio >= 0.5) {
+                return 5;
+            } else if (ratio >= 0.2) {
+                return 3;
+            } else {
+                return 0;
             }
-        ]]>
-  </java>
-  <java name="scoreProfitability" returnClass="int">
-    <![CDATA[
-            int def scoreProfitability(str:profitStatus) {
-                if (profitStatus == "3years") {
-                    return 3;
-                } else if (profitStatus == "2years") {
-                    return 2;
-                } else if (profitStatus == "current") {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        ]]>
-  </java>
-  <java name="calculateTotalScore" returnClass="int">
-    <![CDATA[
-        int def calculateTotalScore(
-            int:businessScore,
-            int:financialScore,
-            int:complianceScore,
-            int:qualificationScore,
-            int:riskScore
-        ) {
-            int baseScore = 60;
-            int weightedBusinessScore = (businessScore * 25) / 10;
-            int weightedFinancialScore = (financialScore * 25) / 10;
-            int weightedComplianceScore = (complianceScore * 20) / 8;
-            int weightedQualificationScore = (qualificationScore * 15) / 6;
-            int weightedRiskScore = (riskScore * 15) / 6;
-            int totalScore = baseScore
-                + weightedBusinessScore
-                + weightedFinancialScore
-                + weightedComplianceScore
-                + weightedQualificationScore
-                + weightedRiskScore;
-            return totalScore;
         }
     ]]>
-  </java>
-</javas>
+</java>
 ```
 
+```xml
+<!-- 核心：计算加权总分 -->
+<java name="calculateTotalScore" returnClass="int">
+    <![CDATA[
+        double def calculateTotalScore(int:basicScore,int:financialScore,int:performanceScore,int:managementScore,int:complianceScore) {
+            // 维度满分: 基本资质20, 财务30, 履约25, 管理15, 合规10
+            return basicScore + financialScore + performanceScore + managementScore + complianceScore;
+         }
+    ]]>
+</java>
+```
+
+### 3. 定义评分接口
+
+接口 [ScoringMapper.java](src/test/java/com/github/paohaijiao/service/ScoringMapper.java) 与 XML 规则按 `name` 一一对应，参数经 `@Param` 绑定：
+
+```java
+public interface ScoringMapper {
+
+    int scoreCapital(@Param("actualCapital") double actualCapital,
+                     @Param("registeredCapital") double registeredCapital);
+
+    int scoreEstablishment(@Param("years") int years);
+
+    int scoreDebtRatio(@Param("debtRatio") double debtRatio);          // 资产负债率，如 0.65 表示 65%
+
+    int scoreCreditRecord(@Param("creditStatus") String creditStatus); // 如 "无逾期"
+
+    double calculateTotalScore(@Param("basicScore") int basicScore,
+                               @Param("financialScore") int financialScore,
+                               @Param("performanceScore") int performanceScore,
+                               @Param("managementScore") int managementScore,
+                               @Param("complianceScore") int complianceScore);
+}
+```
+
+### 4. 执行企业信用评级打分
+
+参考 [TEmEventScoringServiceTest.java](src/test/java/com/github/paohaijiao/xml/TEmEventScoringServiceTest.java)，一次加载、五维打分、加权汇总：
+
+```java
+@Before
+public void setUp() {
+    mapper = JQuickJava.create()
+            .importPackage("java.lang.String", "str")
+            .importPackage("java.util.Date", "JDate")
+            .createApi(ScoringMapper.class, "scoring-rules.xml");
+}
+
+@Test
+public void quickSubmissionReport() {
+    // 基本资质：实缴500万/注册500万 + 成立8年 + 高新资质
+    int basicScore = mapper.scoreCapital(500, 500)      // 8
+                   + mapper.scoreEstablishment(8)       // 4
+                   + mapper.scoreCertification("甲级/一级/高新"); // 6
+    assert basicScore == 18;
+
+    // 财务健康：负债率55% + 连续盈利高增长 + 营业周期1.2倍
+    int financialScore = mapper.scoreDebtRatio(0.55)    // 8
+                       + mapper.scoreProfitability("连续盈利高增长") // 10
+                       + mapper.scoreOperationCycle(1.2);          // 4
+    assert financialScore == 22;
+
+    // 履约信用：履约率98% + 无逾期 + 无处罚
+    int performanceScore = mapper.scoreContractPerformance(0.98)   // 6
+                         + mapper.scoreCreditRecord("无逾期")      // 10
+                         + mapper.scorePenalty("无");              // 5
+    assert performanceScore == 21;
+
+    // 经营管理：增长率12% + 团队稳定
+    int managementScore = mapper.scoreRevenueGrowth(0.12)  // 5
+                        + mapper.scoreTeamStability("稳定"); // 7
+    assert managementScore == 12;
+
+    // 合规与风控：税务合规 + 风控完善
+    int complianceScore = mapper.scoreTaxCompliance("合规")   // 5
+                        + mapper.scoreRiskManagement("完善");  // 5
+    assert complianceScore == 10;
+
+    // 加权评级总分
+    double totalScore = mapper.calculateTotalScore(
+            basicScore, financialScore, performanceScore, managementScore, complianceScore);
+    assert totalScore >= 70;               // A 级线
+    String creditLevel = mapToCreditLevel(totalScore);
+    assert creditLevel.equals("AA");       // 83 分 → AA
+}
+```
+
+### 5. 结果解读
+
+上述企业样本（资本到位、成立 8 年、高盈利、零逾期、零处罚、团队稳定、税务合规）得分明细：
+
+| 维度 | 得分 | 满分 |
+|------|------|------|
+| 基本资质 | 18 | 20 |
+| 财务健康 | 22 | 30 |
+| 履约信用 | 21 | 25 |
+| 经营管理 | 12 | 15 |
+| 合规与风控 | 10 | 10 |
+| **加权总分** | **83** | **100** |
+
+最终评级：**83 分 → AA 级（信用良好，履约能力强）**。
+
 ---
 
-## 开源信息
+## 模块说明
 
-### 项目进度
+JQuick Java 依托 JQuick 生态，核心模块一览：
 
-- License: Apache 2.0
-- Version: 1.4.0
-- Java Version: 8+
-- Maven Central: `io.github.paohaijiao:jquick-java`
+| 模块 | 说明 |
+|------|------|
+| **jquick-java**（本项目） | 核心：脚本引擎 + 统一入口 `JQuickJava` + XML 规则代理（基于 `jquick-xmlProxy`）+ LSP 语言服务 |
+| **JQuick-ASM** | 基于 ASM 的高性能调用链：运行时字节码生成（`JQuickJavaAsmInvokerFactory` / `JQuickJavaAsmMethodInvoker` 等）、调用器并发缓存、基本类型自动装箱/拆箱，与反射调用链双实现 |
+| **JQuick-Gateway** | 生态内规则接入与网关能力模块 |
+| **JQuick-SQL** | 生态内 SQL 增强与数据访问能力模块 |
+| **jquick-excel** | 生态内 Excel 配置驱动模块，支撑指标体系等配置化场景 |
+| **jquick-pdf** | 生态内 PDF 输出模块，支撑评级报告等输出场景 |
+| **jquick-transform-function** | 内置 SPI 函数库（`Builtin::`）：类型判断、位运算、信息脱敏、身份证识别、金融校验等，[GitHub](https://github.com/paohaijiao/jquick-transform-function) |
+| **脚本引擎** | ANTLR4 解析器 + Visitor 执行链，运行时解析执行类 Java 脚本 |
+| **XML 规则代理** | 接口 + XML 声明式规则，动态代理自动生成，规则即配置 |
 
 ---
 
-## Star / Fork 支持
+## 依赖
 
-如果这个项目对你有帮助，建议直接支持仓库：
+| 依赖 | 版本 | 用途 |
+|------|------|------|
+| org.antlr:antlr4-runtime | 由父 POM 管理 | 语法解析运行时 |
+| org.antlr:antlr4 | provided | 语法解析器生成 |
+| io.github.paohaijiao:jquick-asm | 1.1.0 | ASM 高性能调用链 |
+| io.github.paohaijiao:jquick-xmlProxy | 1.6.0 | XML 规则代理 |
+| io.github.paohaijiao:jquick-transform-function | 1.4.0 | 内置 SPI 函数库（[GitHub](https://github.com/paohaijiao/jquick-transform-function)） |
+| io.github.paohaijiao:jquick-banner | 1.3.0 | 启动横幅 |
+| io.github.paohaijiao:javelin-core | 1.8.8 | 基础设施 |
+| junit / lombok / gson | 由父 POM 管理 | 测试与工具 |
 
-- 点一个 **Star**
-- Fork 一份作为你的工程基线
-- 提交 Issue 或 PR 一起完善 JQuick 生态
+---
+
+## 贡献
+
+欢迎通过以下方式参与 JQuick Java：
+
+- 提交 [Issue](https://github.com/paohaijiao/jquick-java/issues) 反馈问题或建议
+- 提交 PR 完善语法、执行链、XML 代理与文档
+- Star / Fork 本仓库，一起完善 JQuick 生态
+
+---
+
+## 许可证
+
+[Apache License 2.0](LICENSE)
 
 项目地址：<https://github.com/paohaijiao/jquick-java>

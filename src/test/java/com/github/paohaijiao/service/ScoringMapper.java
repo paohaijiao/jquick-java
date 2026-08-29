@@ -5,60 +5,33 @@ import com.github.paohaijiao.xml.param.Param;
 import java.util.Date;
 
 public interface ScoringMapper {
-    /**
-     * 快速报送-事件上报的情报端
-     * @param eventType 事件类型 (A/B/C/D)
-     * @param t 报送时间与事发时间的差值（分钟）
-     * @return 得分（保留一位小数）
-     */
-    double quickSubmissionReport(@Param("eventType") String eventType, @Param("t") int t);
 
-    /**
-     * 计算区县管理端触发时效得分
-     * @param eventType 事件类型 (A/B/C/D)
-     * @param t 触发时间与事发时间的差值（分钟）
-     * @return 得分（保留一位小数）
-     */
-    double quickSubmissionTrigger(@Param("eventType") String eventType, @Param("t") int t);
-    /**
-     * 快速办结 - 市级事件考核事件归属区县
-     *
-     * @param hasOfficialFollowUp 是否有正式续报
-     * @param lastFollowUpTime 最后一次正式续报时间
-     * @param settleTime 办结时间
-     * @param reportTime 上报事件时间
-     * @return 得分（double类型，保留一位小数）
-     */
-    double quickSettleOwnToZone(@Param("hasOfficialFollowUp") boolean hasOfficialFollowUp, @Param("lastFollowUpTime") Date lastFollowUpTime, @Param("settleTime") Date settleTime, @Param("reportTime") Date reportTime);
+    int scoreCapital(@Param("actualCapital") double actualCapital, @Param("registeredCapital") double registeredCapital);
 
+    int scoreEstablishment(@Param("years") int years);
 
-    /**
-     * 快速办结 - 区级事件考核事件归属街镇
-     *
-     * @param hasOfficialFollowUp 是否有正式续报
-     * @param lastFollowUpTime 最后一次正式续报时间
-     * @param settleTime 办结时间
-     * @param reportTime 上报事件时间
-     * @return 得分（double类型，保留一位小数）
-     */
-    double quickSettleOwnToStreet(@Param("hasOfficialFollowUp") boolean hasOfficialFollowUp, @Param("lastFollowUpTime") Date lastFollowUpTime, @Param("settleTime") Date settleTime, @Param("reportTime") Date reportTime);
+    int scoreCertification(@Param("certLevel") String certLevel); // 入参如："甲级/一级/高新", "乙级/二级", "无"
 
-    /**
-     * 快速协同回复 - 考核协同目标单位回复时效性
-     *
-     * @param eventType 事件类型 (A/B/C/D)
-     * @param t 第一次协同回复时间 - 协同发起时间（分钟）
-     * @return 得分（double类型，保留一位小数）
-     */
-    double quickReplyTargetUnit(@Param("eventType") String eventType, @Param("t") double t);
+    int scoreDebtRatio(@Param("debtRatio") double debtRatio); // 资产负债率，如 0.65 表示65%
 
-    /**
-     * 快速协同回复 - 考核批示下达交办目标单位回复时效性
-     *
-     * @param eventType 事件类型 (A/B/C/D)
-     * @param t 第一次下达回复时间 - 批示下达时间（分钟）
-     * @return 得分（double类型，保留一位小数）
-     */
-    double quickReplyTargetTimeUnit(@Param("eventType") String eventType, @Param("t") double t);
+    int scoreProfitability(@Param("profitStatus") String profitStatus); // 入参如："连续盈利高增长", "连续盈利低增长", "一年盈利", "连续亏损"
+
+    int scoreOperationCycle(@Param("cycleRatio") double cycleRatio); // 营业周期与行业平均的比值
+
+    int scoreContractPerformance(@Param("performanceRate") double performanceRate); // 履约率，如 0.98
+
+    int scoreCreditRecord(@Param("creditStatus") String creditStatus); // 入参如："无逾期", "轻微逾期", "多次逾期", "不良贷款"
+
+    int scorePenalty(@Param("penaltyStatus") String penaltyStatus); // 入参如："无", "一般行政处罚", "重大/失信"
+
+    int scoreRevenueGrowth(@Param("growthRate") double growthRate); // 复合增长率，如 0.12
+
+    int scoreTeamStability(@Param("stabilityStatus") String stabilityStatus); // 入参如："稳定", "略有变动", "频繁变动"
+
+    int scoreTaxCompliance(@Param("taxStatus") String taxStatus); // 入参如："合规", "轻微违章", "重大违章"
+
+    int scoreRiskManagement(@Param("riskStatus") String riskStatus); // 入参如："完善", "一般", "无"
+
+    double calculateTotalScore(@Param("basicScore") int basicScore, @Param("financialScore") int financialScore, @Param("performanceScore") int performanceScore, @Param("managementScore") int managementScore, @Param("complianceScore") int complianceScore);
 
 }
