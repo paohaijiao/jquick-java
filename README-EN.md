@@ -741,7 +741,7 @@ Yes. A built-in LSP language server `JQuickLanguageServer` (stdio mode) provides
 
 ## Ecosystem
 
-Following the Sa-Token ecosystem showcase style, the JQuick Java ecosystem consists of official repositories, core modules, and built-in examples:
+the JQuick Java ecosystem consists of official repositories, core modules, and built-in examples:
 
 ### Official Repositories
 
