@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="280" height="240">
+  <!-- 纯白背景 -->
+  <rect width="1007" height="928" fill="#ffffff"/>
+
+  <!-- 外层金色能量六边形 -->
+  <polygon points="120,22 206,68 206,172 120,218 34,172 34,68"
+           fill="none"
+           stroke="#FFB347"
+           stroke-width="8"/>
+
+  <!-- 外层橙色六边形 -->
+  <polygon points="120,32 198,74 198,166 120,208 42,166 42,74"
+           fill="#FF7A1A"/>
+
+  <!-- 白色六边形护盾层 -->
+  <polygon points="120,44 188,82 188,158 120,196 52,158 52,82"
+           fill="none"
+           stroke="#ffffff"
+           stroke-width="6"/>
+
+  <!-- 内部橙色能量核心 -->
+  <polygon points="120,56 178,90 178,150 120,184 62,150 62,90"
+           fill="#FF7A1A"/>
+
+  <!-- 内部白色圆环 -->
+  <circle cx="120" cy="120" r="54"
+          fill="none"
+          stroke="#ffffff"
+          stroke-width="4"/>
+
+  <!-- 能量弧线装饰 -->
+  <path d="M88,100 A30,30 0 0,1 100,88"
+        fill="none"
+        stroke="#FFB347"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <path d="M152,140 A30,30 0 0,1 140,152"
+        fill="none"
+        stroke="#FFB347"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <!-- 四个生态组件白点 -->
+  <circle cx="84" cy="96" r="4" fill="#ffffff"/>
+  <circle cx="156" cy="96" r="4" fill="#ffffff"/>
+  <circle cx="84" cy="144" r="4" fill="#ffffff"/>
+  <circle cx="156" cy="144" r="4" fill="#ffffff"/>
+
+  <!-- 居中优化后的白色闪电：左移约 5mm，轻微上移 -->
+  <g transform="translate(-19, -4)">
+    <path fill="#ffffff"
+          d="M136,74 L162,74 L146,112 L164,112 L126,166 L142,126 L124,126 L136,74 Z"/>
+  </g>
+
+  <!-- 底部子项目文字 -->
+  <text x="120" y="232"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#FF7A1A"
+        letter-spacing="0.3">
+    Declarative Configuration-Driven Development
+  </text>
+</svg>

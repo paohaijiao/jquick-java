@@ -24,8 +24,11 @@ public class JQuickLanguageServer {
 
     /** JSON-RPC 错误码。 */
     private static final int PARSE_ERROR = -32700;
+
     private static final int METHOD_NOT_FOUND = -32601;
+
     private static final int INVALID_PARAMS = -32602;
+
     private static final int INTERNAL_ERROR = -32603;
 
     /** 文档管理器。 */
@@ -80,7 +83,7 @@ public class JQuickLanguageServer {
         while (running) {
             JsonObject message = JQuickLspMessage.read(in);
             if (message == null) {
-                break; // 客户端关闭了 stdin
+                break;
             }
             dispatch(message);
         }
@@ -299,8 +302,6 @@ public class JQuickLanguageServer {
         PrintStream realOut = System.out;
         System.setOut(System.err);
         try {
-            // 触发 JQuickJavaParser 类加载（期间 JConsole 可能打印到 stdout），
-            // 加载完成后全局禁用 JConsole 输出。
             com.github.paohaijiao.parser.JQuickJavaParser.console.globalDisable();
         } finally {
             System.setOut(realOut);
