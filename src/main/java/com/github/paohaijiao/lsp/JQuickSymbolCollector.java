@@ -191,7 +191,6 @@ public class JQuickSymbolCollector {
          * str1.toUpperCase(); // 实例名 str1 同样走 identifier
          * </pre>
          */
-
         @Override
         public void enterIdentifier(JQuickJavaParser.IdentifierContext ctx) {
             table.references.add(new Symbol("reference", ctx.IDENTIFIER().getText(), null,

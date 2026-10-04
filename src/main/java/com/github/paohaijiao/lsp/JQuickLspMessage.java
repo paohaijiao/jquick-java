@@ -29,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 public final class JQuickLspMessage {
 
     private static final Gson GSON = new Gson();
+
     private static final String CONTENT_LENGTH_PREFIX = "Content-Length: ";
 
     private JQuickLspMessage() {
@@ -45,7 +46,6 @@ public final class JQuickLspMessage {
         String line;
         while ((line = readLine(in)) != null) {
             if (line.isEmpty()) {
-                // 空行表示头结束
                 break;
             }
             if (line.startsWith(CONTENT_LENGTH_PREFIX)) {
