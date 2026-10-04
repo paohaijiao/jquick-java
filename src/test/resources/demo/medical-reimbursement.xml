@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.MedicalReimbursementRules">
+
+    <!-- 医保目录判定：丙类全部自费 -->
+    <java name="withinCatalog" returnClass="boolean">
+        <![CDATA[
+            boolean def withinCatalog(str:medicalCategory) {
+                if (medicalCategory == "DRUG_C") {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 起付线：参保类型 × 医院等级，急诊减半执行 -->
+    <java name="deductible" returnClass="double">
+        <![CDATA[
+            double def deductible(str:insuranceType, str:hospitalLevel, boolean:emergency) {
+                if (insuranceType == "EMPLOYEE") {
+                    if (emergency) {
+                        if (hospitalLevel == "THIRD_A") {
+                            return 400.0;
+                        } else if (hospitalLevel == "SECOND_A") {
+                            return 250.0;
+                        } else {
+                            return 100.0;
+                        }
+                    } else {
+                        if (hospitalLevel == "THIRD_A") {
+                            return 800.0;
+                        } else if (hospitalLevel == "SECOND_A") {
+                            return 500.0;
+                        } else {
+                            return 200.0;
+                        }
+                    }
+                } else {
+                    if (emergency) {
+                        if (hospitalLevel == "THIRD_A") {
+                            return 300.0;
+                        } else if (hospitalLevel == "SECOND_A") {
+                            return 150.0;
+                        } else {
+                            return 50.0;
+                        }
+                    } else {
+                        if (hospitalLevel == "THIRD_A") {
+                            return 600.0;
+                        } else if (hospitalLevel == "SECOND_A") {
+                            return 300.0;
+                        } else {
+                            return 100.0;
+                        }
+                    }
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 报销比例：参保类型 × 医院等级，急诊上浮 5 个百分点，上限 100% -->
+    <java name="reimburseRatio" returnClass="double">
+        <![CDATA[
+            double def reimburseRatio(str:insuranceType, str:hospitalLevel, boolean:emergency) {
+                double ratio = 0.6;
+                if (insuranceType == "EMPLOYEE") {
+                    if (hospitalLevel == "THIRD_A") {
+                        ratio = 0.9;
+                    } else if (hospitalLevel == "SECOND_A") {
+                        ratio = 0.85;
+                    } else {
+                        ratio = 0.8;
+                    }
+                } else {
+                    if (hospitalLevel == "THIRD_A") {
+                        ratio = 0.7;
+                    } else if (hospitalLevel == "SECOND_A") {
+                        ratio = 0.65;
+                    } else {
+                        ratio = 0.6;
+                    }
+                }
+                if (emergency) {
+                    ratio = ratio + 0.05;
+                }
+                if (ratio > 1.0) {
+                    ratio = 1.0;
+                }
+                return ratio;
+            }
+        ]]>
+    </java>
+
+    <!-- 乙类药品先行自付 10%，其余类别无先行自付 -->
+    <java name="prepaidSelfPay" returnClass="double">
+        <![CDATA[
+            double def prepaidSelfPay(str:medicalCategory, double:totalExpense) {
+                if (medicalCategory == "DRUG_B") {
+                    return totalExpense * 0.1;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 年度统筹基金封顶线 -->
+    <java name="annualCap" returnClass="double">
+        <![CDATA[
+            double def annualCap(str:insuranceType) {
+                if (insuranceType == "EMPLOYEE") {
+                    return 300000.0;
+                } else {
+                    return 200000.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 封顶截断：支付额不得超过年度剩余额度 -->
+    <java name="applyCap" returnClass="double">
+        <![CDATA[
+            double def applyCap(double:payableAmount, double:remainingCap) {
+                if (remainingCap <= 0.0) {
+                    return 0.0;
+                } else if (payableAmount > remainingCap) {
+                    return remainingCap;
+                } else {
+                    return payableAmount;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 结算结论：目录外全自费，异地未备案转人工，其余即时结算 -->
+    <java name="complianceResult" returnClass="java.lang.String">
+        <![CDATA[
+            str def complianceResult(boolean:withinCatalog, boolean:offSite, boolean:filed) {
+                if (withinCatalog == false) {
+                    return "SELF_PAY";
+                } else if (offSite && filed == false) {
+                    return "MANUAL_REVIEW";
+                } else {
+                    return "APPROVE";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 人工审核：异地未备案或单笔统筹支付达到 5 万 -->
+    <java name="needManualReview" returnClass="boolean">
+        <![CDATA[
+            boolean def needManualReview(str:result, double:payableAmount) {
+                if (result == "MANUAL_REVIEW") {
+                    return true;
+                } else if (result == "APPROVE" && payableAmount >= 50000.0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.SubsidyRules">
+
+    <!-- 学历评分 -->
+    <java name="scoreEducation" returnClass="int">
+        <![CDATA[
+            int def scoreEducation(str:education) {
+                if (education == "PHD") {
+                    return 30;
+                } else if (education == "MASTER") {
+                    return 22;
+                } else if (education == "BACHELOR") {
+                    return 15;
+                } else {
+                    return 8;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 年龄评分：青年人才优先 -->
+    <java name="scoreAge" returnClass="int">
+        <![CDATA[
+            int def scoreAge(int:age) {
+                if (age <= 30) {
+                    return 15;
+                } else if (age <= 35) {
+                    return 12;
+                } else if (age <= 40) {
+                    return 8;
+                } else if (age <= 45) {
+                    return 4;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 本地社保连续性评分 -->
+    <java name="scoreSocialSecurity" returnClass="int">
+        <![CDATA[
+            int def scoreSocialSecurity(int:months) {
+                if (months >= 36) {
+                    return 20;
+                } else if (months >= 24) {
+                    return 15;
+                } else if (months >= 12) {
+                    return 10;
+                } else if (months >= 6) {
+                    return 5;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 高层次人才认定评分 -->
+    <java name="scoreTalent" returnClass="int">
+        <![CDATA[
+            int def scoreTalent(str:talentCategory) {
+                if (talentCategory == "A") {
+                    return 25;
+                } else if (talentCategory == "B") {
+                    return 18;
+                } else if (talentCategory == "C") {
+                    return 10;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 创业带动就业评分 -->
+    <java name="scoreStartup" returnClass="int">
+        <![CDATA[
+            int def scoreStartup(boolean:startupRegistered, int:startupEmployees) {
+                if (startupRegistered) {
+                    if (startupEmployees >= 10) {
+                        return 20;
+                    } else if (startupEmployees >= 5) {
+                        return 14;
+                    } else if (startupEmployees >= 1) {
+                        return 8;
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 硬性否决：失信、刑事犯罪、重复申领 -->
+    <java name="hardReject" returnClass="boolean">
+        <![CDATA[
+            boolean def hardReject(boolean:creditViolation, boolean:criminalRecord, boolean:receivedSimilarSubsidy) {
+                if (creditViolation || criminalRecord || receivedSimilarSubsidy) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 审核结论：硬否决优先，其次材料补正，最后按分数分级 -->
+    <java name="eligibilityStage" returnClass="java.lang.String">
+        <![CDATA[
+            str def eligibilityStage(int:qualificationScore, boolean:hardReject, boolean:documentsComplete) {
+                if (hardReject) {
+                    return "REJECTED";
+                } else if (documentsComplete == false) {
+                    return "MANUAL_REVIEW";
+                } else if (qualificationScore >= 75) {
+                    return "QUALIFIED";
+                } else if (qualificationScore >= 50) {
+                    return "MANUAL_REVIEW";
+                } else {
+                    return "REJECTED";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 学历安家补贴定额 -->
+    <java name="educationAmount" returnClass="double">
+        <![CDATA[
+            double def educationAmount(str:education) {
+                if (education == "PHD") {
+                    return 100000.0;
+                } else if (education == "MASTER") {
+                    return 60000.0;
+                } else if (education == "BACHELOR") {
+                    return 30000.0;
+                } else {
+                    return 10000.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 人才认定奖励定额 -->
+    <java name="talentAmount" returnClass="double">
+        <![CDATA[
+            double def talentAmount(str:talentCategory) {
+                if (talentCategory == "A") {
+                    return 200000.0;
+                } else if (talentCategory == "B") {
+                    return 100000.0;
+                } else if (talentCategory == "C") {
+                    return 50000.0;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 创业带动就业奖励定额 -->
+    <java name="startupAmount" returnClass="double">
+        <![CDATA[
+            double def startupAmount(boolean:startupRegistered, int:startupEmployees) {
+                if (startupRegistered) {
+                    if (startupEmployees >= 10) {
+                        return 100000.0;
+                    } else if (startupEmployees >= 5) {
+                        return 50000.0;
+                    } else if (startupEmployees >= 1) {
+                        return 20000.0;
+                    } else {
+                        return 0.0;
+                    }
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

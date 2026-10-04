@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.TransactionFraudRules">
+
+    <!-- 单笔金额评分 -->
+    <java name="scoreAmount" returnClass="int">
+        <![CDATA[
+            int def scoreAmount(double:amount) {
+                if (amount >= 50000.0) {
+                    return 30;
+                } else if (amount >= 20000.0) {
+                    return 20;
+                } else if (amount >= 10000.0) {
+                    return 12;
+                } else if (amount >= 5000.0) {
+                    return 6;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 交易频次评分：笔数档位 + 短时累计金额，封顶 25 -->
+    <java name="scoreVelocity" returnClass="int">
+        <![CDATA[
+            int def scoreVelocity(int:txnCount1h, double:txnAmount1h) {
+                int score = 0;
+                if (txnCount1h >= 10) {
+                    score = 25;
+                } else if (txnCount1h >= 5) {
+                    score = 15;
+                } else if (txnCount1h >= 3) {
+                    score = 8;
+                }
+                if (txnAmount1h >= 100000.0) {
+                    score = score + 15;
+                } else if (txnAmount1h >= 50000.0) {
+                    score = score + 8;
+                }
+                if (score > 25) {
+                    score = 25;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 地理位置评分：境外 25，异地未报备 15，报备出行 5 -->
+    <java name="scoreGeo" returnClass="int">
+        <![CDATA[
+            int def scoreGeo(boolean:overseas, boolean:crossCity, boolean:travelMode) {
+                if (overseas) {
+                    return 25;
+                } else if (crossCity && travelMode == false) {
+                    return 15;
+                } else if (crossCity) {
+                    return 5;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 交易时段评分：深夜 12，夜间 6 -->
+    <java name="scoreTime" returnClass="int">
+        <![CDATA[
+            int def scoreTime(int:txnHour) {
+                if (txnHour >= 23 || txnHour < 5) {
+                    return 12;
+                } else if (txnHour >= 22 || txnHour <= 6) {
+                    return 6;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 设备更换评分 -->
+    <java name="scoreDevice" returnClass="int">
+        <![CDATA[
+            int def scoreDevice(boolean:deviceChanged) {
+                if (deviceChanged) {
+                    return 15;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 新商户评分 -->
+    <java name="scoreMerchant" returnClass="int">
+        <![CDATA[
+            int def scoreMerchant(boolean:newMerchant) {
+                if (newMerchant) {
+                    return 8;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 无卡交易评分：线上/移动端且无卡现场景加 10 -->
+    <java name="scoreCardNotPresent" returnClass="int">
+        <![CDATA[
+            int def scoreCardNotPresent(boolean:cardNotPresent, str:channel) {
+                if (cardNotPresent && (channel == "ONLINE" || channel == "MOBILE")) {
+                    return 10;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 鉴权失败评分 -->
+    <java name="scoreFailure" returnClass="int">
+        <![CDATA[
+            int def scoreFailure(int:failCount24h) {
+                if (failCount24h >= 3) {
+                    return 10;
+                } else if (failCount24h >= 1) {
+                    return 5;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 行为偏离与新账户评分：金额偏离历史 3 倍/5 倍，开户不足 7 天加 15 -->
+    <java name="scoreDeviation" returnClass="int">
+        <![CDATA[
+            int def scoreDeviation(double:amount, double:historicalMaxAmount, int:accountAgeDays) {
+                int score = 0;
+                if (historicalMaxAmount > 0.0) {
+                    if (amount * 10 >= historicalMaxAmount * 50) {
+                        score = 15;
+                    } else if (amount * 10 >= historicalMaxAmount * 30) {
+                        score = 8;
+                    }
+                }
+                if (accountAgeDays < 7) {
+                    score = score + 15;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 风险等级 -->
+    <java name="riskLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def riskLevel(int:riskScore) {
+                if (riskScore >= 75) {
+                    return "HIGH";
+                } else if (riskScore >= 45) {
+                    return "MEDIUM";
+                } else {
+                    return "LOW";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 处置动作 -->
+    <java name="fraudAction" returnClass="java.lang.String">
+        <![CDATA[
+            str def fraudAction(str:riskLevel) {
+                if (riskLevel == "HIGH") {
+                    return "BLOCK";
+                } else if (riskLevel == "MEDIUM") {
+                    return "STEP_UP";
+                } else {
+                    return "PASS";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 实时预警：高风险必预警，中风险境外交易预警 -->
+    <java name="needAlert" returnClass="boolean">
+        <![CDATA[
+            boolean def needAlert(str:riskLevel, boolean:overseas) {
+                if (riskLevel == "HIGH") {
+                    return true;
+                } else if (riskLevel == "MEDIUM" && overseas) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

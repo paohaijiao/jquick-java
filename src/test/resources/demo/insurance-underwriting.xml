@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.InsuranceUnderwritingRules">
+
+    <!-- 年龄评分：0-25 -->
+    <java name="scoreAge" returnClass="int">
+        <![CDATA[
+            int def scoreAge(int:age) {
+                if (age <= 30) {
+                    return 25;
+                } else if (age <= 40) {
+                    return 22;
+                } else if (age <= 50) {
+                    return 17;
+                } else if (age <= 60) {
+                    return 10;
+                } else {
+                    return 4;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 职业类别评分：0-25 -->
+    <java name="scoreOccupation" returnClass="int">
+        <![CDATA[
+            int def scoreOccupation(int:occupationClass) {
+                if (occupationClass == 1) {
+                    return 25;
+                } else if (occupationClass == 2) {
+                    return 22;
+                } else if (occupationClass == 3) {
+                    return 17;
+                } else if (occupationClass == 4) {
+                    return 11;
+                } else {
+                    return 5;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- BMI 评分：0-20 -->
+    <java name="scoreBmi" returnClass="int">
+        <![CDATA[
+            int def scoreBmi(double:bmi) {
+                if (bmi >= 18.5 && bmi <= 24.0) {
+                    return 20;
+                } else if (bmi > 24.0 && bmi <= 28.0) {
+                    return 14;
+                } else if (bmi > 28.0 && bmi <= 32.0) {
+                    return 7;
+                } else {
+                    return 3;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 吸烟评分：0-10 -->
+    <java name="scoreSmoker" returnClass="int">
+        <![CDATA[
+            int def scoreSmoker(boolean:smoker) {
+                if (smoker) {
+                    return 4;
+                } else {
+                    return 10;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 慢性病史评分：0-20 -->
+    <java name="scoreChronic" returnClass="int">
+        <![CDATA[
+            int def scoreChronic(str:chronicDisease) {
+                if (chronicDisease == "NONE") {
+                    return 20;
+                } else if (chronicDisease == "HYPERTENSION") {
+                    return 10;
+                } else if (chronicDisease == "DIABETES") {
+                    return 6;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 核保结论：特定慢病+险种先判除外责任，其余按评分分档 -->
+    <java name="underwritingResult" returnClass="java.lang.String">
+        <![CDATA[
+            str def underwritingResult(int:totalScore, str:chronicDisease, str:productType) {
+                str result = "POSTPONE";
+                if (totalScore >= 55) {
+                    result = "LOADED";
+                }
+                if (totalScore >= 70) {
+                    result = "STANDARD";
+                }
+                if (totalScore >= 85) {
+                    result = "PREFERRED";
+                }
+                if (chronicDisease == "DIABETES") {
+                    if (productType == "MEDICAL") {
+                        result = "EXCLUSION";
+                    }
+                    if (productType == "CRITICAL_ILLNESS") {
+                        result = "EXCLUSION";
+                    }
+                }
+                if (chronicDisease == "HYPERTENSION") {
+                    if (productType == "MEDICAL") {
+                        result = "EXCLUSION";
+                    }
+                }
+                return result;
+            }
+        ]]>
+    </java>
+
+    <!-- 加费比例：加费件统一加费 25% -->
+    <java name="extraPremiumRate" returnClass="int">
+        <![CDATA[
+            int def extraPremiumRate(str:result) {
+                if (result == "LOADED") {
+                    return 25;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 优选体折扣：10% -->
+    <java name="premiumDiscountRate" returnClass="int">
+        <![CDATA[
+            int def premiumDiscountRate(str:result) {
+                if (result == "PREFERRED") {
+                    return 10;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 自动核保保额上限（万元）：职业类别与年龄双轴 -->
+    <java name="maxSumInsuredWan" returnClass="int">
+        <![CDATA[
+            int def maxSumInsuredWan(int:occupationClass, int:age) {
+                if (occupationClass <= 2 && age <= 40) {
+                    return 200;
+                } else if (occupationClass <= 3 && age <= 50) {
+                    return 100;
+                } else if (occupationClass <= 4) {
+                    return 60;
+                } else {
+                    return 30;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.IncomingMaterialRules">
+
+    <java name="scoreMajor" returnClass="int">
+        <![CDATA[
+            int def scoreMajor(int:major, int:sample) {
+                if (major == 0) {
+                    return 30;
+                } else if (major * 100 < sample * 1) {
+                    return 20;
+                } else if (major * 100 < sample * 3) {
+                    return 10;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreMinor" returnClass="int">
+        <![CDATA[
+            int def scoreMinor(int:minor, int:sample) {
+                if (minor == 0) {
+                    return 20;
+                } else if (minor * 100 < sample * 3) {
+                    return 14;
+                } else if (minor * 100 < sample * 5) {
+                    return 7;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreCertificate" returnClass="int">
+        <![CDATA[
+            int def scoreCertificate(boolean:provided) {
+                if (provided) {
+                    return 15;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreAppearance" returnClass="int">
+        <![CDATA[
+            int def scoreAppearance(boolean:pass) {
+                if (pass) {
+                    return 15;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreDimension" returnClass="int">
+        <![CDATA[
+            int def scoreDimension(boolean:pass) {
+                if (pass) {
+                    return 10;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreEnvironmental" returnClass="int">
+        <![CDATA[
+            int def scoreEnvironmental(boolean:compliant) {
+                if (compliant) {
+                    return 10;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="inspectionLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def inspectionLevel(int:totalScore) {
+                if (totalScore >= 90) {
+                    return "ACCEPT";
+                } else if (totalScore >= 70) {
+                    return "CONDITIONAL";
+                } else {
+                    return "REJECT";
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

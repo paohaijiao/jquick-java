@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.InvestorSuitabilityRules">
+
+    <!-- 年龄成熟度评分：0-15，25-50 岁投资生涯最稳健 -->
+    <java name="scoreAge" returnClass="int">
+        <![CDATA[
+            int def scoreAge(int:age) {
+                if (age >= 25 && age <= 50) {
+                    return 15;
+                } else if (age >= 51 && age <= 60) {
+                    return 12;
+                } else if (age >= 18 && age <= 24) {
+                    return 8;
+                } else if (age >= 61 && age <= 64) {
+                    return 6;
+                } else {
+                    return 3;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 收入成熟度评分：0-15 -->
+    <java name="scoreIncome" returnClass="int">
+        <![CDATA[
+            int def scoreIncome(double:annualIncome) {
+                if (annualIncome >= 500000.0) {
+                    return 15;
+                } else if (annualIncome >= 200000.0) {
+                    return 12;
+                } else if (annualIncome >= 100000.0) {
+                    return 8;
+                } else if (annualIncome >= 50000.0) {
+                    return 4;
+                } else {
+                    return 2;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 资产成熟度评分：0-20 -->
+    <java name="scoreAssets" returnClass="int">
+        <![CDATA[
+            int def scoreAssets(double:netAssets) {
+                if (netAssets >= 3000000.0) {
+                    return 20;
+                } else if (netAssets >= 1000000.0) {
+                    return 15;
+                } else if (netAssets >= 300000.0) {
+                    return 10;
+                } else if (netAssets >= 100000.0) {
+                    return 5;
+                } else {
+                    return 2;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 投资经验评分：0-20 -->
+    <java name="scoreExperience" returnClass="int">
+        <![CDATA[
+            int def scoreExperience(int:investExperienceYears) {
+                if (investExperienceYears >= 10) {
+                    return 20;
+                } else if (investExperienceYears >= 5) {
+                    return 15;
+                } else if (investExperienceYears >= 3) {
+                    return 10;
+                } else if (investExperienceYears >= 1) {
+                    return 5;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 风险承受问卷评分：0-30 -->
+    <java name="scoreTolerance" returnClass="int">
+        <![CDATA[
+            int def scoreTolerance(int:riskToleranceRank) {
+                if (riskToleranceRank >= 5) {
+                    return 30;
+                } else if (riskToleranceRank == 4) {
+                    return 24;
+                } else if (riskToleranceRank == 3) {
+                    return 18;
+                } else if (riskToleranceRank == 2) {
+                    return 10;
+                } else {
+                    return 5;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 是否需要确认（双录）：高龄购中高风险，或低成熟度购中高风险 -->
+    <java name="needConfirm" returnClass="boolean">
+        <![CDATA[
+            boolean def needConfirm(int:maturityScore, int:productRiskRank, boolean:elderly) {
+                boolean confirm = false;
+                if (maturityScore < 50) {
+                    if (productRiskRank >= 3) {
+                        confirm = true;
+                    }
+                }
+                if (elderly) {
+                    if (productRiskRank >= 3) {
+                        confirm = true;
+                    }
+                }
+                return confirm;
+            }
+        ]]>
+    </java>
+
+    <!-- 风险等级差 -->
+    <java name="rankGap" returnClass="int">
+        <![CDATA[
+            int def rankGap(int:riskToleranceRank, int:productRiskRank) {
+                return productRiskRank - riskToleranceRank;
+            }
+        ]]>
+    </java>
+
+</javas>

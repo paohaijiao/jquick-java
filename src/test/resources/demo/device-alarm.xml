@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.DeviceAlarmRules">
+
+    <!-- 温度评分：0~35 -->
+    <java name="scoreTemperature" returnClass="int">
+        <![CDATA[
+            int def scoreTemperature(double:temperature) {
+                if (temperature >= 90.0) {
+                    return 35;
+                } else if (temperature >= 80.0) {
+                    return 25;
+                } else if (temperature >= 70.0) {
+                    return 15;
+                } else if (temperature >= 60.0) {
+                    return 8;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 错误次数评分：0~25 -->
+    <java name="scoreError" returnClass="int">
+        <![CDATA[
+            int def scoreError(int:errorCount) {
+                if (errorCount >= 20) {
+                    return 25;
+                } else if (errorCount >= 10) {
+                    return 18;
+                } else if (errorCount >= 5) {
+                    return 10;
+                } else if (errorCount >= 1) {
+                    return 4;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 资源占用评分（取 CPU/内存峰值）：0~20 -->
+    <java name="scoreResource" returnClass="int">
+        <![CDATA[
+            int def scoreResource(int:cpuUsage, int:memoryUsage) {
+                int peak = cpuUsage;
+                if (memoryUsage > peak) {
+                    peak = memoryUsage;
+                }
+                if (peak >= 95) {
+                    return 20;
+                } else if (peak >= 85) {
+                    return 12;
+                } else if (peak >= 75) {
+                    return 6;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 电量评分：0~15 -->
+    <java name="scoreBattery" returnClass="int">
+        <![CDATA[
+            int def scoreBattery(int:batteryLevel) {
+                if (batteryLevel <= 5) {
+                    return 15;
+                } else if (batteryLevel <= 20) {
+                    return 8;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 连接异常评分：0~25 -->
+    <java name="scoreConnection" returnClass="int">
+        <![CDATA[
+            int def scoreConnection(boolean:connectionLost, int:lastHeartbeatSeconds) {
+                if (connectionLost) {
+                    return 25;
+                } else if (lastHeartbeatSeconds >= 300) {
+                    return 15;
+                } else if (lastHeartbeatSeconds >= 120) {
+                    return 8;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 振动评分：0~20 -->
+    <java name="scoreVibration" returnClass="int">
+        <![CDATA[
+            int def scoreVibration(double:vibrationLevel) {
+                if (vibrationLevel >= 8.0) {
+                    return 20;
+                } else if (vibrationLevel >= 5.0) {
+                    return 12;
+                } else if (vibrationLevel >= 3.0) {
+                    return 5;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 告警等级 -->
+    <java name="alarmLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def alarmLevel(int:alarmScore) {
+                if (alarmScore >= 70) {
+                    return "CRITICAL";
+                } else if (alarmScore >= 45) {
+                    return "MAJOR";
+                } else if (alarmScore >= 20) {
+                    return "MINOR";
+                } else {
+                    return "NORMAL";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 告警类型（按业务优先级归类） -->
+    <java name="alarmType" returnClass="java.lang.String">
+        <![CDATA[
+            str def alarmType(boolean:connectionLost, int:lastHeartbeatSeconds, double:temperature,
+                              int:cpuUsage, int:memoryUsage, int:batteryLevel, double:vibrationLevel) {
+                if (connectionLost || lastHeartbeatSeconds >= 300) {
+                    return "NETWORK";
+                } else if (temperature >= 70.0) {
+                    return "TEMPERATURE";
+                } else if (cpuUsage >= 85 || memoryUsage >= 85) {
+                    return "PERFORMANCE";
+                } else if (batteryLevel <= 20) {
+                    return "POWER";
+                } else if (vibrationLevel >= 5.0) {
+                    return "VIBRATION";
+                } else {
+                    return "NONE";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 是否派单 -->
+    <java name="needDispatch" returnClass="boolean">
+        <![CDATA[
+            boolean def needDispatch(int:alarmScore, str:criticality) {
+                if (alarmScore >= 45) {
+                    return true;
+                } else if (alarmScore >= 20 && criticality == "HIGH") {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 派单优先级 -->
+    <java name="dispatchPriority" returnClass="java.lang.String">
+        <![CDATA[
+            str def dispatchPriority(int:alarmScore, str:criticality) {
+                if (alarmScore >= 70) {
+                    return "P0";
+                } else if (alarmScore >= 45) {
+                    return "P1";
+                } else if (alarmScore >= 20 && criticality == "HIGH") {
+                    return "P2";
+                } else {
+                    return "P3";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 通知渠道 -->
+    <java name="notifyChannel" returnClass="java.lang.String">
+        <![CDATA[
+            str def notifyChannel(str:alarmLevel, str:criticality) {
+                if (alarmLevel == "CRITICAL") {
+                    return "PHONE_CALL";
+                } else if (alarmLevel == "MAJOR") {
+                    return "SMS";
+                } else if (alarmLevel == "MINOR") {
+                    return "IM";
+                } else {
+                    return "EMAIL";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 自动处置动作 -->
+    <java name="autoRemediation" returnClass="java.lang.String">
+        <![CDATA[
+            str def autoRemediation(str:alarmType, int:alarmScore) {
+                if (alarmScore >= 70) {
+                    return "ISOLATE";
+                } else if (alarmType == "NETWORK") {
+                    return "ISOLATE";
+                } else if (alarmType == "PERFORMANCE") {
+                    return "RATE_LIMIT";
+                } else if (alarmType == "TEMPERATURE") {
+                    return "THROTTLE";
+                } else if (alarmType == "VIBRATION") {
+                    return "THROTTLE";
+                } else {
+                    return "NONE";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 升级时限（分钟） -->
+    <java name="escalateMinutes" returnClass="int">
+        <![CDATA[
+            int def escalateMinutes(str:alarmLevel) {
+                if (alarmLevel == "CRITICAL") {
+                    return 5;
+                } else if (alarmLevel == "MAJOR") {
+                    return 15;
+                } else if (alarmLevel == "MINOR") {
+                    return 60;
+                } else {
+                    return 240;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

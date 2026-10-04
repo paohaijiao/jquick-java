@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.SupplierAdmissionRules">
+
+    <!-- 企业资质评分：0-20 -->
+    <java name="scoreQualification" returnClass="int">
+        <![CDATA[
+            int def scoreQualification(str:qualificationLevel, int:registeredCapitalWan) {
+                if (qualificationLevel == "S") {
+                    if (registeredCapitalWan >= 2000) {
+                        return 20;
+                    } else if (registeredCapitalWan >= 500) {
+                        return 18;
+                    } else {
+                        return 16;
+                    }
+                } else if (qualificationLevel == "A") {
+                    if (registeredCapitalWan >= 2000) {
+                        return 16;
+                    } else if (registeredCapitalWan >= 500) {
+                        return 14;
+                    } else {
+                        return 12;
+                    }
+                } else if (qualificationLevel == "B") {
+                    if (registeredCapitalWan >= 500) {
+                        return 10;
+                    } else if (registeredCapitalWan >= 100) {
+                        return 8;
+                    } else {
+                        return 6;
+                    }
+                } else if (qualificationLevel == "C") {
+                    return 4;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 履约记录评分：0-30，三项比率各 10 分 -->
+    <java name="scoreFulfillment" returnClass="int">
+        <![CDATA[
+            int def scoreFulfillment(double:onTimeDeliveryRate, double:qualityPassRate,
+                                    double:contractFulfillRate) {
+                int total = 0;
+                if (onTimeDeliveryRate >= 98.0) {
+                    total = total + 10;
+                } else if (onTimeDeliveryRate >= 95.0) {
+                    total = total + 8;
+                } else if (onTimeDeliveryRate >= 90.0) {
+                    total = total + 5;
+                } else if (onTimeDeliveryRate >= 85.0) {
+                    total = total + 3;
+                } else {
+                    total = total + 1;
+                }
+                if (qualityPassRate >= 98.0) {
+                    total = total + 10;
+                } else if (qualityPassRate >= 95.0) {
+                    total = total + 8;
+                } else if (qualityPassRate >= 90.0) {
+                    total = total + 5;
+                } else if (qualityPassRate >= 85.0) {
+                    total = total + 3;
+                } else {
+                    total = total + 1;
+                }
+                if (contractFulfillRate >= 98.0) {
+                    total = total + 10;
+                } else if (contractFulfillRate >= 95.0) {
+                    total = total + 8;
+                } else if (contractFulfillRate >= 90.0) {
+                    total = total + 5;
+                } else if (contractFulfillRate >= 85.0) {
+                    total = total + 3;
+                } else {
+                    total = total + 1;
+                }
+                return total;
+            }
+        ]]>
+    </java>
+
+    <!-- 合作深度评分：0-15 -->
+    <java name="scoreCooperation" returnClass="int">
+        <![CDATA[
+            int def scoreCooperation(int:cooperationMonths, double:annualOrderAmount) {
+                int monthsScore = 0;
+                if (cooperationMonths >= 36) {
+                    monthsScore = 8;
+                } else if (cooperationMonths >= 18) {
+                    monthsScore = 6;
+                } else if (cooperationMonths >= 6) {
+                    monthsScore = 4;
+                } else if (cooperationMonths >= 3) {
+                    monthsScore = 2;
+                }
+                int orderScore = 0;
+                if (annualOrderAmount >= 50000000.0) {
+                    orderScore = 7;
+                } else if (annualOrderAmount >= 20000000.0) {
+                    orderScore = 5;
+                } else if (annualOrderAmount >= 5000000.0) {
+                    orderScore = 3;
+                } else {
+                    orderScore = 1;
+                }
+                return monthsScore + orderScore;
+            }
+        ]]>
+    </java>
+
+    <!-- 财务状况评分：0-20 -->
+    <java name="scoreFinance" returnClass="int">
+        <![CDATA[
+            int def scoreFinance(str:financeStatus) {
+                if (financeStatus == "HEALTHY") {
+                    return 20;
+                } else if (financeStatus == "STABLE") {
+                    return 15;
+                } else if (financeStatus == "WEAK") {
+                    return 8;
+                } else {
+                    return 2;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 注册年限评分：0-15 -->
+    <java name="scoreRegisteredYears" returnClass="int">
+        <![CDATA[
+            int def scoreRegisteredYears(int:registeredYears) {
+                if (registeredYears >= 8) {
+                    return 15;
+                } else if (registeredYears >= 5) {
+                    return 12;
+                } else if (registeredYears >= 3) {
+                    return 8;
+                } else if (registeredYears >= 1) {
+                    return 4;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 评级映射 -->
+    <java name="grade" returnClass="java.lang.String">
+        <![CDATA[
+            str def grade(int:totalScore) {
+                if (totalScore >= 85) {
+                    return "A";
+                } else if (totalScore >= 75) {
+                    return "B";
+                } else if (totalScore >= 60) {
+                    return "C";
+                } else {
+                    return "D";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 保理额度比例 -->
+    <java name="factoringRatio" returnClass="double">
+        <![CDATA[
+            double def factoringRatio(str:grade) {
+                if (grade == "A") {
+                    return 0.20;
+                } else if (grade == "B") {
+                    return 0.12;
+                } else if (grade == "C") {
+                    return 0.05;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 建议账期 -->
+    <java name="settlementDays" returnClass="int">
+        <![CDATA[
+            int def settlementDays(str:grade) {
+                if (grade == "A") {
+                    return 90;
+                } else if (grade == "B") {
+                    return 60;
+                } else if (grade == "C") {
+                    return 30;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

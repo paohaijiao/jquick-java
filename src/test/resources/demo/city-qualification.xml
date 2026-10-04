@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.CityQualificationRules">
+
+    <!-- 学历积分 -->
+    <java name="educationScore" returnClass="int">
+        <![CDATA[
+            int def educationScore(str:education) {
+                if (education == "DOCTOR") {
+                    return 40;
+                } else if (education == "MASTER") {
+                    return 30;
+                } else if (education == "BACHELOR") {
+                    return 20;
+                } else if (education == "COLLEGE") {
+                    return 10;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 社保积分：分段等价于每满 12 个月 10 分，48 月封顶 -->
+    <java name="securityScore" returnClass="int">
+        <![CDATA[
+            int def securityScore(int:months) {
+                if (months >= 48) {
+                    return 40;
+                } else if (months >= 36) {
+                    return 30;
+                } else if (months >= 24) {
+                    return 20;
+                } else if (months >= 12) {
+                    return 10;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 年龄积分 -->
+    <java name="ageSettleScore" returnClass="int">
+        <![CDATA[
+            int def ageSettleScore(int:age) {
+                if (age <= 35) {
+                    return 15;
+                } else if (age <= 45) {
+                    return 10;
+                } else if (age <= 55) {
+                    return 5;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 人才称号积分 -->
+    <java name="titleScore" returnClass="int">
+        <![CDATA[
+            int def titleScore(str:talentTitle) {
+                if (talentTitle == "TOP_TALENT") {
+                    return 30;
+                } else if (talentTitle == "ELITE") {
+                    return 15;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 投资纳税积分 -->
+    <java name="investTaxScore" returnClass="int">
+        <![CDATA[
+            int def investTaxScore(double:enterpriseTaxWan) {
+                if (enterpriseTaxWan >= 100.0) {
+                    return 20;
+                } else if (enterpriseTaxWan >= 50.0) {
+                    return 10;
+                } else if (enterpriseTaxWan >= 10.0) {
+                    return 5;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 落户结论分档 -->
+    <java name="settleResult" returnClass="java.lang.String">
+        <![CDATA[
+            str def settleResult(int:points) {
+                if (points >= 80) {
+                    return "APPROVE";
+                } else if (points >= 60) {
+                    return "REVIEW";
+                } else {
+                    return "REJECT";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 购房资格：普通 36 月，人才 3 月（社保、个税满足其一即可） -->
+    <java name="houseEligible" returnClass="boolean">
+        <![CDATA[
+            boolean def houseEligible(int:ssMonths, int:taxMonths, str:talentTitle) {
+                boolean eligible = false;
+                if (ssMonths >= 36 || taxMonths >= 36) {
+                    eligible = true;
+                }
+                if (talentTitle == "TOP_TALENT") {
+                    if (ssMonths >= 3 || taxMonths >= 3) {
+                        eligible = true;
+                    }
+                }
+                if (talentTitle == "ELITE") {
+                    if (ssMonths >= 3 || taxMonths >= 3) {
+                        eligible = true;
+                    }
+                }
+                return eligible;
+            }
+        ]]>
+    </java>
+
+    <!-- 购车新能源指标：普通 24 月，人才 6 月，且名下无车 -->
+    <java name="carEligible" returnClass="boolean">
+        <![CDATA[
+            boolean def carEligible(int:ssMonths, int:taxMonths, boolean:noCarInCity, str:talentTitle) {
+                boolean eligible = false;
+                if (noCarInCity) {
+                    if (ssMonths >= 24 || taxMonths >= 24) {
+                        eligible = true;
+                    }
+                    if (talentTitle == "TOP_TALENT") {
+                        if (ssMonths >= 6 || taxMonths >= 6) {
+                            eligible = true;
+                        }
+                    }
+                    if (talentTitle == "ELITE") {
+                        if (ssMonths >= 6 || taxMonths >= 6) {
+                            eligible = true;
+                        }
+                    }
+                }
+                return eligible;
+            }
+        ]]>
+    </java>
+
+</javas>

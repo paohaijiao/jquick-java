@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.TaxReliefRules">
+
+    <!-- 企业所得税：小微分段优惠（100 万以下 5%，100-300 万部分 10%），否则 25% -->
+    <java name="incomeTaxWan" returnClass="double">
+        <![CDATA[
+            double def incomeTaxWan(double:incomeWan, boolean:smallQualified) {
+                double tax = 0.0;
+                if (smallQualified) {
+                    if (incomeWan <= 100.0) {
+                        tax = incomeWan * 0.05;
+                    } else {
+                        tax = 5.0 + (incomeWan - 100.0) * 0.10;
+                    }
+                } else {
+                    tax = incomeWan * 0.25;
+                }
+                return tax;
+            }
+        ]]>
+    </java>
+
+    <!-- 增值税征收率：小规模 1%，一般纳税人不适用此优惠（0 表示不涉及） -->
+    <java name="vatLevyRate" returnClass="double">
+        <![CDATA[
+            double def vatLevyRate(str:taxpayerType) {
+                if (taxpayerType == "SMALL_SCALE") {
+                    return 0.01;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 稳岗补贴资格：社保 12 月以上、裁员率 5% 以下、无社保欠费 -->
+    <java name="stabilizationEligible" returnClass="boolean">
+        <![CDATA[
+            boolean def stabilizationEligible(int:ssMonths, int:layoffRate, boolean:noArrears) {
+                if (ssMonths >= 12) {
+                    if (layoffRate <= 5) {
+                        if (noArrears) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 稳岗补贴定额：实缴失业保险费的 50% -->
+    <java name="subsidyAmountWan" returnClass="double">
+        <![CDATA[
+            double def subsidyAmountWan(double:paidUiWan, boolean:eligible) {
+                if (eligible) {
+                    return paidUiWan * 0.5;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

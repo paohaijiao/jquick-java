@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.LicenseAnnualReviewRules">
+
+    <!-- 健康证：expired/total 比率用交叉相乘（expired*10 对 total、total*3） -->
+    <java name="scoreHealth" returnClass="int">
+        <![CDATA[
+            int def scoreHealth(int:expired, int:total) {
+                if (expired == 0) {
+                    return 20;
+                } else if (expired * 10 < total) {
+                    return 12;
+                } else if (expired * 10 < total * 3) {
+                    return 6;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 培训覆盖率 -->
+    <java name="scoreTraining" returnClass="int">
+        <![CDATA[
+            int def scoreTraining(int:rate) {
+                if (rate >= 100) {
+                    return 15;
+                } else if (rate >= 80) {
+                    return 12;
+                } else if (rate >= 60) {
+                    return 8;
+                } else {
+                    return 2;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 食品安全员配备 -->
+    <java name="scoreOfficer" returnClass="int">
+        <![CDATA[
+            int def scoreOfficer(boolean:hasOfficer) {
+                if (hasOfficer) {
+                    return 10;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 日常检查缺陷项 -->
+    <java name="scoreDefects" returnClass="int">
+        <![CDATA[
+            int def scoreDefects(int:defectCount) {
+                if (defectCount == 0) {
+                    return 15;
+                } else if (defectCount <= 2) {
+                    return 10;
+                } else if (defectCount <= 5) {
+                    return 5;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 上年度整改 -->
+    <java name="scoreRectification" returnClass="int">
+        <![CDATA[
+            int def scoreRectification(boolean:completed) {
+                if (completed) {
+                    return 10;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 有效投诉 -->
+    <java name="scoreComplaints" returnClass="int">
+        <![CDATA[
+            int def scoreComplaints(int:complaintCount) {
+                if (complaintCount == 0) {
+                    return 10;
+                } else if (complaintCount <= 3) {
+                    return 6;
+                } else if (complaintCount <= 10) {
+                    return 2;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 环境卫生量化等级 -->
+    <java name="scoreEnvironment" returnClass="int">
+        <![CDATA[
+            int def scoreEnvironment(str:rating) {
+                if (rating == "A") {
+                    return 10;
+                } else if (rating == "B") {
+                    return 6;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 食安责任险 -->
+    <java name="scoreInsurance" returnClass="int">
+        <![CDATA[
+            int def scoreInsurance(boolean:hasInsurance) {
+                if (hasInsurance) {
+                    return 10;
+                } else {
+                    return 5;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 年审结论分档 -->
+    <java name="reviewLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def reviewLevel(int:totalScore) {
+                if (totalScore >= 85) {
+                    return "PASS";
+                } else if (totalScore >= 70) {
+                    return "CONDITIONAL";
+                } else {
+                    return "FAIL";
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

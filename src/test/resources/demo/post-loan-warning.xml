@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.PostLoanWarningRules">
+
+    <!-- 逾期阶段：0-未逾期 / 1-M1 / 2-M2 / 3-M3 / 4-M3+ -->
+    <java name="overdueStage" returnClass="int">
+        <![CDATA[
+            int def overdueStage(int:overdueDays) {
+                if (overdueDays >= 90) {
+                    return 4;
+                } else if (overdueDays >= 60) {
+                    return 3;
+                } else if (overdueDays >= 30) {
+                    return 2;
+                } else if (overdueDays >= 1) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 逾期天数与历史逾期评分：0-35 分 -->
+    <java name="scoreOverdueDays" returnClass="int">
+        <![CDATA[
+            int def scoreOverdueDays(int:overdueDays, int:overdueHistoryCount) {
+                int score = 0;
+                if (overdueDays >= 90) {
+                    score = 35;
+                } else if (overdueDays >= 60) {
+                    score = 28;
+                } else if (overdueDays >= 30) {
+                    score = 22;
+                } else if (overdueDays >= 7) {
+                    score = 15;
+                } else if (overdueDays >= 1) {
+                    score = 8;
+                }
+                if (overdueHistoryCount >= 3) {
+                    score = score - 10;
+                } else if (overdueHistoryCount >= 1) {
+                    score = score - 5;
+                }
+                if (score < 0) {
+                    score = 0;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 逾期金额占比评分：0-25 分 -->
+    <java name="scoreAmountRatio" returnClass="int">
+        <![CDATA[
+            int def scoreAmountRatio(double:overdueAmount, double:remainingPrincipal) {
+                if (remainingPrincipal <= 0.0 || overdueAmount <= 0.0) {
+                    return 0;
+                }
+                double ratio = overdueAmount / remainingPrincipal;
+                if (ratio >= 0.5) {
+                    return 25;
+                } else if (ratio >= 0.3) {
+                    return 20;
+                } else if (ratio >= 0.15) {
+                    return 14;
+                } else if (ratio >= 0.05) {
+                    return 8;
+                } else {
+                    return 4;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 联系触达评分：0-15 分，联系不上为 0 -->
+    <java name="scoreContact" returnClass="int">
+        <![CDATA[
+            int def scoreContact(boolean:contactSuccess, int:lastContactDays) {
+                int score = 0;
+                if (contactSuccess) {
+                    if (lastContactDays <= 3) {
+                        score = 15;
+                    } else if (lastContactDays <= 7) {
+                        score = 10;
+                    } else {
+                        score = 5;
+                    }
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 抵押物覆盖度评分：0-25 分 -->
+    <java name="scoreCollateral" returnClass="int">
+        <![CDATA[
+            int def scoreCollateral(str:collateralType, double:collateralValue, double:remainingPrincipal) {
+                if (remainingPrincipal <= 0.0) {
+                    return 0;
+                }
+                if (collateralType == "HOUSE") {
+                    double cover = collateralValue / remainingPrincipal;
+                    if (cover >= 1.2) {
+                        return 25;
+                    } else if (cover >= 0.8) {
+                        return 18;
+                    } else {
+                        return 10;
+                    }
+                } else if (collateralType == "VEHICLE") {
+                    double cover = collateralValue / remainingPrincipal;
+                    if (cover >= 1.2) {
+                        return 15;
+                    } else if (cover >= 0.8) {
+                        return 10;
+                    } else {
+                        return 5;
+                    }
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 预警等级映射 -->
+    <java name="warningLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def warningLevel(int:warningScore) {
+                if (warningScore >= 80) {
+                    return "RED";
+                } else if (warningScore >= 60) {
+                    return "ORANGE";
+                } else if (warningScore >= 40) {
+                    return "YELLOW";
+                } else {
+                    return "BLUE";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 催收渠道路由：大额高分直接诉讼 -->
+    <java name="collectChannel" returnClass="java.lang.String">
+        <![CDATA[
+            str def collectChannel(int:warningScore, double:overdueAmount) {
+                if (warningScore >= 80) {
+                    return "LITIGATION";
+                } else if (warningScore >= 60 && overdueAmount >= 100000.0) {
+                    return "LITIGATION";
+                } else if (warningScore >= 60) {
+                    return "HOME_VISIT";
+                } else if (warningScore >= 40) {
+                    return "PHONE";
+                } else {
+                    return "SMS";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 罚息计提：剩余本金 × 合同利率 × 1.5 × 逾期天数 / 365 -->
+    <java name="penaltyInterest" returnClass="double">
+        <![CDATA[
+            double def penaltyInterest(double:remainingPrincipal, double:baseRate, int:overdueDays) {
+                double penaltyRate = baseRate * 1.5;
+                double interest = remainingPrincipal * penaltyRate / 365.0 * overdueDays;
+                return interest;
+            }
+        ]]>
+    </java>
+
+    <!-- 最低还款额：逾期金额 + 违约金 -->
+    <java name="minRepayAmount" returnClass="double">
+        <![CDATA[
+            double def minRepayAmount(double:overdueAmount, int:overdueDays) {
+                double penaltyRatio = 0.01;
+                if (overdueDays >= 90) {
+                    penaltyRatio = 0.05;
+                } else if (overdueDays >= 30) {
+                    penaltyRatio = 0.03;
+                }
+                return overdueAmount + overdueAmount * penaltyRatio;
+            }
+        ]]>
+    </java>
+
+    <!-- 风险迁徙度：逾期阶段 × 2 + 历史预警次数，封顶 9 -->
+    <java name="riskMigration" returnClass="int">
+        <![CDATA[
+            int def riskMigration(int:overdueStage, int:warningCount) {
+                int migration = overdueStage * 2 + warningCount;
+                if (migration > 9) {
+                    migration = 9;
+                }
+                return migration;
+            }
+        ]]>
+    </java>
+
+</javas>

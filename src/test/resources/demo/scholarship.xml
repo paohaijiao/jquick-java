@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.ScholarshipRules">
+
+    <java name="eligibilityOk" returnClass="boolean">
+        <![CDATA[
+            boolean def eligibilityOk(int:failedCredits, boolean:violation) {
+                if (failedCredits > 0) {
+                    return false;
+                } else if (violation) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="academicScore" returnClass="int">
+        <![CDATA[
+            int def academicScore(int:average) {
+                if (average >= 95) {
+                    return 60;
+                } else if (average >= 90) {
+                    return 54;
+                } else if (average >= 85) {
+                    return 46;
+                } else if (average >= 80) {
+                    return 38;
+                } else if (average >= 75) {
+                    return 28;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="rankScore" returnClass="int">
+        <![CDATA[
+            int def rankScore(int:rank, int:total) {
+                if (rank * 100 < total * 10) {
+                    return 25;
+                } else if (rank * 100 < total * 20) {
+                    return 20;
+                } else if (rank * 100 < total * 30) {
+                    return 13;
+                } else if (rank * 100 < total * 50) {
+                    return 7;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="researchScore" returnClass="int">
+        <![CDATA[
+            int def researchScore(str:competition, boolean:paper) {
+                if (competition == "NATIONAL") {
+                    return 15;
+                } else if (paper) {
+                    return 15;
+                } else if (competition == "PROVINCIAL") {
+                    return 10;
+                } else if (competition == "SCHOOL") {
+                    return 5;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="awardLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def awardLevel(str:type, int:score, str:economic, str:competition, boolean:paper, boolean:volunteer) {
+                if (type == "NATIONAL") {
+                    if (score >= 85) {
+                        return "NATIONAL_SPECIAL";
+                    } else if (score >= 70) {
+                        return "NATIONAL_ENDEAVOR";
+                    } else {
+                        return "NONE";
+                    }
+                } else if (type == "ACADEMIC") {
+                    if (score >= 85) {
+                        return "FIRST";
+                    } else if (score >= 65) {
+                        return "SECOND";
+                    } else if (score >= 50) {
+                        return "THIRD";
+                    } else {
+                        return "NONE";
+                    }
+                } else if (type == "NEED_BASED") {
+                    if (economic == "HARDSHIP") {
+                        return "FIRST_GRANT";
+                    } else if (economic == "DIFFICULT") {
+                        return "SECOND_GRANT";
+                    } else {
+                        return "NONE";
+                    }
+                } else {
+                    if (competition == "NATIONAL") {
+                        return "INNOVATION";
+                    } else if (paper) {
+                        return "INNOVATION";
+                    } else if (competition == "PROVINCIAL") {
+                        return "COMP_PROVINCIAL";
+                    } else if (volunteer) {
+                        return "VOLUNTEER";
+                    } else {
+                        return "NONE";
+                    }
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="amountOf" returnClass="int">
+        <![CDATA[
+            int def amountOf(str:level) {
+                if (level == "NATIONAL_SPECIAL") {
+                    return 8000;
+                } else if (level == "NATIONAL_ENDEAVOR") {
+                    return 5000;
+                } else if (level == "FIRST") {
+                    return 3000;
+                } else if (level == "SECOND") {
+                    return 2000;
+                } else if (level == "FIRST_GRANT") {
+                    return 3000;
+                } else if (level == "SECOND_GRANT") {
+                    return 2000;
+                } else if (level == "INNOVATION") {
+                    return 1500;
+                } else if (level == "COMP_PROVINCIAL") {
+                    return 800;
+                } else if (level == "VOLUNTEER") {
+                    return 500;
+                } else if (level == "THIRD") {
+                    return 1000;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

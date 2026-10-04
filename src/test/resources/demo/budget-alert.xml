@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.BudgetAlertRules">
+
+    <java name="utilizationLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def utilizationLevel(double:spent, double:committed, double:budget) {
+                double occupied = spent + committed;
+                if (occupied * 100 >= budget * 100) {
+                    return "RED";
+                } else if (occupied * 100 >= budget * 90) {
+                    return "ORANGE";
+                } else if (occupied * 100 >= budget * 70) {
+                    return "YELLOW";
+                } else {
+                    return "GREEN";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="burnStatus" returnClass="java.lang.String">
+        <![CDATA[
+            str def burnStatus(double:spent, double:budget, int:month) {
+                double diff = spent * 12 - month * budget;
+                if (diff > budget * 1.8) {
+                    return "OVER_BURN";
+                } else if (diff < budget * -1.8) {
+                    return "UNDER_BURN";
+                } else {
+                    return "NORMAL";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="forecastStatus" returnClass="java.lang.String">
+        <![CDATA[
+            str def forecastStatus(double:forecast, double:budget) {
+                if (forecast * 100 >= budget * 110) {
+                    return "SEVERE";
+                } else if (forecast > budget) {
+                    return "MILD";
+                } else {
+                    return "OK";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="singleExpenseAction" returnClass="java.lang.String">
+        <![CDATA[
+            str def singleExpenseAction(str:level, str:category, boolean:emergency, boolean:capexApproved, boolean:overFivePercent) {
+                if (category == "CAPEX") {
+                    if (capexApproved) {
+                        return "APPROVE";
+                    } else {
+                        return "BLOCK";
+                    }
+                } else if (level == "RED") {
+                    if (emergency) {
+                        return "ESCALATE";
+                    } else {
+                        return "BLOCK";
+                    }
+                } else if (level == "ORANGE") {
+                    if (overFivePercent) {
+                        return "ESCALATE";
+                    } else {
+                        return "APPROVE_WITH_WARNING";
+                    }
+                } else if (level == "YELLOW") {
+                    return "APPROVE_WITH_WARNING";
+                } else {
+                    return "APPROVE";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="riskScore" returnClass="int">
+        <![CDATA[
+            int def riskScore(str:level, str:burn, str:forecast) {
+                int score = 10;
+                if (level == "RED") {
+                    score = 100;
+                } else if (level == "ORANGE") {
+                    score = 70;
+                } else if (level == "YELLOW") {
+                    score = 40;
+                }
+                if (burn == "OVER_BURN") {
+                    score = score + 10;
+                }
+                if (forecast == "SEVERE") {
+                    score = score + 10;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+</javas>

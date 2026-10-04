@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.QualityInspectionRules">
+
+    <!-- 不良率（千分比，整数运算避免精度问题） -->
+    <java name="defectRatePermil" returnClass="int">
+        <![CDATA[
+            int def defectRatePermil(int:totalDefects, int:sampleSize) {
+                if (sampleSize <= 0) {
+                    return 0;
+                }
+                return totalDefects * 1000 / sampleSize;
+            }
+        ]]>
+    </java>
+
+    <!-- 关键尺寸双向公差判定 -->
+    <java name="dimensionPass" returnClass="boolean">
+        <![CDATA[
+            boolean def dimensionPass(double:measuredSize, double:targetSize, double:tolerance) {
+                if (measuredSize > targetSize + tolerance) {
+                    return false;
+                } else if (measuredSize < targetSize - tolerance) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 缺陷扣分：致命 40 / 严重 15 / 轻微 5，下限 0 -->
+    <java name="scoreDefects" returnClass="int">
+        <![CDATA[
+            int def scoreDefects(int:criticalDefects, int:majorDefects, int:minorDefects) {
+                int score = 100 - criticalDefects * 40 - majorDefects * 15 - minorDefects * 5;
+                if (score < 0) {
+                    score = 0;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 外观加扣项 -->
+    <java name="scoreAppearance" returnClass="int">
+        <![CDATA[
+            int def scoreAppearance(int:surfaceScore) {
+                if (surfaceScore >= 95) {
+                    return 0;
+                } else if (surfaceScore >= 85) {
+                    return -10;
+                } else {
+                    return -20;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 尺寸加扣项 -->
+    <java name="scoreDimension" returnClass="int">
+        <![CDATA[
+            int def scoreDimension(boolean:dimensionPass) {
+                if (dimensionPass) {
+                    return 0;
+                } else {
+                    return -30;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 设备状态加扣项 -->
+    <java name="scoreEquipment" returnClass="int">
+        <![CDATA[
+            int def scoreEquipment(str:equipmentStatus) {
+                if (equipmentStatus == "WARNING") {
+                    return -5;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 质量等级：致命缺陷或高不良率直接报废，其次返工、挂起、接收 -->
+    <java name="qualityLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def qualityLevel(int:qualityScore, int:criticalDefects, int:defectRatePermil) {
+                if (criticalDefects >= 1 || defectRatePermil >= 200) {
+                    return "SCRAP";
+                } else if (qualityScore < 40 || defectRatePermil >= 100) {
+                    return "REWORK";
+                } else if (qualityScore < 60 || defectRatePermil >= 30) {
+                    return "HOLD";
+                } else {
+                    return "ACCEPT";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 处置去向 -->
+    <java name="disposition" returnClass="java.lang.String">
+        <![CDATA[
+            str def disposition(str:qualityLevel) {
+                if (qualityLevel == "SCRAP") {
+                    return "SCRAP_BIN";
+                } else if (qualityLevel == "REWORK") {
+                    return "REWORK_LINE";
+                } else if (qualityLevel == "HOLD") {
+                    return "QA_HOLD";
+                } else {
+                    return "NEXT_PROCESS";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 纠正预防措施：致命缺陷、严重缺陷成片、设备告警时触发 -->
+    <java name="needCapa" returnClass="boolean">
+        <![CDATA[
+            boolean def needCapa(int:criticalDefects, int:majorDefects, boolean:equipmentWarning) {
+                if (criticalDefects >= 1 || majorDefects >= 3 || equipmentWarning) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 放行许可：必须接收且关键尺寸合格 -->
+    <java name="releaseAllowed" returnClass="boolean">
+        <![CDATA[
+            boolean def releaseAllowed(str:qualityLevel, boolean:dimensionPass) {
+                if (qualityLevel == "ACCEPT" && dimensionPass) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

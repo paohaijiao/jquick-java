@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.CouponRules">
+
+    <!-- 基础满减：会员等级 × 订单金额 -->
+    <java name="baseDiscount" returnClass="double">
+        <![CDATA[
+            double def baseDiscount(str:memberLevel, double:orderAmount) {
+                if (orderAmount >= 1000.0) {
+                    if (memberLevel == "VIP") {
+                        return 200.0;
+                    } else if (memberLevel == "GOLD") {
+                        return 150.0;
+                    } else if (memberLevel == "SILVER") {
+                        return 100.0;
+                    } else {
+                        return 60.0;
+                    }
+                } else if (orderAmount >= 500.0) {
+                    if (memberLevel == "VIP") {
+                        return 100.0;
+                    } else if (memberLevel == "GOLD") {
+                        return 80.0;
+                    } else if (memberLevel == "SILVER") {
+                        return 50.0;
+                    } else {
+                        return 30.0;
+                    }
+                } else if (orderAmount >= 200.0) {
+                    if (memberLevel == "VIP") {
+                        return 40.0;
+                    } else {
+                        return 20.0;
+                    }
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 新客奖励：注册 7 天内 -->
+    <java name="newUserBonus" returnClass="double">
+        <![CDATA[
+            double def newUserBonus(boolean:newUser, int:joinDays) {
+                if (newUser && joinDays <= 7) {
+                    return 30.0;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 忠诚奖励：下单频次 -->
+    <java name="loyaltyBonus" returnClass="double">
+        <![CDATA[
+            double def loyaltyBonus(str:memberLevel, int:orderCount) {
+                if (orderCount >= 50 && (memberLevel == "VIP" || memberLevel == "GOLD")) {
+                    return 50.0;
+                } else if (orderCount >= 20) {
+                    return 20.0;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 品类奖励：活动期生鲜/数码 -->
+    <java name="categoryBonus" returnClass="double">
+        <![CDATA[
+            double def categoryBonus(str:category, boolean:campaignActive) {
+                if (campaignActive && category == "FRESH") {
+                    return 15.0;
+                } else if (campaignActive && category == "DIGITAL") {
+                    return 10.0;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 券类型（按业务优先级归类） -->
+    <java name="couponType" returnClass="java.lang.String">
+        <![CDATA[
+            str def couponType(str:memberLevel, double:orderAmount, boolean:newUser, int:joinDays,
+                               int:orderCount, str:category, boolean:campaignActive) {
+                if (newUser && joinDays <= 7 && orderAmount >= 50.0) {
+                    return "NEW_USER";
+                } else if (memberLevel == "VIP" && orderAmount >= 1000.0) {
+                    return "VIP_EXCLUSIVE";
+                } else if (orderAmount >= 1000.0) {
+                    return "LARGE_ORDER";
+                } else if (orderCount >= 20 && (memberLevel == "VIP" || memberLevel == "GOLD")) {
+                    return "LOYALTY";
+                } else if (campaignActive && category == "FRESH") {
+                    return "CATEGORY";
+                } else if (orderAmount >= 200.0) {
+                    return "ORDER";
+                } else {
+                    return "NONE";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 券名称 -->
+    <java name="couponName" returnClass="java.lang.String">
+        <![CDATA[
+            str def couponName(str:couponType, double:discountAmount) {
+                if (discountAmount <= 0.0) {
+                    return "无可用券";
+                } else if (couponType == "NEW_USER") {
+                    return "新客专享券";
+                } else if (couponType == "VIP_EXCLUSIVE") {
+                    return "VIP专享券";
+                } else if (couponType == "LARGE_ORDER") {
+                    return "大额满减券";
+                } else if (couponType == "LOYALTY") {
+                    return "忠诚回馈券";
+                } else if (couponType == "CATEGORY") {
+                    return "生鲜品类券";
+                } else {
+                    return "满减券";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 使用门槛 -->
+    <java name="threshold" returnClass="double">
+        <![CDATA[
+            double def threshold(double:discountAmount) {
+                if (discountAmount >= 200.0) {
+                    return 2000.0;
+                } else if (discountAmount >= 150.0) {
+                    return 1500.0;
+                } else if (discountAmount >= 100.0) {
+                    return 1000.0;
+                } else if (discountAmount >= 60.0) {
+                    return 600.0;
+                } else if (discountAmount >= 40.0) {
+                    return 400.0;
+                } else if (discountAmount >= 20.0) {
+                    return 200.0;
+                } else if (discountAmount >= 10.0) {
+                    return 100.0;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 有效期 -->
+    <java name="validDays" returnClass="int">
+        <![CDATA[
+            int def validDays(str:couponType) {
+                if (couponType == "NEW_USER") {
+                    return 7;
+                } else if (couponType == "VIP_EXCLUSIVE") {
+                    return 30;
+                } else if (couponType == "LARGE_ORDER") {
+                    return 15;
+                } else {
+                    return 10;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 是否人工复核 -->
+    <java name="needManualReview" returnClass="boolean">
+        <![CDATA[
+            boolean def needManualReview(boolean:riskFlag, double:discountAmount) {
+                if (riskFlag) {
+                    return true;
+                } else if (discountAmount >= 200.0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 是否可叠加 -->
+    <java name="stackable" returnClass="boolean">
+        <![CDATA[
+            boolean def stackable(str:couponType, boolean:hasUsedCoupon) {
+                if (hasUsedCoupon) {
+                    return false;
+                } else if (couponType == "NEW_USER") {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 风控等级 -->
+    <java name="riskLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def riskLevel(boolean:riskFlag, int:orderCount, int:joinDays) {
+                if (riskFlag) {
+                    return "HIGH";
+                } else if (joinDays < 3 && orderCount <= 0) {
+                    return "MEDIUM";
+                } else {
+                    return "LOW";
+                }
+            }
+        ]]>
+    </java>
+
+</javas>
