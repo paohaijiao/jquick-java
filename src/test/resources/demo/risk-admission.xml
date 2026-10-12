@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.RiskAdmissionRules">
+
+    <!-- 负债收入比评分：0-25 分 -->
+    <java name="scoreDebtRatio" returnClass="int">
+        <![CDATA[
+            int def scoreDebtRatio(double:monthlyIncome, double:monthlyDebt) {
+                if (monthlyIncome <= 0.0) {
+                    return 0;
+                }
+                double ratio = monthlyDebt / monthlyIncome;
+                if (ratio <= 0.2) {
+                    return 25;
+                } else if (ratio <= 0.4) {
+                    return 20;
+                } else if (ratio <= 0.5) {
+                    return 15;
+                } else if (ratio <= 0.6) {
+                    return 8;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 历史逾期评分：0-30 分，逾期越久越差 -->
+    <java name="scoreOverdue" returnClass="int">
+        <![CDATA[
+            int def scoreOverdue(int:overdueCount, int:maxOverdueDays) {
+                if (overdueCount == 0) {
+                    return 30;
+                } else if (overdueCount <= 2 && maxOverdueDays <= 30) {
+                    return 20;
+                } else if (overdueCount <= 4 && maxOverdueDays <= 60) {
+                    return 10;
+                } else if (maxOverdueDays <= 90) {
+                    return 5;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 职业稳定性评分：0-15 分，在职月数 + 单位性质 -->
+    <java name="scoreEmployment" returnClass="int">
+        <![CDATA[
+            int def scoreEmployment(int:employedMonths, str:companyType) {
+                int score = 0;
+                if (employedMonths >= 36) {
+                    score = 10;
+                } else if (employedMonths >= 12) {
+                    score = 7;
+                } else if (employedMonths >= 6) {
+                    score = 4;
+                }
+                if (companyType == "SOE" || companyType == "LISTED") {
+                    score = score + 5;
+                } else if (companyType == "FOREIGN") {
+                    score = score + 4;
+                } else if (companyType == "PRIVATE") {
+                    score = score + 2;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 征信查询评分：-5 ~ 10 分，多头借贷信号 -->
+    <java name="scoreCreditQuery" returnClass="int">
+        <![CDATA[
+            int def scoreCreditQuery(int:queryCount3M) {
+                if (queryCount3M <= 2) {
+                    return 10;
+                } else if (queryCount3M <= 5) {
+                    return 5;
+                } else if (queryCount3M <= 8) {
+                    return 0;
+                } else {
+                    return -5;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 抵押物评分：0-20 分，结合覆盖率 -->
+    <java name="scoreCollateral" returnClass="int">
+        <![CDATA[
+            int def scoreCollateral(str:collateralType, double:collateralValue, double:loanAmount) {
+                if (loanAmount <= 0.0) {
+                    return 0;
+                }
+                if (collateralType == "HOUSE") {
+                    double cover = collateralValue / loanAmount;
+                    if (cover >= 1.5) {
+                        return 20;
+                    } else if (cover >= 1.0) {
+                        return 15;
+                    } else {
+                        return 8;
+                    }
+                } else if (collateralType == "VEHICLE") {
+                    double cover = collateralValue / loanAmount;
+                    if (cover >= 1.5) {
+                        return 12;
+                    } else if (cover >= 1.0) {
+                        return 8;
+                    } else {
+                        return 4;
+                    }
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 风险等级映射 -->
+    <java name="riskLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def riskLevel(int:totalScore) {
+                if (totalScore >= 85) {
+                    return "A";
+                } else if (totalScore >= 70) {
+                    return "B";
+                } else if (totalScore >= 55) {
+                    return "C";
+                } else {
+                    return "D";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 准入结论：涉诉一票否决 -->
+    <java name="admit" returnClass="java.lang.String">
+        <![CDATA[
+            str def admit(int:totalScore, boolean:hasJudicialRecord) {
+                if (hasJudicialRecord) {
+                    return "REJECT";
+                } else if (totalScore >= 70) {
+                    return "PASS";
+                } else if (totalScore >= 55) {
+                    return "MANUAL_REVIEW";
+                } else {
+                    return "REJECT";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 建议额度：月收入 × 风险系数 -->
+    <java name="suggestLimit" returnClass="double">
+        <![CDATA[
+            double def suggestLimit(double:monthlyIncome, int:totalScore) {
+                double multiplier = 0.0;
+                if (totalScore >= 90) {
+                    multiplier = 30.0;
+                } else if (totalScore >= 80) {
+                    multiplier = 24.0;
+                } else if (totalScore >= 70) {
+                    multiplier = 18.0;
+                } else if (totalScore >= 55) {
+                    multiplier = 12.0;
+                } else {
+                    multiplier = 0.0;
+                }
+                return monthlyIncome * multiplier;
+            }
+        ]]>
+    </java>
+
+    <!-- 风险定价：等级越低利率越高 -->
+    <java name="interestRate" returnClass="double">
+        <![CDATA[
+            double def interestRate(str:riskLevel) {
+                if (riskLevel == "A") {
+                    return 0.0385;
+                } else if (riskLevel == "B") {
+                    return 0.0495;
+                } else if (riskLevel == "C") {
+                    return 0.0680;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 人工复核触发条件 -->
+    <java name="needManualReview" returnClass="boolean">
+        <![CDATA[
+            boolean def needManualReview(int:totalScore, int:queryCount3M) {
+                if (totalScore >= 55 && totalScore < 70) {
+                    return true;
+                } else if (queryCount3M > 8) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

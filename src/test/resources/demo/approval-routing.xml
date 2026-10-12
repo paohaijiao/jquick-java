@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.ApprovalRoutingRules">
+
+    <java name="leaveApprover" returnClass="java.lang.String">
+        <![CDATA[
+            str def leaveApprover(str:leaveType, double:hours) {
+                if (leaveType == "ANNUAL") {
+                    if (hours > 80.0) {
+                        return "VP";
+                    } else if (hours > 24.0) {
+                        return "DEPT_MANAGER";
+                    } else {
+                        return "TEAM_LEAD";
+                    }
+                } else if (leaveType == "SICK") {
+                    if (hours > 40.0) {
+                        return "VP";
+                    } else if (hours > 24.0) {
+                        return "DEPT_MANAGER";
+                    } else {
+                        return "TEAM_LEAD";
+                    }
+                } else {
+                    if (hours > 40.0) {
+                        return "VP";
+                    } else if (hours > 8.0) {
+                        return "DEPT_MANAGER";
+                    } else {
+                        return "TEAM_LEAD";
+                    }
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="tripApprover" returnClass="java.lang.String">
+        <![CDATA[
+            str def tripApprover(double:amount) {
+                if (amount >= 30000.0) {
+                    return "CEO";
+                } else if (amount >= 10000.0) {
+                    return "CFO";
+                } else if (amount >= 3000.0) {
+                    return "VP";
+                } else {
+                    return "DEPT_MANAGER";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="overtimeApprover" returnClass="java.lang.String">
+        <![CDATA[
+            str def overtimeApprover(double:hours, boolean:retroactive) {
+                if (retroactive) {
+                    return "DEPT_MANAGER";
+                } else if (hours > 16.0) {
+                    return "DEPT_MANAGER";
+                } else {
+                    return "TEAM_LEAD";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="sickCertificateRequired" returnClass="boolean">
+        <![CDATA[
+            boolean def sickCertificateRequired(double:hours) {
+                if (hours > 24.0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="slaHours" returnClass="int">
+        <![CDATA[
+            int def slaHours(str:role) {
+                if (role == "CEO") {
+                    return 48;
+                } else if (role == "CFO") {
+                    return 36;
+                } else if (role == "VP") {
+                    return 24;
+                } else if (role == "DEPT_MANAGER") {
+                    return 16;
+                } else {
+                    return 8;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

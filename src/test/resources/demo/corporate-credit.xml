@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.CorporateLoanRules">
+
+    <!-- 持续经营年限评分：0-15 -->
+    <java name="scoreOperatingYears" returnClass="int">
+        <![CDATA[
+            int def scoreOperatingYears(int:operatingYears) {
+                if (operatingYears >= 10) {
+                    return 15;
+                } else if (operatingYears >= 5) {
+                    return 12;
+                } else if (operatingYears >= 3) {
+                    return 8;
+                } else if (operatingYears >= 1) {
+                    return 4;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 营收规模评分：0-20（单位：元） -->
+    <java name="scoreRevenue" returnClass="int">
+        <![CDATA[
+            int def scoreRevenue(double:annualRevenue) {
+                if (annualRevenue >= 100000000.0) {
+                    return 20;
+                } else if (annualRevenue >= 50000000.0) {
+                    return 16;
+                } else if (annualRevenue >= 20000000.0) {
+                    return 12;
+                } else if (annualRevenue >= 5000000.0) {
+                    return 7;
+                } else {
+                    return 3;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 纳税信用评分：0-20，等级为轴、税额微调 -->
+    <java name="scoreTaxCredit" returnClass="int">
+        <![CDATA[
+            int def scoreTaxCredit(str:taxCreditLevel, double:annualTaxAmount) {
+                if (taxCreditLevel == "A") {
+                    if (annualTaxAmount >= 1000000.0) {
+                        return 20;
+                    } else if (annualTaxAmount >= 300000.0) {
+                        return 17;
+                    } else {
+                        return 14;
+                    }
+                } else if (taxCreditLevel == "B") {
+                    if (annualTaxAmount >= 1000000.0) {
+                        return 15;
+                    } else if (annualTaxAmount >= 300000.0) {
+                        return 13;
+                    } else {
+                        return 10;
+                    }
+                } else if (taxCreditLevel == "M") {
+                    if (annualTaxAmount >= 300000.0) {
+                        return 10;
+                    } else if (annualTaxAmount >= 100000.0) {
+                        return 8;
+                    } else {
+                        return 6;
+                    }
+                } else if (taxCreditLevel == "C") {
+                    return 4;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 流水核验评分：0-15，流水/营收交叉相乘比较 -->
+    <java name="scoreBankFlow" returnClass="int">
+        <![CDATA[
+            int def scoreBankFlow(double:bankFlowAnnual, double:annualRevenue) {
+                if (annualRevenue <= 0.0) {
+                    return 0;
+                }
+                if (bankFlowAnnual * 10 >= annualRevenue * 12) {
+                    return 15;
+                } else if (bankFlowAnnual >= annualRevenue) {
+                    return 12;
+                } else if (bankFlowAnnual * 10 >= annualRevenue * 8) {
+                    return 8;
+                } else if (bankFlowAnnual * 10 >= annualRevenue * 5) {
+                    return 4;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 资产负债率评分：0-15 -->
+    <java name="scoreDebtRatio" returnClass="int">
+        <![CDATA[
+            int def scoreDebtRatio(int:debtRatio) {
+                if (debtRatio <= 40) {
+                    return 15;
+                } else if (debtRatio <= 55) {
+                    return 12;
+                } else if (debtRatio <= 70) {
+                    return 8;
+                } else if (debtRatio <= 80) {
+                    return 4;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 征信记录评分：0-15 -->
+    <java name="scoreCreditRecord" returnClass="int">
+        <![CDATA[
+            int def scoreCreditRecord(int:overdueCount, boolean:hasJudicialRecord) {
+                if (hasJudicialRecord) {
+                    return 0;
+                }
+                if (overdueCount == 0) {
+                    return 15;
+                } else if (overdueCount <= 2) {
+                    return 11;
+                } else if (overdueCount <= 4) {
+                    return 6;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 信用等级映射 -->
+    <java name="creditRating" returnClass="java.lang.String">
+        <![CDATA[
+            str def creditRating(int:totalScore) {
+                if (totalScore >= 85) {
+                    return "A";
+                } else if (totalScore >= 75) {
+                    return "B";
+                } else if (totalScore >= 60) {
+                    return "C";
+                } else {
+                    return "D";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 审批结论映射 -->
+    <java name="approveDecision" returnClass="java.lang.String">
+        <![CDATA[
+            str def approveDecision(int:totalScore) {
+                if (totalScore >= 75) {
+                    return "APPROVE";
+                } else if (totalScore >= 60) {
+                    return "MANUAL_REVIEW";
+                } else {
+                    return "REJECT";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 纳税额授信倍数 -->
+    <java name="taxMultiplier" returnClass="double">
+        <![CDATA[
+            double def taxMultiplier(str:taxCreditLevel, int:totalScore) {
+                if (taxCreditLevel == "A") {
+                    if (totalScore >= 85) {
+                        return 9.0;
+                    } else if (totalScore >= 75) {
+                        return 7.0;
+                    } else {
+                        return 4.0;
+                    }
+                } else if (taxCreditLevel == "B") {
+                    if (totalScore >= 85) {
+                        return 6.0;
+                    } else if (totalScore >= 75) {
+                        return 4.5;
+                    } else {
+                        return 2.5;
+                    }
+                } else if (taxCreditLevel == "M") {
+                    if (totalScore >= 75) {
+                        return 3.0;
+                    } else if (totalScore >= 60) {
+                        return 2.0;
+                    } else {
+                        return 1.0;
+                    }
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 执行年利率 -->
+    <java name="interestRate" returnClass="double">
+        <![CDATA[
+            double def interestRate(str:creditRating) {
+                if (creditRating == "A") {
+                    return 0.0345;
+                } else if (creditRating == "B") {
+                    return 0.0385;
+                } else if (creditRating == "C") {
+                    return 0.0435;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.AfterSalesRules">
+
+    <java name="sevenDayEligible" returnClass="boolean">
+        <![CDATA[
+            boolean def sevenDayEligible(int:days, boolean:unused, boolean:sealed, boolean:impact) {
+                if (days <= 7) {
+                    if (unused) {
+                        if (sealed) {
+                            if (impact) {
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="qualityEligible" returnClass="boolean">
+        <![CDATA[
+            boolean def qualityEligible(int:days, boolean:proof, boolean:shopResponsible) {
+                if (days <= 15) {
+                    if (proof) {
+                        return true;
+                    } else {
+                        if (shopResponsible) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="exchangeEligible" returnClass="boolean">
+        <![CDATA[
+            boolean def exchangeEligible(str:reason, int:days) {
+                if (reason == "SIZE") {
+                    if (days <= 15) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else if (reason == "MISMATCH") {
+                    if (days <= 30) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="freightPayer" returnClass="java.lang.String">
+        <![CDATA[
+            str def freightPayer(str:reason) {
+                if (reason == "QUALITY") {
+                    return "MERCHANT";
+                } else if (reason == "MISMATCH") {
+                    return "MERCHANT";
+                } else if (reason == "SIZE") {
+                    return "BUYER";
+                } else if (reason == "SEVEN_DAY") {
+                    return "BUYER";
+                } else {
+                    return "BUYER";
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

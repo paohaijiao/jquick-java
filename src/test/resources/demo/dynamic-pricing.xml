@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.DynamicPricingRules">
+
+    <!-- 库龄分级 -->
+    <java name="ageLevel" returnClass="int">
+        <![CDATA[
+            int def ageLevel(int:stockAgeDays) {
+                if (stockAgeDays >= 180) {
+                    return 4;
+                } else if (stockAgeDays >= 90) {
+                    return 3;
+                } else if (stockAgeDays >= 60) {
+                    return 2;
+                } else if (stockAgeDays >= 30) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 库龄基准折扣 -->
+    <java name="baseDiscount" returnClass="double">
+        <![CDATA[
+            double def baseDiscount(int:stockAgeDays) {
+                if (stockAgeDays >= 180) {
+                    return 0.5;
+                } else if (stockAgeDays >= 90) {
+                    return 0.65;
+                } else if (stockAgeDays >= 60) {
+                    return 0.8;
+                } else if (stockAgeDays >= 30) {
+                    return 0.9;
+                } else {
+                    return 1.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 周转修正：近 30 天销量 / 库存 -->
+    <java name="slowMovingFactor" returnClass="double">
+        <![CDATA[
+            double def slowMovingFactor(int:recentSalesQty30d, int:stockQty) {
+                if (stockQty <= 0) {
+                    return 0.0;
+                }
+                if (recentSalesQty30d * 10 <= stockQty) {
+                    return -0.15;
+                } else if (recentSalesQty30d * 10 <= stockQty * 3) {
+                    return -0.08;
+                } else if (recentSalesQty30d * 10 <= stockQty * 6) {
+                    return 0.0;
+                } else {
+                    return 0.05;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 季节修正 -->
+    <java name="seasonFactor" returnClass="double">
+        <![CDATA[
+            double def seasonFactor(str:seasonFactor) {
+                if (seasonFactor == "OFF") {
+                    return -0.05;
+                } else if (seasonFactor == "PEAK") {
+                    return 0.05;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 临期修正 -->
+    <java name="perishableFactor" returnClass="double">
+        <![CDATA[
+            double def perishableFactor(boolean:perishable, int:stockAgeDays) {
+                if (perishable && stockAgeDays >= 7) {
+                    return -0.10;
+                } else if (perishable) {
+                    return -0.05;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 仓储修正 -->
+    <java name="warehouseFactor" returnClass="double">
+        <![CDATA[
+            double def warehouseFactor(str:warehouseType) {
+                if (warehouseType == "OUTSOURCE") {
+                    return -0.03;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 最低毛利保护 -->
+    <java name="applyFloor" returnClass="double">
+        <![CDATA[
+            double def applyFloor(double:price, double:costPrice, double:marginFloor) {
+                double floor = costPrice * (1.0 + marginFloor);
+                if (price < floor) {
+                    return floor;
+                } else {
+                    return price;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 清仓等级 -->
+    <java name="clearanceLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def clearanceLevel(double:finalDiscount) {
+                if (finalDiscount <= 0.55) {
+                    return "DEEP";
+                } else if (finalDiscount <= 0.75) {
+                    return "MEDIUM";
+                } else if (finalDiscount < 1.0) {
+                    return "LIGHT";
+                } else {
+                    return "NONE";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 促销方式路由 -->
+    <java name="promotionType" returnClass="java.lang.String">
+        <![CDATA[
+            str def promotionType(str:clearanceLevel, boolean:perishable) {
+                if (clearanceLevel == "DEEP" && perishable) {
+                    return "FLASH_SALE";
+                } else if (clearanceLevel == "DEEP") {
+                    return "BUNDLE";
+                } else if (clearanceLevel == "MEDIUM") {
+                    return "COUPON";
+                } else if (clearanceLevel == "LIGHT") {
+                    return "MEMBER_PRICE";
+                } else {
+                    return "NONE";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 是否建议清仓 -->
+    <java name="needClearance" returnClass="boolean">
+        <![CDATA[
+            boolean def needClearance(int:stockAgeDays, int:stockQty, int:recentSalesQty30d) {
+                if (stockAgeDays >= 90) {
+                    return true;
+                } else if (stockAgeDays >= 60 && recentSalesQty30d * 4 < stockQty) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.PropertyWaiverRules">
+
+    <java name="hardRejectReason" returnClass="java.lang.String">
+        <![CDATA[
+            str def hardRejectReason(boolean:renting, boolean:illegal, int:overdueMonths, boolean:safetyViolation) {
+                if (renting) {
+                    return "RENTING";
+                } else if (illegal) {
+                    return "ILLEGAL";
+                } else if (overdueMonths > 6) {
+                    return "OVERDUE";
+                } else if (safetyViolation) {
+                    return "SAFETY";
+                } else {
+                    return "PASS";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="propertyWaiverPercent" returnClass="int">
+        <![CDATA[
+            int def propertyWaiverPercent(str:householdType, boolean:vacant) {
+                if (householdType == "SUBSISTENCE") {
+                    return 100;
+                } else if (householdType == "MARTYR") {
+                    return 100;
+                } else if (householdType == "DISABLED") {
+                    return 100;
+                } else if (householdType == "LOW_INCOME") {
+                    return 60;
+                } else if (householdType == "ELDERLY_ALONE") {
+                    return 50;
+                } else if (vacant) {
+                    return 30;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="parkingWaiverPercent" returnClass="int">
+        <![CDATA[
+            int def parkingWaiverPercent(str:householdType) {
+                if (householdType == "SUBSISTENCE") {
+                    return 100;
+                } else if (householdType == "MARTYR") {
+                    return 100;
+                } else if (householdType == "DISABLED") {
+                    return 100;
+                } else if (householdType == "LOW_INCOME") {
+                    return 50;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="qualifiedArea" returnClass="double">
+        <![CDATA[
+            double def qualifiedArea(double:size, double:perCapita, int:family, str:householdType) {
+                double cap = 15.0;
+                if (householdType == "SUBSISTENCE") {
+                    cap = 30.0;
+                } else if (householdType == "MARTYR") {
+                    cap = 30.0;
+                } else if (householdType == "DISABLED") {
+                    cap = 30.0;
+                } else if (householdType == "ELDERLY_ALONE") {
+                    cap = 30.0;
+                } else if (householdType == "LOW_INCOME") {
+                    cap = 20.0;
+                }
+                if (perCapita <= cap) {
+                    return size;
+                }
+                double limit = cap * family;
+                if (size < limit) {
+                    return size;
+                } else {
+                    return limit;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

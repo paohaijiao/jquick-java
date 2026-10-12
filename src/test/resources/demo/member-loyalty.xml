@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.MemberLoyaltyRules">
+
+    <java name="periodEarn" returnClass="int">
+        <![CDATA[
+            int def periodEarn(int:spendYuan, int:orders, int:refundRate) {
+                int raw = spendYuan + orders * 20;
+                if (refundRate >= 30) {
+                    return raw * 50 / 100;
+                } else if (refundRate >= 15) {
+                    return raw * 80 / 100;
+                } else {
+                    return raw;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="targetLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def targetLevel(int:growthValue) {
+                if (growthValue >= 50000) {
+                    return "S5";
+                } else if (growthValue >= 20000) {
+                    return "S4";
+                } else if (growthValue >= 8000) {
+                    return "S3";
+                } else if (growthValue >= 2000) {
+                    return "S2";
+                } else {
+                    return "S1";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="levelRank" returnClass="int">
+        <![CDATA[
+            int def levelRank(str:level) {
+                if (level == "S5") {
+                    return 5;
+                } else if (level == "S4") {
+                    return 4;
+                } else if (level == "S3") {
+                    return 3;
+                } else if (level == "S2") {
+                    return 2;
+                } else {
+                    return 1;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="levelDiscount" returnClass="double">
+        <![CDATA[
+            double def levelDiscount(str:level) {
+                if (level == "S5") {
+                    return 0.85;
+                } else if (level == "S4") {
+                    return 0.90;
+                } else if (level == "S3") {
+                    return 0.94;
+                } else if (level == "S2") {
+                    return 0.97;
+                } else {
+                    return 1.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="renewalReminder" returnClass="boolean">
+        <![CDATA[
+            boolean def renewalReminder(int:daysToExpire, int:violationCount) {
+                if (daysToExpire <= 30) {
+                    if (violationCount == 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

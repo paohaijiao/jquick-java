@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.PresaleFinalPaymentRules">
+
+    <java name="merchantEligible" returnClass="boolean">
+        <![CDATA[
+            boolean def merchantEligible(int:creditScore, int:breaches, boolean:bondPaid) {
+                if (creditScore >= 80) {
+                    if (breaches == 0) {
+                        if (bondPaid) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="availableStock" returnClass="int">
+        <![CDATA[
+            int def availableStock(int:stockOnHand, int:reservedStock) {
+                return stockOnHand - reservedStock;
+            }
+        ]]>
+    </java>
+
+    <java name="depositTreatment" returnClass="java.lang.String">
+        <![CDATA[
+            str def depositTreatment(int:windowStatus, boolean:identity, boolean:cancelledBefore) {
+                if (cancelledBefore) {
+                    return "REFUNDABLE";
+                } else if (windowStatus == 2) {
+                    return "FORFEIT";
+                } else if (windowStatus == 1) {
+                    if (identity) {
+                        return "DEDUCT";
+                    } else {
+                        return "HOLD";
+                    }
+                } else {
+                    return "HOLD";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="canPayBalance" returnClass="boolean">
+        <![CDATA[
+            boolean def canPayBalance(int:windowStatus, boolean:identity) {
+                if (windowStatus == 1) {
+                    if (identity) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

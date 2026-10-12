@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.TechProjectReviewRules">
+
+    <!-- 技术先进性：鉴定等级基础分 + 发明专利加成，35 封顶 -->
+    <java name="scoreTech" returnClass="int">
+        <![CDATA[
+            int def scoreTech(str:techLevel, int:inventionPatents) {
+                int score = 8;
+                if (techLevel == "INTL_LEADING") {
+                    score = 35;
+                } else if (techLevel == "INTL_ADVANCED") {
+                    score = 30;
+                } else if (techLevel == "DOM_LEADING") {
+                    score = 25;
+                } else if (techLevel == "DOM_ADVANCED") {
+                    score = 18;
+                } else {
+                    score = 8;
+                }
+                int bonus = 0;
+                if (inventionPatents >= 5) {
+                    bonus = 3;
+                } else if (inventionPatents >= 2) {
+                    bonus = 2;
+                } else if (inventionPatents >= 1) {
+                    bonus = 1;
+                } else {
+                    bonus = 0;
+                }
+                int total = score + bonus;
+                if (total > 35) {
+                    total = 35;
+                }
+                return total;
+            }
+        ]]>
+    </java>
+
+    <!-- 产业化成熟度：阶段基础分 + 营收规模加成，25 封顶 -->
+    <java name="scoreIndustrialization" returnClass="int">
+        <![CDATA[
+            int def scoreIndustrialization(str:pilotStage, int:annualRevenueWan) {
+                int base = 7;
+                if (pilotStage == "MASS") {
+                    base = 20;
+                } else if (pilotStage == "PILOT") {
+                    base = 14;
+                } else {
+                    base = 7;
+                }
+                int bonus = 0;
+                if (pilotStage == "MASS") {
+                    if (annualRevenueWan >= 5000) {
+                        bonus = 5;
+                    } else if (annualRevenueWan >= 1000) {
+                        bonus = 3;
+                    } else {
+                        bonus = 0;
+                    }
+                }
+                if (pilotStage == "PILOT") {
+                    if (annualRevenueWan >= 5000) {
+                        bonus = 4;
+                    } else if (annualRevenueWan >= 1000) {
+                        bonus = 2;
+                    } else {
+                        bonus = 0;
+                    }
+                }
+                int total = base + bonus;
+                if (total > 25) {
+                    total = 25;
+                }
+                return total;
+            }
+        ]]>
+    </java>
+
+    <!-- 团队实力：带头人基础分 + 博士加成，按档封顶 -->
+    <java name="scoreTeam" returnClass="int">
+        <![CDATA[
+            int def scoreTeam(str:leaderTitle, int:phdCount) {
+                int base = 6;
+                int cap = 8;
+                if (leaderTitle == "ACADEMICIAN") {
+                    base = 13;
+                    cap = 15;
+                } else if (leaderTitle == "EXPERT") {
+                    base = 10;
+                    cap = 12;
+                } else {
+                    base = 6;
+                    cap = 8;
+                }
+                int bonus = 0;
+                if (phdCount >= 3) {
+                    bonus = 2;
+                } else if (phdCount >= 1) {
+                    bonus = 1;
+                } else {
+                    bonus = 0;
+                }
+                int total = base + bonus;
+                if (total > cap) {
+                    total = cap;
+                }
+                return total;
+            }
+        ]]>
+    </java>
+
+    <!-- 经费预算合理性：研发投入强度 + 自筹资金比例 -->
+    <java name="scoreBudget" returnClass="int">
+        <![CDATA[
+            int def scoreBudget(int:rdRatio, int:selfFundedRatio) {
+                int rd = 0;
+                if (rdRatio >= 15) {
+                    rd = 8;
+                } else if (rdRatio >= 8) {
+                    rd = 5;
+                } else if (rdRatio >= 3) {
+                    rd = 3;
+                } else {
+                    rd = 0;
+                }
+                int self = 1;
+                if (selfFundedRatio >= 60) {
+                    self = 7;
+                } else if (selfFundedRatio >= 40) {
+                    self = 5;
+                } else if (selfFundedRatio >= 20) {
+                    self = 3;
+                } else {
+                    self = 1;
+                }
+                return rd + self;
+            }
+        ]]>
+    </java>
+
+    <!-- 社会效益：新增就业 + 节能降耗 -->
+    <java name="scoreSocial" returnClass="int">
+        <![CDATA[
+            int def scoreSocial(int:employmentIncrease, int:energySavingTon) {
+                int jobs = 0;
+                if (employmentIncrease >= 50) {
+                    jobs = 5;
+                } else if (employmentIncrease >= 20) {
+                    jobs = 3;
+                } else if (employmentIncrease >= 5) {
+                    jobs = 1;
+                } else {
+                    jobs = 0;
+                }
+                int energy = 0;
+                if (energySavingTon >= 1000) {
+                    energy = 5;
+                } else if (energySavingTon >= 300) {
+                    energy = 3;
+                } else if (energySavingTon >= 100) {
+                    energy = 1;
+                } else {
+                    energy = 0;
+                }
+                return jobs + energy;
+            }
+        ]]>
+    </java>
+
+    <!-- 评审结论：违规/补正前置，其次按分数分档 -->
+    <java name="reviewResult" returnClass="java.lang.String">
+        <![CDATA[
+            str def reviewResult(int:totalScore, boolean:majorViolation, boolean:materialsComplete) {
+                str result = "REJECT";
+                if (majorViolation) {
+                    result = "REJECT";
+                } else if (materialsComplete == false) {
+                    result = "MATERIAL_PENDING";
+                } else if (totalScore >= 80) {
+                    result = "APPROVE";
+                } else if (totalScore >= 65) {
+                    result = "REVIEW";
+                } else {
+                    result = "REJECT";
+                }
+                return result;
+            }
+        ]]>
+    </java>
+
+    <!-- 资助定额：项目类别 × 评分档 -->
+    <java name="grantAmountWan" returnClass="int">
+        <![CDATA[
+            int def grantAmountWan(str:projectCategory, int:totalScore) {
+                int amount = 0;
+                if (projectCategory == "KEY_CORE") {
+                    if (totalScore >= 90) {
+                        amount = 500;
+                    } else if (totalScore >= 80) {
+                        amount = 300;
+                    } else {
+                        amount = 0;
+                    }
+                }
+                if (projectCategory == "HIGH_TECH") {
+                    if (totalScore >= 90) {
+                        amount = 300;
+                    } else if (totalScore >= 80) {
+                        amount = 150;
+                    } else {
+                        amount = 0;
+                    }
+                }
+                if (projectCategory == "SOCIAL_DEV") {
+                    if (totalScore >= 90) {
+                        amount = 100;
+                    } else if (totalScore >= 80) {
+                        amount = 50;
+                    } else {
+                        amount = 0;
+                    }
+                }
+                return amount;
+            }
+        ]]>
+    </java>
+
+</javas>

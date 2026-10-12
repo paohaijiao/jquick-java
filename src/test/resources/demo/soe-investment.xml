@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.SoeInvestmentRules">
+
+    <!-- 审批层级：10000/5000/1000/300 万四级阈值 -->
+    <java name="approvalLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def approvalLevel(int:amountWan) {
+                if (amountWan >= 10000) {
+                    return "SASAC";
+                } else if (amountWan >= 5000) {
+                    return "GROUP";
+                } else if (amountWan >= 1000) {
+                    return "BOARD";
+                } else if (amountWan >= 300) {
+                    return "EXECUTIVE";
+                } else {
+                    return "INTERNAL";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 出资额截断：授权与申报取小，非主业 3000 万封顶，金融地产清零 -->
+    <java name="cappedApprovedWan" returnClass="int">
+        <![CDATA[
+            int def cappedApprovedWan(int:requestedWan, int:grantedWan, str:projectType) {
+                int limit = grantedWan;
+                if (requestedWan < limit) {
+                    limit = requestedWan;
+                }
+                if (projectType == "NON_MAIN") {
+                    if (limit > 3000) {
+                        limit = 3000;
+                    }
+                }
+                if (projectType == "FINANCIAL") {
+                    limit = 0;
+                }
+                if (projectType == "REAL_ESTATE") {
+                    limit = 0;
+                }
+                return limit;
+            }
+        ]]>
+    </java>
+
+</javas>

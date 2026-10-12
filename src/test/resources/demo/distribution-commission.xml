@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.DistributionCommissionRules">
+
+    <java name="categoryRate" returnClass="double">
+        <![CDATA[
+            double def categoryRate(str:category) {
+                if (category == "BEAUTY") {
+                    return 0.20;
+                } else if (category == "STANDARD") {
+                    return 0.10;
+                } else if (category == "FRESH") {
+                    return 0.06;
+                } else {
+                    return 0.03;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="levelMultiplier" returnClass="double">
+        <![CDATA[
+            double def levelMultiplier(str:level) {
+                if (level == "PARTNER") {
+                    return 1.5;
+                } else if (level == "L3") {
+                    return 1.3;
+                } else if (level == "L2") {
+                    return 1.1;
+                } else {
+                    return 1.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="directReferRate" returnClass="double">
+        <![CDATA[
+            double def directReferRate(str:uplineLevel) {
+                if (uplineLevel == "PARTNER") {
+                    return 0.05;
+                } else if (uplineLevel == "L3") {
+                    return 0.04;
+                } else if (uplineLevel == "L2") {
+                    return 0.03;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="indirectReferRate" returnClass="double">
+        <![CDATA[
+            double def indirectReferRate(str:rootLevel) {
+                if (rootLevel == "PARTNER") {
+                    return 0.02;
+                } else if (rootLevel == "L3") {
+                    return 0.015;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="baseFactor" returnClass="double">
+        <![CDATA[
+            double def baseFactor(int:promotionCostRate) {
+                if (promotionCostRate >= 50) {
+                    return 0.5;
+                } else if (promotionCostRate >= 30) {
+                    return 0.7;
+                } else if (promotionCostRate >= 10) {
+                    return 0.9;
+                } else {
+                    return 1.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="groupBonusRate" returnClass="double">
+        <![CDATA[
+            double def groupBonusRate(boolean:groupLeader, int:groupCount) {
+                if (groupLeader) {
+                    if (groupCount >= 20) {
+                        return 0.02;
+                    } else if (groupCount >= 10) {
+                        return 0.01;
+                    } else {
+                        return 0.0;
+                    }
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.HealthScreeningRules">
+
+    <java name="systolicLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def systolicLevel(int:systolic) {
+                if (systolic >= 180) {
+                    return "CRITICAL";
+                } else if (systolic >= 140) {
+                    return "HIGH";
+                } else if (systolic >= 130) {
+                    return "ATTENTION";
+                } else {
+                    return "NORMAL";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="diastolicLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def diastolicLevel(int:diastolic) {
+                if (diastolic >= 110) {
+                    return "CRITICAL";
+                } else if (diastolic >= 90) {
+                    return "HIGH";
+                } else if (diastolic >= 85) {
+                    return "ATTENTION";
+                } else {
+                    return "NORMAL";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="glucoseLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def glucoseLevel(double:glucose) {
+                if (glucose >= 7.0) {
+                    return "CRITICAL";
+                } else if (glucose >= 6.1) {
+                    return "HIGH";
+                } else if (glucose >= 5.6) {
+                    return "ATTENTION";
+                } else {
+                    return "NORMAL";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="cholesterolLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def cholesterolLevel(double:cholesterol) {
+                if (cholesterol >= 6.2) {
+                    return "HIGH";
+                } else if (cholesterol >= 5.2) {
+                    return "ATTENTION";
+                } else {
+                    return "NORMAL";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="bmiLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def bmiLevel(double:bmi) {
+                if (bmi >= 32) {
+                    return "CRITICAL";
+                } else if (bmi >= 28) {
+                    return "HIGH";
+                } else if (bmi >= 24) {
+                    return "ATTENTION";
+                } else if (bmi < 18.5) {
+                    return "ATTENTION";
+                } else {
+                    return "NORMAL";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="heartRateLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def heartRateLevel(int:heartRate) {
+                if (heartRate >= 120) {
+                    return "CRITICAL";
+                } else if (heartRate >= 100) {
+                    return "HIGH";
+                } else if (heartRate < 50) {
+                    return "HIGH";
+                } else if (heartRate <= 55) {
+                    return "ATTENTION";
+                } else {
+                    return "NORMAL";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="altLevelRank" returnClass="int">
+        <![CDATA[
+            int def altLevelRank(int:alt) {
+                if (alt > 120) {
+                    return 2;
+                } else if (alt > 40) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="creatinineLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def creatinineLevel(int:creatinine, str:gender) {
+                if (gender == "M") {
+                    if (creatinine > 115) {
+                        return "HIGH";
+                    } else if (creatinine > 97) {
+                        return "ATTENTION";
+                    } else {
+                        return "NORMAL";
+                    }
+                } else {
+                    if (creatinine > 80) {
+                        return "HIGH";
+                    } else if (creatinine > 70) {
+                        return "ATTENTION";
+                    } else {
+                        return "NORMAL";
+                    }
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.SalaryAllowanceRules">
+
+    <java name="seniorityAllowance" returnClass="double">
+        <![CDATA[
+            double def seniorityAllowance(double:baseSalary, int:years) {
+                if (years >= 20) {
+                    return baseSalary * 0.08;
+                } else if (years >= 10) {
+                    return baseSalary * 0.05;
+                } else if (years >= 5) {
+                    return baseSalary * 0.03;
+                } else if (years >= 1) {
+                    return baseSalary * 0.01;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="nightShiftAllowance" returnClass="int">
+        <![CDATA[
+            int def nightShiftAllowance(int:shifts) {
+                return shifts * 50;
+            }
+        ]]>
+    </java>
+
+    <java name="highTempAllowance" returnClass="int">
+        <![CDATA[
+            int def highTempAllowance(int:days, boolean:outdoor) {
+                if (outdoor) {
+                    return days * 30;
+                } else {
+                    return days * 15;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="overtimePay" returnClass="double">
+        <![CDATA[
+            double def overtimePay(double:hourlyBase, double:hours, str:type) {
+                if (type == "HOLIDAY") {
+                    return hourlyBase * hours * 3.0;
+                } else if (type == "WEEKEND") {
+                    return hourlyBase * hours * 2.0;
+                } else {
+                    return hourlyBase * hours * 1.5;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="mealAllowance" returnClass="int">
+        <![CDATA[
+            int def mealAllowance(int:days) {
+                return days * 30;
+            }
+        ]]>
+    </java>
+
+    <java name="remoteAreaAllowance" returnClass="double">
+        <![CDATA[
+            double def remoteAreaAllowance(double:baseSalary, boolean:remote) {
+                if (remote) {
+                    return baseSalary * 0.10;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="perfectAttendanceBonus" returnClass="int">
+        <![CDATA[
+            int def perfectAttendanceBonus(boolean:perfect) {
+                if (perfect) {
+                    return 300;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="performanceBonus" returnClass="double">
+        <![CDATA[
+            double def performanceBonus(double:baseSalary, int:score) {
+                if (score >= 95) {
+                    return baseSalary * 0.30;
+                } else if (score >= 85) {
+                    return baseSalary * 0.20;
+                } else if (score >= 70) {
+                    return baseSalary * 0.10;
+                } else if (score >= 60) {
+                    return baseSalary * 0.05;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.TicketSlaRules">
+
+    <!-- 服务水平等级 -->
+    <java name="slaLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def slaLevel(str:priority, str:customerLevel) {
+                if (priority == "P0" || customerLevel == "VIP") {
+                    return "VIP";
+                } else if (priority == "P1") {
+                    return "GOLD";
+                } else {
+                    return "STANDARD";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 首次响应时限 -->
+    <java name="responseMinutes" returnClass="int">
+        <![CDATA[
+            int def responseMinutes(str:priority, boolean:securityRelated) {
+                int minutes = 240;
+                if (priority == "P0") {
+                    minutes = 10;
+                } else if (priority == "P1") {
+                    minutes = 20;
+                } else if (priority == "P2") {
+                    minutes = 60;
+                }
+                if (securityRelated && (priority == "P0" || priority == "P1")) {
+                    minutes = 5;
+                }
+                return minutes;
+            }
+        ]]>
+    </java>
+
+    <!-- 解决时限 -->
+    <java name="resolveMinutes" returnClass="int">
+        <![CDATA[
+            int def resolveMinutes(str:priority, str:slaLevel) {
+                if (slaLevel == "VIP") {
+                    if (priority == "P0") {
+                        return 120;
+                    } else if (priority == "P1") {
+                        return 240;
+                    } else if (priority == "P2") {
+                        return 1440;
+                    } else {
+                        return 4320;
+                    }
+                } else {
+                    if (priority == "P0") {
+                        return 240;
+                    } else if (priority == "P1") {
+                        return 480;
+                    } else if (priority == "P2") {
+                        return 2880;
+                    } else {
+                        return 7200;
+                    }
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 升级时限 -->
+    <java name="escalateMinutes" returnClass="int">
+        <![CDATA[
+            int def escalateMinutes(str:priority, str:slaLevel) {
+                if (slaLevel == "VIP") {
+                    if (priority == "P0") {
+                        return 10;
+                    } else if (priority == "P1") {
+                        return 30;
+                    } else if (priority == "P2") {
+                        return 120;
+                    } else {
+                        return 720;
+                    }
+                } else {
+                    if (priority == "P0") {
+                        return 30;
+                    } else if (priority == "P1") {
+                        return 60;
+                    } else if (priority == "P2") {
+                        return 240;
+                    } else {
+                        return 1440;
+                    }
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 优先级权重 -->
+    <java name="priorityWeight" returnClass="int">
+        <![CDATA[
+            int def priorityWeight(str:priority) {
+                if (priority == "P0") {
+                    return 40;
+                } else if (priority == "P1") {
+                    return 30;
+                } else if (priority == "P2") {
+                    return 15;
+                } else {
+                    return 5;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 重开工单风险分 -->
+    <java name="scoreReopen" returnClass="int">
+        <![CDATA[
+            int def scoreReopen(int:reopenedTimes) {
+                int score = reopenedTimes * 12;
+                if (score > 36) {
+                    score = 36;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 处理人负载风险分 -->
+    <java name="scoreLoad" returnClass="int">
+        <![CDATA[
+            int def scoreLoad(int:assigneeLoad) {
+                if (assigneeLoad >= 20) {
+                    return 20;
+                } else if (assigneeLoad >= 12) {
+                    return 12;
+                } else if (assigneeLoad >= 6) {
+                    return 6;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 违约风险 -->
+    <java name="breachRisk" returnClass="java.lang.String">
+        <![CDATA[
+            str def breachRisk(int:riskScore, boolean:hasSlaBreachHistory) {
+                if (hasSlaBreachHistory) {
+                    return "HIGH";
+                } else if (riskScore >= 60) {
+                    return "HIGH";
+                } else if (riskScore >= 35) {
+                    return "MEDIUM";
+                } else {
+                    return "LOW";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 是否触发升级 -->
+    <java name="needEscalate" returnClass="boolean">
+        <![CDATA[
+            boolean def needEscalate(int:elapsedMinutes, int:escalateMinutes) {
+                if (elapsedMinutes >= escalateMinutes) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 是否需要经理介入 -->
+    <java name="needManager" returnClass="boolean">
+        <![CDATA[
+            boolean def needManager(str:priority, str:customerLevel, boolean:securityRelated) {
+                if (priority == "P0" || customerLevel == "VIP" || securityRelated) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

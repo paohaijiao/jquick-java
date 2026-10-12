@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.InventoryRules">
+
+    <!-- 提前期需求 -->
+    <java name="demandDuringLeadTime" returnClass="int">
+        <![CDATA[
+            int def demandDuringLeadTime(int:avgDailySales, int:leadTimeDays) {
+                return avgDailySales * leadTimeDays;
+            }
+        ]]>
+    </java>
+
+    <!-- 动态安全库存 -->
+    <java name="safetyStockLevel" returnClass="int">
+        <![CDATA[
+            int def safetyStockLevel(int:safetyStock, int:avgDailySales, double:supplierReliability, boolean:promotion) {
+                int level = safetyStock;
+                if (promotion) {
+                    level = level + avgDailySales * 5;
+                }
+                if (supplierReliability < 0.9) {
+                    level = level + avgDailySales * 3;
+                }
+                return level;
+            }
+        ]]>
+    </java>
+
+    <!-- 目标库存 -->
+    <java name="targetStock" returnClass="int">
+        <![CDATA[
+            int def targetStock(int:safetyStock, int:demandDuringLeadTime, str:seasonFactor, int:avgDailySales) {
+                int target = safetyStock + demandDuringLeadTime;
+                if (seasonFactor == "PEAK") {
+                    target = target + avgDailySales * 7;
+                } else if (seasonFactor == "OFF") {
+                    target = target - avgDailySales * 3;
+                }
+                if (target < 0) {
+                    target = 0;
+                }
+                return target;
+            }
+        ]]>
+    </java>
+
+    <!-- 库存缺口 -->
+    <java name="shortage" returnClass="int">
+        <![CDATA[
+            int def shortage(int:targetStock, int:currentStock) {
+                int gap = targetStock - currentStock;
+                if (gap < 0) {
+                    gap = 0;
+                }
+                return gap;
+            }
+        ]]>
+    </java>
+
+    <!-- 最小起订量约束 -->
+    <java name="adjustToMoq" returnClass="int">
+        <![CDATA[
+            int def adjustToMoq(int:qty, int:moq) {
+                int result = qty;
+                if (qty > 0 && qty < moq) {
+                    result = moq;
+                }
+                return result;
+            }
+        ]]>
+    </java>
+
+    <!-- 包装规格向上取整：while 循环示例 -->
+    <java name="roundToPack" returnClass="int">
+        <![CDATA[
+            int def roundToPack(int:qty, int:packSize) {
+                if (qty <= 0) {
+                    return 0;
+                }
+                if (packSize <= 1) {
+                    return qty;
+                }
+                int rounded = 0;
+                while (rounded < qty) {
+                    rounded = rounded + packSize;
+                }
+                return rounded;
+            }
+        ]]>
+    </java>
+
+    <!-- 可售天数 -->
+    <java name="stockDays" returnClass="int">
+        <![CDATA[
+            int def stockDays(int:currentStock, int:avgDailySales) {
+                if (avgDailySales <= 0) {
+                    return 999;
+                }
+                return currentStock / avgDailySales;
+            }
+        ]]>
+    </java>
+
+    <!-- 紧急度 -->
+    <java name="urgency" returnClass="java.lang.String">
+        <![CDATA[
+            str def urgency(int:stockDays, int:leadTimeDays) {
+                if (stockDays <= leadTimeDays) {
+                    return "CRITICAL";
+                } else if (stockDays <= leadTimeDays + 3) {
+                    return "HIGH";
+                } else if (stockDays <= leadTimeDays + 7) {
+                    return "MEDIUM";
+                } else {
+                    return "LOW";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 是否加急补货 -->
+    <java name="suggestExpress" returnClass="boolean">
+        <![CDATA[
+            boolean def suggestExpress(int:stockDays, int:leadTimeDays, str:seasonFactor) {
+                if (stockDays <= leadTimeDays) {
+                    return true;
+                } else if (seasonFactor == "PEAK" && stockDays <= leadTimeDays + 3) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 单次下单量上限 -->
+    <java name="cappedQty" returnClass="int">
+        <![CDATA[
+            int def cappedQty(int:qty, int:maxOrder) {
+                int result = qty;
+                if (result > maxOrder) {
+                    result = maxOrder;
+                }
+                return result;
+            }
+        ]]>
+    </java>
+
+</javas>

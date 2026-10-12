@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.WorkshopEnergyRules">
+
+    <java name="powerDeviationPercent" returnClass="int">
+        <![CDATA[
+            int def powerDeviationPercent(int:total, int:baseline) {
+                return (total - baseline) * 100 / baseline;
+            }
+        ]]>
+    </java>
+
+    <java name="efficiencyLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def efficiencyLevel(int:total, int:output, int:standardPerUnit) {
+                int standardTotal = output * standardPerUnit;
+                if (total * 100 > standardTotal * 120) {
+                    return "WASTE";
+                } else if (total * 100 > standardTotal * 105) {
+                    return "ATTENTION";
+                } else {
+                    return "NORMAL";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="demandExcessPercent" returnClass="int">
+        <![CDATA[
+            int def demandExcessPercent(int:maxDemand, int:contract) {
+                return (maxDemand - contract) * 100 / contract;
+            }
+        ]]>
+    </java>
+
+    <java name="waterDeviationPercent" returnClass="int">
+        <![CDATA[
+            int def waterDeviationPercent(int:usage, int:baseline) {
+                return (usage - baseline) * 100 / baseline;
+            }
+        ]]>
+    </java>
+
+    <java name="temperatureAbnormal" returnClass="boolean">
+        <![CDATA[
+            boolean def temperatureAbnormal(boolean:controlled, int:temperature) {
+                if (controlled) {
+                    if (temperature >= 18) {
+                        if (temperature <= 26) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.ResumeScreeningRules">
+
+    <!-- 学历档位：博士 4 / 硕士 3 / 本科 2 / 大专 1 -->
+    <java name="eduRank" returnClass="int">
+        <![CDATA[
+            int def eduRank(str:education) {
+                if (education == "PHD") {
+                    return 4;
+                } else if (education == "MASTER") {
+                    return 3;
+                } else if (education == "BACHELOR") {
+                    return 2;
+                } else {
+                    return 1;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 学历门槛 -->
+    <java name="educationPass" returnClass="boolean">
+        <![CDATA[
+            boolean def educationPass(int:actualRank, int:requiredRank) {
+                if (actualRank >= requiredRank) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 年限门槛 -->
+    <java name="experiencePass" returnClass="boolean">
+        <![CDATA[
+            boolean def experiencePass(int:yearsExperience, int:requiredYears) {
+                if (yearsExperience >= requiredYears) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 技能门槛：覆盖率达到 80% 即通过（交叉相乘避免除法精度问题） -->
+    <java name="skillPass" returnClass="boolean">
+        <![CDATA[
+            boolean def skillPass(int:skillMatchCount, int:requiredSkillCount) {
+                if (requiredSkillCount <= 0) {
+                    return true;
+                } else if (skillMatchCount * 100 >= requiredSkillCount * 80) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 薪资门槛：期望不超带宽上限，且不低于下限八成（恶意低报也不通过） -->
+    <java name="salaryPass" returnClass="boolean">
+        <![CDATA[
+            boolean def salaryPass(double:expectedSalary, double:salaryMin, double:salaryMax) {
+                if (expectedSalary <= salaryMax && expectedSalary >= salaryMin * 0.8) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 工作地门槛：同城或接受调动 -->
+    <java name="locationPass" returnClass="boolean">
+        <![CDATA[
+            boolean def locationPass(str:currentCity, str:jobCity, boolean:willingToRelocate) {
+                if (currentCity == jobCity || willingToRelocate) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 硬性否决：高频跳槽或超长空窗 -->
+    <java name="hardReject" returnClass="boolean">
+        <![CDATA[
+            boolean def hardReject(int:jobHoppingCount, int:gapMonths) {
+                if (jobHoppingCount >= 4 || gapMonths >= 24) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 学历院校评分：超档 20 / 高一档 15 / 达标 10，另加院校层次分 -->
+    <java name="scoreEducation" returnClass="int">
+        <![CDATA[
+            int def scoreEducation(int:actualRank, int:requiredRank, str:schoolTier) {
+                int score = 0;
+                if (actualRank - requiredRank >= 2) {
+                    score = 20;
+                } else if (actualRank - requiredRank == 1) {
+                    score = 15;
+                } else if (actualRank == requiredRank) {
+                    score = 10;
+                }
+                if (schoolTier == "985") {
+                    score = score + 5;
+                } else if (schoolTier == "211") {
+                    score = score + 3;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 经验评分：超出要求越多分越高 -->
+    <java name="scoreExperience" returnClass="int">
+        <![CDATA[
+            int def scoreExperience(int:yearsExperience, int:requiredYears) {
+                int extra = yearsExperience - requiredYears;
+                if (extra >= 5) {
+                    return 25;
+                } else if (extra >= 2) {
+                    return 20;
+                } else if (extra >= 0) {
+                    return 12;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 技能覆盖率评分：100% 得 20，80% 得 14，60% 得 8 -->
+    <java name="scoreSkills" returnClass="int">
+        <![CDATA[
+            int def scoreSkills(int:skillMatchCount, int:requiredSkillCount) {
+                if (requiredSkillCount <= 0) {
+                    return 20;
+                } else if (skillMatchCount >= requiredSkillCount) {
+                    return 20;
+                } else if (skillMatchCount * 100 >= requiredSkillCount * 80) {
+                    return 14;
+                } else if (skillMatchCount * 100 >= requiredSkillCount * 60) {
+                    return 8;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 稳定性评分：跳槽 0/1/2 次得 15/10/5，空窗 3 个月内加 5 -->
+    <java name="scoreStability" returnClass="int">
+        <![CDATA[
+            int def scoreStability(int:jobHoppingCount, int:gapMonths) {
+                int score = 0;
+                if (jobHoppingCount == 0) {
+                    score = 15;
+                } else if (jobHoppingCount == 1) {
+                    score = 10;
+                } else if (jobHoppingCount == 2) {
+                    score = 5;
+                }
+                if (gapMonths <= 3) {
+                    score = score + 5;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 资质与英语加分：资格证 5 分，CET6 5 分 / CET4 3 分 -->
+    <java name="scoreBonus" returnClass="int">
+        <![CDATA[
+            int def scoreBonus(boolean:certified, str:englishLevel) {
+                int score = 0;
+                if (certified) {
+                    score = score + 5;
+                }
+                if (englishLevel == "CET6") {
+                    score = score + 5;
+                } else if (englishLevel == "CET4") {
+                    score = score + 3;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 初筛结论：硬否决与门槛优先，评分只决定面试与储备 -->
+    <java name="screeningResult" returnClass="java.lang.String">
+        <![CDATA[
+            str def screeningResult(int:totalScore, boolean:hardCheckPass, boolean:hardReject) {
+                if (hardReject) {
+                    return "REJECT";
+                } else if (hardCheckPass == false) {
+                    return "REJECT";
+                } else if (totalScore >= 75) {
+                    return "INTERVIEW";
+                } else if (totalScore >= 55) {
+                    return "RESERVE";
+                } else {
+                    return "REJECT";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 推荐等级 -->
+    <java name="recommendLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def recommendLevel(int:totalScore) {
+                if (totalScore >= 85) {
+                    return "STRONG";
+                } else if (totalScore >= 75) {
+                    return "NORMAL";
+                } else if (totalScore >= 55) {
+                    return "RESERVE";
+                } else {
+                    return "NONE";
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

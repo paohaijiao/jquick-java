@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.PerformanceRules">
+
+    <!-- 加权总分 -->
+    <java name="weightedScore" returnClass="double">
+        <![CDATA[
+            double def weightedScore(double:kpiScore, double:projectScore, double:teamScore, double:attendanceScore) {
+                double total = kpiScore * 0.5 + projectScore * 0.2 + teamScore * 0.15 + attendanceScore * 0.15;
+                return total;
+            }
+        ]]>
+    </java>
+
+    <!-- 绩效等级 -->
+    <java name="grade" returnClass="java.lang.String">
+        <![CDATA[
+            str def grade(double:totalScore) {
+                if (totalScore >= 90.0) {
+                    return "S";
+                } else if (totalScore >= 80.0) {
+                    return "A";
+                } else if (totalScore >= 70.0) {
+                    return "B";
+                } else if (totalScore >= 60.0) {
+                    return "C";
+                } else {
+                    return "D";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 等级基准系数 -->
+    <java name="baseCoefficient" returnClass="double">
+        <![CDATA[
+            double def baseCoefficient(str:grade) {
+                if (grade == "S") {
+                    return 1.8;
+                } else if (grade == "A") {
+                    return 1.4;
+                } else if (grade == "B") {
+                    return 1.1;
+                } else if (grade == "C") {
+                    return 0.8;
+                } else {
+                    return 0.5;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 管理者加成 -->
+    <java name="managerBonus" returnClass="double">
+        <![CDATA[
+            double def managerBonus(boolean:manager) {
+                if (manager) {
+                    return 0.2;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 销售激励 -->
+    <java name="salesBonus" returnClass="double">
+        <![CDATA[
+            double def salesBonus(double:salesAmount, str:grade) {
+                if ((grade == "S" || grade == "A") && salesAmount >= 500000.0) {
+                    return 0.2;
+                } else if (salesAmount >= 200000.0) {
+                    return 0.1;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 违规扣减 -->
+    <java name="violationPenalty" returnClass="double">
+        <![CDATA[
+            double def violationPenalty(boolean:hasViolation) {
+                if (hasViolation) {
+                    return -0.3;
+                } else {
+                    return 0.0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 晋升资格 -->
+    <java name="promotionEligible" returnClass="boolean">
+        <![CDATA[
+            boolean def promotionEligible(double:totalScore, boolean:hasViolation) {
+                if (hasViolation) {
+                    return false;
+                } else if (totalScore >= 85.0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 绩效改进 -->
+    <java name="needPip" returnClass="boolean">
+        <![CDATA[
+            boolean def needPip(double:totalScore, boolean:hasViolation) {
+                if (totalScore < 60.0) {
+                    return true;
+                } else if (totalScore < 70.0 && hasViolation) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 考勤等级 -->
+    <java name="attendanceLevel" returnClass="int">
+        <![CDATA[
+            int def attendanceLevel(double:attendanceScore) {
+                if (attendanceScore >= 95.0) {
+                    return 3;
+                } else if (attendanceScore >= 90.0) {
+                    return 2;
+                } else if (attendanceScore >= 80.0) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 奖金金额 -->
+    <java name="bonusAmount" returnClass="double">
+        <![CDATA[
+            double def bonusAmount(double:baseSalary, double:bonusCoefficient) {
+                return baseSalary * bonusCoefficient;
+            }
+        ]]>
+    </java>
+
+</javas>

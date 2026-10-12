@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.CampaignFraudRules">
+
+    <java name="scoreAccountAge" returnClass="int">
+        <![CDATA[
+            int def scoreAccountAge(int:days) {
+                if (days < 1) {
+                    return 20;
+                } else if (days < 7) {
+                    return 14;
+                } else if (days < 30) {
+                    return 8;
+                } else if (days < 90) {
+                    return 3;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreFrequency" returnClass="int">
+        <![CDATA[
+            int def scoreFrequency(int:count1h, int:count24h) {
+                int score = 0;
+                if (count1h >= 5) {
+                    score = score + 18;
+                } else if (count1h >= 3) {
+                    score = score + 12;
+                } else if (count1h >= 1) {
+                    score = score + 5;
+                }
+                if (count24h >= 15) {
+                    score = score + 7;
+                } else if (count24h >= 8) {
+                    score = score + 4;
+                } else if (count24h >= 3) {
+                    score = score + 2;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <java name="scoreDevice" returnClass="int">
+        <![CDATA[
+            int def scoreDevice(int:deviceAccounts, int:ipAccounts) {
+                int score = 0;
+                if (deviceAccounts >= 5) {
+                    score = score + 14;
+                } else if (deviceAccounts >= 3) {
+                    score = score + 8;
+                } else if (deviceAccounts >= 2) {
+                    score = score + 4;
+                }
+                if (ipAccounts >= 10) {
+                    score = score + 6;
+                } else if (ipAccounts >= 5) {
+                    score = score + 4;
+                } else if (ipAccounts >= 3) {
+                    score = score + 2;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <java name="scoreIdentity" returnClass="int">
+        <![CDATA[
+            int def scoreIdentity(boolean:realName, boolean:paymentConsistent, boolean:virtualAddress) {
+                int score = 0;
+                if (realName) {
+                } else {
+                    score = score + 8;
+                }
+                if (paymentConsistent) {
+                } else {
+                    score = score + 4;
+                }
+                if (virtualAddress) {
+                    score = score + 3;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <java name="scoreCoupon" returnClass="int">
+        <![CDATA[
+            int def scoreCoupon(int:couponOrders, int:emptyRate) {
+                int score = 0;
+                if (couponOrders >= 10) {
+                    score = score + 6;
+                } else if (couponOrders >= 5) {
+                    score = score + 4;
+                } else if (couponOrders >= 2) {
+                    score = score + 2;
+                }
+                if (emptyRate >= 50) {
+                    score = score + 4;
+                } else if (emptyRate >= 20) {
+                    score = score + 2;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <java name="scoreDeviation" returnClass="int">
+        <![CDATA[
+            int def scoreDeviation(int:deviationPercent) {
+                if (deviationPercent >= 400) {
+                    return 10;
+                } else if (deviationPercent >= 200) {
+                    return 6;
+                } else if (deviationPercent >= 100) {
+                    return 3;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

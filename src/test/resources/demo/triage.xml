@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.TriageRules">
+
+    <java name="lifeThreatScore" returnClass="int">
+        <![CDATA[
+            int def lifeThreatScore(int:vitalAbnormal, int:spo2, int:consciousCode, int:bleeding, int:distress) {
+                int score = 0;
+                if (vitalAbnormal >= 1) {
+                    score = score + 4;
+                }
+                if (spo2 < 90) {
+                    score = score + 4;
+                }
+                if (consciousCode >= 2) {
+                    score = score + 4;
+                } else if (consciousCode == 1) {
+                    score = score + 2;
+                }
+                if (bleeding >= 1) {
+                    score = score + 3;
+                }
+                if (distress >= 1) {
+                    score = score + 3;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <java name="complaintBaseLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def complaintBaseLevel(str:complaint) {
+                if (complaint == "CHEST_PAIN") {
+                    return "II";
+                } else if (complaint == "STROKE_SIGN") {
+                    return "II";
+                } else if (complaint == "TRAUMA") {
+                    return "III";
+                } else if (complaint == "ABDOMINAL") {
+                    return "III";
+                } else if (complaint == "FEVER") {
+                    return "III";
+                } else {
+                    return "IV";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="feverLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def feverLevel(double:temperature, boolean:infant) {
+                if (temperature >= 40.0) {
+                    return "I";
+                } else if (temperature >= 39.0) {
+                    if (infant) {
+                        return "II";
+                    } else {
+                        return "III";
+                    }
+                } else if (temperature >= 38.5) {
+                    return "III";
+                } else {
+                    return "IV";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="withinStrokeWindow" returnClass="boolean">
+        <![CDATA[
+            boolean def withinStrokeWindow(int:onsetHalfHours) {
+                if (onsetHalfHours <= 9) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

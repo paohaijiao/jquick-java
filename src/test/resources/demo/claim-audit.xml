@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.ClaimAuditRules">
+
+    <!-- 等待期校验：等待期内不承担赔付责任 -->
+    <java name="withinWaitingPeriod" returnClass="boolean">
+        <![CDATA[
+            boolean def withinWaitingPeriod(int:insuredDays, int:waitingPeriodDays) {
+                if (insuredDays < waitingPeriodDays) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 赔付比例：产品 × 医院等级 × 意外与否 -->
+    <java name="reimburseRatio" returnClass="double">
+        <![CDATA[
+            double def reimburseRatio(str:productType, str:hospitalLevel, boolean:isAccident) {
+                double ratio = 0.6;
+                if (productType == "MEDICAL") {
+                    if (hospitalLevel == "THIRD_A") {
+                        ratio = 0.85;
+                    } else if (hospitalLevel == "SECOND_A") {
+                        ratio = 0.75;
+                    } else {
+                        ratio = 0.6;
+                    }
+                } else if (productType == "CRITICAL_ILLNESS") {
+                    ratio = 1.0;
+                } else if (productType == "ACCIDENT") {
+                    ratio = 0.9;
+                } else if (productType == "AUTO") {
+                    if (isAccident) {
+                        ratio = 0.9;
+                    } else {
+                        ratio = 0.7;
+                    }
+                }
+                return ratio;
+            }
+        ]]>
+    </java>
+
+    <!-- 实际免赔额：重疾免赔额为 0，意外险减半，且不超过申请金额 -->
+    <java name="actualDeductible" returnClass="double">
+        <![CDATA[
+            double def actualDeductible(str:productType, double:deductible, double:claimAmount) {
+                double actual = deductible;
+                if (productType == "CRITICAL_ILLNESS") {
+                    actual = 0.0;
+                } else if (productType == "ACCIDENT") {
+                    actual = deductible * 0.5;
+                }
+                if (actual > claimAmount) {
+                    actual = claimAmount;
+                }
+                return actual;
+            }
+        ]]>
+    </java>
+
+    <!-- 赔付金额计算：以发票金额与申请金额的较小者为费用基数 -->
+    <java name="payableAmount" returnClass="double">
+        <![CDATA[
+            double def payableAmount(double:claimAmount, double:invoiceAmount, double:ratio, double:deductibleAmount) {
+                double base = claimAmount;
+                if (invoiceAmount < claimAmount) {
+                    base = invoiceAmount;
+                }
+                double payable = (base - deductibleAmount) * ratio;
+                if (payable < 0.0) {
+                    payable = 0.0;
+                }
+                return payable;
+            }
+        ]]>
+    </java>
+
+    <!-- 产品封顶线 -->
+    <java name="applyCap" returnClass="double">
+        <![CDATA[
+            double def applyCap(double:payableAmount, str:productType) {
+                double capped = payableAmount;
+                if (productType == "MEDICAL" && payableAmount > 200000.0) {
+                    capped = 200000.0;
+                } else if (productType == "CRITICAL_ILLNESS" && payableAmount > 500000.0) {
+                    capped = 500000.0;
+                } else if (productType == "AUTO" && payableAmount > 300000.0) {
+                    capped = 300000.0;
+                } else if (productType == "ACCIDENT" && payableAmount > 100000.0) {
+                    capped = 100000.0;
+                }
+                return capped;
+            }
+        ]]>
+    </java>
+
+    <!-- 理赔风险分 -->
+    <java name="riskScore" returnClass="int">
+        <![CDATA[
+            int def riskScore(int:priorClaimCount, int:fraudFlagCount, double:claimAmount) {
+                int score = 0;
+                score = score + priorClaimCount * 10;
+                score = score + fraudFlagCount * 25;
+                if (claimAmount >= 100000.0) {
+                    score = score + 20;
+                } else if (claimAmount >= 50000.0) {
+                    score = score + 10;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 理赔风险等级 -->
+    <java name="riskLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def riskLevel(int:riskScore) {
+                if (riskScore >= 60) {
+                    return "HIGH";
+                } else if (riskScore >= 30) {
+                    return "MEDIUM";
+                } else {
+                    return "LOW";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 是否转调查岗 -->
+    <java name="needInvestigation" returnClass="boolean">
+        <![CDATA[
+            boolean def needInvestigation(int:fraudFlagCount, double:claimAmount) {
+                if (fraudFlagCount >= 2) {
+                    return true;
+                } else if (fraudFlagCount >= 1 && claimAmount >= 50000.0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 核赔结论 -->
+    <java name="auditResult" returnClass="java.lang.String">
+        <![CDATA[
+            str def auditResult(boolean:withinWaitingPeriod, int:fraudFlagCount, boolean:documentComplete, double:payableAmount) {
+                if (withinWaitingPeriod) {
+                    return "REJECT";
+                } else if (fraudFlagCount >= 2) {
+                    return "MANUAL_AUDIT";
+                } else if (payableAmount <= 0.0) {
+                    return "REJECT";
+                } else if (documentComplete) {
+                    return "APPROVE";
+                } else {
+                    return "MANUAL_AUDIT";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 小额快赔通道 -->
+    <java name="fastTrack" returnClass="boolean">
+        <![CDATA[
+            boolean def fastTrack(double:payableAmount, boolean:documentComplete, int:priorClaimCount) {
+                if (documentComplete && payableAmount <= 5000.0 && priorClaimCount == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

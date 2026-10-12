@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.UserSegmentRules">
+
+    <java name="activitySegment" returnClass="java.lang.String">
+        <![CDATA[
+            str def activitySegment(int:browseDays, int:lastOrderDays) {
+                if (browseDays >= 15) {
+                    if (lastOrderDays <= 7) {
+                        return "ACTIVE";
+                    } else {
+                        if (browseDays >= 8 || lastOrderDays <= 30) {
+                            return "WARM";
+                        } else {
+                            if (browseDays >= 3 || lastOrderDays <= 90) {
+                                return "COLD";
+                            } else {
+                                return "DORMANT";
+                            }
+                        }
+                    }
+                } else if (browseDays >= 8 || lastOrderDays <= 30) {
+                    return "WARM";
+                } else if (browseDays >= 3 || lastOrderDays <= 90) {
+                    return "COLD";
+                } else {
+                    return "DORMANT";
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreGmv" returnClass="int">
+        <![CDATA[
+            int def scoreGmv(double:gmv) {
+                if (gmv >= 5000) {
+                    return 30;
+                } else if (gmv >= 2000) {
+                    return 22;
+                } else if (gmv >= 800) {
+                    return 14;
+                } else if (gmv >= 300) {
+                    return 7;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreOrders" returnClass="int">
+        <![CDATA[
+            int def scoreOrders(int:orders) {
+                if (orders >= 12) {
+                    return 20;
+                } else if (orders >= 6) {
+                    return 15;
+                } else if (orders >= 3) {
+                    return 9;
+                } else if (orders >= 1) {
+                    return 4;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreMember" returnClass="int">
+        <![CDATA[
+            int def scoreMember(int:rank) {
+                if (rank >= 5) {
+                    return 15;
+                } else if (rank == 4) {
+                    return 12;
+                } else if (rank == 3) {
+                    return 8;
+                } else if (rank == 2) {
+                    return 4;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <java name="scoreAvgPrice" returnClass="int">
+        <![CDATA[
+            int def scoreAvgPrice(double:avgAmount) {
+                if (avgAmount >= 1000) {
+                    return 10;
+                } else if (avgAmount >= 500) {
+                    return 7;
+                } else if (avgAmount >= 200) {
+                    return 4;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>

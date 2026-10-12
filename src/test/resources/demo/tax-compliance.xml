@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE javas PUBLIC "-//PAOHAIJIAO//DTD API JAVA 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-java.dtd">
+<javas namespace="com.github.paohaijiao.demo.TaxComplianceRules">
+
+    <!-- 逾期申报扣分 -->
+    <java name="scoreLate" returnClass="int">
+        <![CDATA[
+            int def scoreLate(int:lateCount) {
+                int score = lateCount * 5;
+                if (score > 25) {
+                    score = 25;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 缺失发票扣分 -->
+    <java name="scoreMissingInvoice" returnClass="int">
+        <![CDATA[
+            int def scoreMissingInvoice(int:missingInvoice) {
+                int score = missingInvoice * 8;
+                if (score > 24) {
+                    score = 24;
+                }
+                return score;
+            }
+        ]]>
+    </java>
+
+    <!-- 税负率异常扣分 -->
+    <java name="scoreBurden" returnClass="int">
+        <![CDATA[
+            int def scoreBurden(double:taxBurdenRate, double:industryAvgBurden) {
+                if (taxBurdenRate < industryAvgBurden * 0.5) {
+                    return 20;
+                } else if (taxBurdenRate < industryAvgBurden * 0.8) {
+                    return 12;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 进项占比异常扣分 -->
+    <java name="scoreInputRatio" returnClass="int">
+        <![CDATA[
+            int def scoreInputRatio(double:inputTaxRatio) {
+                if (inputTaxRatio > 0.95) {
+                    return 15;
+                } else if (inputTaxRatio > 0.85) {
+                    return 8;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 异常发票扣分 -->
+    <java name="scoreAbnormal" returnClass="int">
+        <![CDATA[
+            int def scoreAbnormal(boolean:hasAbnormalInvoice) {
+                if (hasAbnormalInvoice) {
+                    return 20;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 新设企业扣分 -->
+    <java name="scoreAge" returnClass="int">
+        <![CDATA[
+            int def scoreAge(int:yearsSinceRegister) {
+                if (yearsSinceRegister < 1) {
+                    return 10;
+                } else if (yearsSinceRegister < 3) {
+                    return 5;
+                } else {
+                    return 0;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 风险等级 -->
+    <java name="riskLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def riskLevel(int:riskScore) {
+                if (riskScore >= 70) {
+                    return "HIGH";
+                } else if (riskScore >= 40) {
+                    return "MEDIUM";
+                } else {
+                    return "LOW";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 处置方式 -->
+    <java name="auditLevel" returnClass="java.lang.String">
+        <![CDATA[
+            str def auditLevel(int:riskScore, boolean:hasAbnormalInvoice) {
+                if (hasAbnormalInvoice) {
+                    return "TAX_AUDIT";
+                } else if (riskScore >= 70) {
+                    return "TAX_AUDIT";
+                } else if (riskScore >= 40) {
+                    return "FIELD_VISIT";
+                } else {
+                    return "SELF_CHECK";
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 是否推送提醒 -->
+    <java name="needWarning" returnClass="boolean">
+        <![CDATA[
+            boolean def needWarning(int:riskScore) {
+                if (riskScore >= 40) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+    <!-- 是否移交稽查 -->
+    <java name="needInvestigation" returnClass="boolean">
+        <![CDATA[
+            boolean def needInvestigation(int:riskScore, boolean:hasAbnormalInvoice) {
+                if (hasAbnormalInvoice) {
+                    return true;
+                } else if (riskScore >= 70) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ]]>
+    </java>
+
+</javas>
