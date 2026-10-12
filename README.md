@@ -12,6 +12,21 @@
 </p>
 
 <p align="center">
+  🌐 <a href="https://www.jquick.org">JQuick Website</a> ·
+  📖 <a href="https://github.com/paohaijiao">GitHub</a> ·
+  📦 <a href="https://central.sonatype.com/artifact/io.github.paohaijiao/javelin">Maven Central</a>
+</p>
+
+<p align="center">
+  🔗 <a href="https://github.com/paohaijiao/jquick-curl">jquick-curl</a> ·
+  📂 <a href="https://github.com/paohaijiao/jquick-path">jquick-path</a> ·
+  📊 <a href="https://github.com/paohaijiao/jquick-excel">jquick-excel</a> ·
+  📄 <a href="https://github.com/paohaijiao/jquick-pdf">jquick-pdf</a> ·
+  ☕ <a href="https://github.com/paohaijiao/jquick-java">jquick-java</a> ·
+  🗄️ <a href="https://github.com/paohaijiao/jquick-sql">jquick-sql</a>
+</p>
+
+<p align="center">
   <b>English</b> | <a href="./README-CN.md">Chinese</a>
 </p>
 
